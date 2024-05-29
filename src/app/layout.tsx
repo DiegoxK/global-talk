@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import { Outfit } from "next/font/google";
 import { TRPCReactProvider } from "@/trpc/react";
+import Header from "@/components/header";
 
 export const metadata = {
   title: "Global Talk Medallo",
@@ -21,7 +22,10 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${outfit.className}`}>
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <Header />
+          {children}
+        </TRPCReactProvider>
       </body>
     </html>
   );
