@@ -1,7 +1,5 @@
 import "@/styles/globals.css";
-
-import { GeistSans } from "geist/font/sans";
-
+import { Outfit } from "next/font/google";
 import { TRPCReactProvider } from "@/trpc/react";
 
 export const metadata = {
@@ -10,13 +8,18 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
+const outfit = Outfit({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
+});
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang="es" className={`${outfit.className}`}>
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
