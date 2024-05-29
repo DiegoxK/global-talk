@@ -8,8 +8,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { siteConfig } from "@/config";
-import Logo from "@/public/CC.svg";
-import Image from "next/image";
 
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
