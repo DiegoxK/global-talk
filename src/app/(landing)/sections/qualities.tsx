@@ -90,7 +90,7 @@ interface CardProps {
 const Card = ({ title, description, Icon }: CardProps) => {
   return (
     <div className="border-3 relative flex rounded-xl border-primary-900 bg-white">
-      <div className="border-3 absolute left-[20] top-[-30] flex h-16 w-16 items-center justify-center rounded-lg border-primary-900 bg-primary-800">
+      <div className="border-3 absolute left-[20px] top-[-30px] flex h-16 w-16 items-center justify-center rounded-lg border-primary-900 bg-primary-800">
         <Icon className="fill-white" />
       </div>
       <div className="space-y-1 self-center px-8 pb-10">
