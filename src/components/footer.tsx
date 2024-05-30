@@ -14,7 +14,7 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="border-t-3 border-foreground px-10 pb-8 pt-16">
-      <div className="mb-10 grid grid-cols-2">
+      <div className="mb-10 grid md:grid-cols-2">
         <div className="space-y-10">
           <div className="md:me-10">
             <p className="text-xl font-bold">Global Talk Medallo</p>
