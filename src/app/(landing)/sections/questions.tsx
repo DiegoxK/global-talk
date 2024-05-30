@@ -94,7 +94,7 @@ const Card = ({ index, question, answer }: CardProps) => {
       collapsible
     >
       <AccordionItem value={`item-${index}`}>
-        <AccordionTrigger className="font-semibold">
+        <AccordionTrigger className="text-start font-semibold">
           {question}
           <div className="rounded-sm border border-primary-900 bg-primary-800 p-1 [&[data-state=open]>svg]:rotate-180">
             <ChevronDown className="h-4 w-4 shrink-0 text-white transition-transform duration-200 " />
