@@ -20,11 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${outfit.className}`}>
+    <html lang="es" className={`${outfit.className} antialiased`}>
       <body>
         <TRPCReactProvider>
           <Header />
-          <main className="container">{children}</main>
+          <main className="container px-20">{children}</main>
         </TRPCReactProvider>
       </body>
     </html>
