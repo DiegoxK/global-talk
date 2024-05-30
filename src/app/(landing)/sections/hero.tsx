@@ -5,15 +5,15 @@ export default function Hero() {
   return (
     <section className="mt-16 flex flex-wrap justify-center gap-10 md:gap-28 lg:flex-nowrap lg:justify-normal">
       <div className="gradient absolute left-0 top-0" />
-      <div className="relative w-fit space-y-6 text-center">
+      <div className="relative flex w-fit flex-col space-y-6 text-center">
         <div className="flex justify-center">
-          <div className="relative">
+          <div className="relative pr-10 md:pr-24">
             <Flags className="absolute" />
             <Logo className="mb-6 ms-16 mt-16 h-[214px] w-[227px] fill-primary md:ms-28 md:mt-20 md:h-auto md:w-auto" />
-            <Elipse className="absolute bottom-0 left-[25%] z-[-1] w-[200px] fill-primary-100 md:left-[30%] md:w-auto" />
+            <Elipse className="absolute bottom-0 left-[22%] z-[-1] w-[200px] fill-primary-100 md:left-[24%] md:w-auto" />
           </div>
         </div>
-        <div className="space-y-2 md:w-max">
+        <div className="space-y-2 self-center md:w-max">
           <p className="text-5xl font-bold text-primary-900">
             Global Talk Medallo
           </p>

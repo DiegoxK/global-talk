@@ -15,31 +15,31 @@ export default function Questions() {
     },
     {
       question: "¿Qué plataformas usan para enseñar?",
-      answer: "Estamos trabajando para darte la mejor experiencia",
+      answer: "Estamos trabajando para darte la mejor experiencia!",
     },
     {
       question: "¿Tengo que estar en Medellín?",
-      answer: "Estamos trabajando para darte la mejor experiencia",
+      answer: "Estamos trabajando para darte la mejor experiencia!",
     },
     {
       question: "¿De qué tamaño son los grupos?",
-      answer: "Estamos trabajando para darte la mejor experiencia",
+      answer: "Estamos trabajando para darte la mejor experiencia!",
     },
     {
       question: "¿Qué hacer si cuento con conocimientos previos?",
-      answer: "Estamos trabajando para darte la mejor experiencia",
+      answer: "Estamos trabajando para darte la mejor experiencia!",
     },
     {
       question: "¿Hay actividades extracurriculares?",
-      answer: "Estamos trabajando para darte la mejor experiencia",
+      answer: "Estamos trabajando para darte la mejor experiencia!",
     },
     {
       question: "¿Cómo sé si hay cupos disponibles?",
-      answer: "Estamos trabajando para darte la mejor experiencia",
+      answer: "Estamos trabajando para darte la mejor experiencia!",
     },
     {
       question: "¿En cuanto tiempo se llega a B2?",
-      answer: "Estamos trabajando para darte la mejor experiencia",
+      answer: "Estamos trabajando para darte la mejor experiencia!",
     },
   ];
 
