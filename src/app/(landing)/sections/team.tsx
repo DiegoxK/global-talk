@@ -33,7 +33,7 @@ export default function Team() {
   ];
 
   return (
-    <section className="py-16">
+    <section id="team" className="py-16">
       <div>
         <h2>Nuestros profesores</h2>
         <p>

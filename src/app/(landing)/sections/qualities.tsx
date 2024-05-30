@@ -48,7 +48,7 @@ export default function Qualities() {
   ];
 
   return (
-    <section className="py-16">
+    <section id="qualities" className="py-16">
       <div>
         <h2>¿Por qué estudiar con nosotros?</h2>
         <p>

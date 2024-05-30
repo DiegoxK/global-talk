@@ -59,7 +59,7 @@ export default function Questions() {
   };
 
   return (
-    <section className="my-16 gap-28">
+    <section id="questions" className="my-16 gap-28">
       <div>
         <h2>Preguntas frecuentes</h2>
         <p>

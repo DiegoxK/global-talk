@@ -5,6 +5,7 @@ export const siteConfig = {
       url: "/",
       subLinks: [
         { label: "Caracteristicas", url: "/#qualities" },
+        { label: "Camino", url: "/#road" },
         { label: "Profesores", url: "/#team" },
         { label: "Preguntas", url: "/#questions" },
       ],
