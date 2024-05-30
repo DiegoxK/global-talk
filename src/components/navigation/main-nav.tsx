@@ -16,13 +16,13 @@ export default function MainNav() {
         <Logo className="me-1 fill-primary" width={38} height={40} />
         lobal Talk Medallo
       </NavLink>
-      <div className="flex items-center space-x-6 text-sm font-medium">
+      <div className="flex items-center space-x-6 text-sm">
         {siteConfig.navigation.map((link) => (
           <NavLink key={link.url} href={link.url}>
             {link.label}
           </NavLink>
         ))}
-        <Button>¡Quiero unirme!</Button>
+        <Button className="bg-primary px-6">¡Quiero unirme!</Button>
       </div>
     </nav>
   );
@@ -47,8 +47,8 @@ export function NavLink({
   return (
     <Link
       className={cn(
-        "hover:text-foreground/80 transition-colors",
-        pathname === href ? "text-foreground" : "text-foreground/60",
+        "transition-colors hover:text-primary",
+        pathname === href ? "text-primary" : "text-foreground",
         className,
       )}
       onClick={toggleOpen !== undefined ? () => toggleOpen(false) : undefined}
