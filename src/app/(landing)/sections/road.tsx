@@ -25,7 +25,7 @@ export default function Road() {
       ],
     },
     {
-      level: "C1",
+      level: "C1 ★",
       points: [
         "Comunicación efectiva en contextos profesionales y académicos.",
         "Comunicación efectiva en contextos profesionales y académicos.",
