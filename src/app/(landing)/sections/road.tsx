@@ -39,7 +39,7 @@ export default function Road() {
       <h2 className="mb-20 mt-20 text-center text-5xl font-semibold">
         Tu camino al éxito en el inglés
       </h2>
-      <div className="relative grid grid-cols-4 gap-8">
+      <div className="relative grid grid-cols-1 gap-8 md:grid-cols-4">
         {roads.map((road, index) => (
           <RoadCard key={index} level={road.level} points={road.points} />
         ))}
@@ -51,7 +51,9 @@ export default function Road() {
 const RoadCard = ({ level, points }: { level: string; points: string[] }) => {
   return (
     <div className="flex flex-col justify-end gap-y-4">
-      <h3 className="text-center text-2xl font-bold text-primary">{level}</h3>
+      <h3 className="text-2xl font-bold text-primary md:text-center">
+        {level}
+      </h3>
       <ul className="space-y-4">
         {points.map((point, index) => (
           <li className="flex gap-2" key={index}>

@@ -37,12 +37,12 @@ export default function Team() {
     <section id="team" className="space-y-24 pb-20 pt-16">
       <div className="flex flex-col gap-6 text-center">
         <h2 className="text-5xl font-semibold">Nuestros profesores</h2>
-        <p className="w-[680px] self-center">
+        <p className="self-center md:w-[680px]">
           Nuestros profesores son profesionales altamente experimentados,
           certificados y conocidos por su enfoque amigable.
         </p>
       </div>
-      <div className="grid grid-cols-3 gap-10">
+      <div className="grid gap-10 lg:grid-cols-2 xl:grid-cols-3">
         {teachers.map((teacher, index) => (
           <Card
             key={index}
@@ -53,12 +53,12 @@ export default function Team() {
           />
         ))}
       </div>
-      <div className="flex items-center justify-between rounded-xl bg-primary-700 p-10 text-white">
+      <div className="hidden items-center justify-between rounded-xl bg-primary-700 p-10 text-white md:flex">
         <h2 className="text-3xl">
           ¡Transforma tu futuro con el poder del inglés!
         </h2>
         <Link href="/contact">
-          <Button className="flex gap-2" variant="secondary">
+          <Button className="ms-10 flex gap-2" variant="secondary">
             Registrarme ahora
             <svg
               width="21"

@@ -25,7 +25,7 @@ export default function RootLayout({
       <body>
         <TRPCReactProvider>
           <Header />
-          <main className="[&_section]:container [&_section]:px-20">
+          <main className="[&_section]:container md:[&_section]:px-20">
             {children}
           </main>
           <Footer />

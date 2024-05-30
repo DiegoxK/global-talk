@@ -67,12 +67,12 @@ export default function Questions() {
     <section id="questions" className="mb-40 mt-20 space-y-20">
       <div className="flex flex-col gap-6 text-center">
         <h2 className="text-5xl font-semibold">Preguntas frecuentes</h2>
-        <p className="w-[680px] self-center">
+        <p className="self-center md:w-[680px]">
           Todo lo que necesitas saber está en nuestra sección de preguntas
           frecuentes, diseñada para resolver tus dudas más comunes.
         </p>
       </div>
-      <div className="grid grid-cols-2 gap-10 overflow-hidden">
+      <div className="grid grid-cols-1 gap-5 overflow-hidden md:grid-cols-2 md:gap-10">
         <Column position="left" />
         <Column position="right" />
       </div>
@@ -89,7 +89,7 @@ interface CardProps {
 const Card = ({ index, question, answer }: CardProps) => {
   return (
     <Accordion
-      className="border-3 rounded-lg border-primary-900 px-8 py-2"
+      className="border-3 rounded-lg border-primary-900 px-5 py-1"
       type="single"
       collapsible
     >

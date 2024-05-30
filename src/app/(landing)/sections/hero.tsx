@@ -3,7 +3,7 @@ import { Elipse, Flags, Hat, Planet } from "@/vectors/miscellaneous";
 
 export default function Hero() {
   return (
-    <section className="mt-16 flex gap-28">
+    <section className="mt-16 flex flex-wrap justify-center gap-28 md:flex-nowrap md:justify-normal">
       <div className="gradient absolute left-0 top-0" />
       <div className="relative w-fit space-y-6 text-center">
         <div className="relative flex">

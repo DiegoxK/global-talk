@@ -58,13 +58,13 @@ export default function Qualities() {
             <h2 className="text-5xl font-semibold text-primary-900">
               ¿Por qué estudiar con nosotros?
             </h2>
-            <p className="w-[840px] self-center text-primary-900">
+            <p className="self-center text-primary-900 md:w-[840px]">
               Con un equipo dedicado de profesores experimentados, herramientas
               modernas para la enseñanza y la mejor actitud, te ayudaremos a
               dominar y certificar tu inglés.
             </p>
           </div>
-          <div className="mt-20 grid grid-cols-3 gap-10">
+          <div className="mt-20 grid gap-10 lg:grid-cols-2 xl:grid-cols-3">
             {qualities.map((quality, index) => (
               <Card
                 key={index}

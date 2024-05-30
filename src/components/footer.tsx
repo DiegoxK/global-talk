@@ -16,7 +16,7 @@ export default function Footer() {
     <footer className="border-t-3 border-foreground px-10 pb-8 pt-16">
       <div className="mb-10 grid grid-cols-2">
         <div className="space-y-10">
-          <div>
+          <div className="md:me-10">
             <p className="text-xl font-bold">Global Talk Medallo</p>
             <p>
               Convierte el inglés en una herramienta para alcanzar tus sueños.
@@ -43,7 +43,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <nav>
+        <nav className="hidden md:block">
           <div className="grid grid-cols-4">
             {siteConfig.navigation.map((link) => (
               <FooterLinks
@@ -57,8 +57,8 @@ export default function Footer() {
         </nav>
       </div>
       <Separator className="bg-black" />
-      <div className="my-4 grid grid-cols-2">
-        <div className="flex items-center gap-2">
+      <div className="my-4 grid grid-cols-1 gap-5 md:grid-cols-4">
+        <div className="flex items-center justify-center gap-2 md:col-span-3 md:justify-start">
           <NavLink href="/t&c">Términos del servicio</NavLink>
           <div>|</div>
           <NavLink href="/t&c#privacy">Política de privacidad</NavLink>
@@ -66,7 +66,7 @@ export default function Footer() {
           <NavLink href="/t&c#cookies">Política de Cookies</NavLink>
         </div>
 
-        <div className="flex items-center justify-end gap-2">
+        <div className="flex items-center justify-center gap-2 md:col-span-1 md:justify-end">
           <div className="border-3 rounded-md border-primary-900 bg-primary-700 p-2">
             <Facebook className="fill-white" />
           </div>
