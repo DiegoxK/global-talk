@@ -9,7 +9,7 @@ export default function Header() {
         <div className="flex w-full items-center justify-between">
           <NavLink
             href="/"
-            className="mr-6 flex items-center space-x-2 text-3xl font-semibold text-primary"
+            className="mr-6 flex items-center space-x-2 text-2xl font-semibold text-primary md:text-3xl"
           >
             <Logo className="me-1 fill-primary" width={38} height={40} />
             lobal Talk Medallo

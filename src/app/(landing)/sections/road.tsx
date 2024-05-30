@@ -35,7 +35,7 @@ export default function Road() {
     },
   ];
   return (
-    <section id="road" className="px-0 pb-48 pt-28">
+    <section id="road" className="pb-24 md:pb-48 md:pt-28">
       <h2 className="mb-20 mt-20 text-center text-5xl font-semibold">
         Tu camino al éxito en el inglés
       </h2>

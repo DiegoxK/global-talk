@@ -34,7 +34,7 @@ export default function Team() {
   ];
 
   return (
-    <section id="team" className="space-y-24 pb-20 pt-16">
+    <section id="team" className="space-y-16 md:pb-20 md:pt-16">
       <div className="flex flex-col gap-6 text-center">
         <h2 className="text-5xl font-semibold">Nuestros profesores</h2>
         <p className="self-center md:w-[680px]">
