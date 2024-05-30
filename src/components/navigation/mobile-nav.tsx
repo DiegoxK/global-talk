@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { siteConfig } from "@/config";
+import { Logo } from "@/vectors/logo";
 
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -19,7 +20,7 @@ export default function MobileNav() {
           variant="ghost"
           className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
         >
-          <Menu size={22} />
+          <Menu className="text-primary" size={30} />
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
@@ -29,9 +30,9 @@ export default function MobileNav() {
           toggleOpen={setOpen}
           className="mr-6 flex items-center space-x-2"
         >
-          G
+          <Logo className="ml-1 mt-1 fill-primary" width={50} height={50} />
         </NavLink>
-        <ScrollArea className="my-4 h-[calc(100vh-6rem)] pl-6">
+        <ScrollArea className="mt-8 h-[calc(100vh-6rem)] pl-10">
           <nav className="flex flex-col space-y-3">
             {siteConfig.navigation.map((link) => (
               <NavLink

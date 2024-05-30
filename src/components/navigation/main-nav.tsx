@@ -4,18 +4,10 @@ import { siteConfig } from "@/config";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { Logo } from "@/vectors/logo";
 
 export default function MainNav() {
   return (
-    <nav className="hidden w-full justify-between md:flex">
-      <NavLink
-        href="/"
-        className="mr-6 flex items-center space-x-2 text-3xl font-semibold text-primary"
-      >
-        <Logo className="me-1 fill-primary" width={38} height={40} />
-        lobal Talk Medallo
-      </NavLink>
+    <nav className="hidden justify-between md:flex">
       <div className="flex items-center space-x-6 text-sm">
         {siteConfig.navigation.map((link) => (
           <NavLink key={link.url} href={link.url}>

@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
+/* * {
   outline: 1px solid rgb(129, 82, 161);
-}
+} */
 
 @layer base {
   :root {
@@ -44,7 +44,7 @@
 
     --border: hsl(214.3 31.8% 91.4%);
     --input: hsl(214.3 31.8% 91.4%);
-    --ring: hsl(222.2 84% 4.9%);
+    --ring: #8a63b0;
 
     --radius: 0.5rem;
   }

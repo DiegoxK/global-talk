@@ -15,7 +15,7 @@ export default function Hero() {
           />
           <Elipse className="absolute bottom-0 left-[25%] z-[-1] fill-primary-100" />
         </div>
-        <div className="w-max space-y-2">
+        <div className="space-y-2 md:w-max">
           <p className="text-5xl font-bold text-primary-900">
             Global Talk Medallo
           </p>
