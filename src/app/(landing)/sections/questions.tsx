@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { ChevronDown } from "lucide-react";
 
 export default function Questions() {
   const questions = [
@@ -18,6 +19,10 @@ export default function Questions() {
     },
     {
       question: "¿Tengo que estar en Medellín?",
+      answer: "Estamos trabajando para darte la mejor experiencia",
+    },
+    {
+      question: "¿De qué tamaño son los grupos?",
       answer: "Estamos trabajando para darte la mejor experiencia",
     },
     {
@@ -45,7 +50,7 @@ export default function Questions() {
         : questions.filter((_, index) => index % 2 !== 0);
 
     return (
-      <div>
+      <div className="space-y-5">
         {columnQuestions.map((question, index) => (
           <Card
             key={index}
@@ -59,10 +64,10 @@ export default function Questions() {
   };
 
   return (
-    <section id="questions" className="my-16 gap-28">
-      <div>
-        <h2>Preguntas frecuentes</h2>
-        <p>
+    <section id="questions" className="my-20 space-y-20">
+      <div className="flex flex-col gap-6 text-center">
+        <h2 className="text-5xl font-semibold">Preguntas frecuentes</h2>
+        <p className="w-[680px] self-center">
           Todo lo que necesitas saber está en nuestra sección de preguntas
           frecuentes, diseñada para resolver tus dudas más comunes.
         </p>
@@ -83,10 +88,21 @@ interface CardProps {
 
 const Card = ({ index, question, answer }: CardProps) => {
   return (
-    <Accordion type="single" collapsible>
+    <Accordion
+      className="border-3 rounded-lg border-primary-900 px-8 py-2"
+      type="single"
+      collapsible
+    >
       <AccordionItem value={`item-${index}`}>
-        <AccordionTrigger>{question}</AccordionTrigger>
-        <AccordionContent>{answer}</AccordionContent>
+        <AccordionTrigger className="font-semibold">
+          {question}
+          <div className="rounded-sm border border-primary-900 bg-primary-800 p-1 [&[data-state=open]>svg]:rotate-180">
+            <ChevronDown className="h-4 w-4 shrink-0 text-white transition-transform duration-200 " />
+          </div>
+        </AccordionTrigger>
+        <AccordionContent className="border-t-2 border-primary-900 pt-4">
+          {answer}
+        </AccordionContent>
       </AccordionItem>
     </Accordion>
   );

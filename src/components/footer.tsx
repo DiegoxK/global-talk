@@ -12,26 +12,34 @@ import { siteConfig } from "@/config";
 
 export default function Footer() {
   return (
-    <footer className="mx-10 py-6">
-      <div className="grid grid-cols-2">
-        <div>
+    <footer className="border-t-3 border-foreground px-10 pb-8 pt-16">
+      <div className="mb-10 grid grid-cols-2">
+        <div className="space-y-10">
           <div>
-            <p>Global Talk Medallo</p>
+            <p className="text-xl font-bold">Global Talk Medallo</p>
             <p>
               Convierte el inglés en una herramienta para alcanzar tus sueños.
             </p>
           </div>
-          <div className="flex">
-            <Mail />
-            <p>contacto@globtm.co</p>
-          </div>
-          <div className="flex">
-            <Phone />
-            <p>+57 310 000 0000</p>
-          </div>
-          <div className="flex">
-            <Location />
-            <p>Medellín, Colombia.</p>
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="border-3 rounded-md border-primary-900 bg-primary-700 p-1">
+                <Mail className="fill-white" />
+              </div>
+              <p>contacto@globtm.co</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="border-3 rounded-md border-primary-900 bg-primary-700 p-1">
+                <Phone className="fill-white" />
+              </div>
+              <p>+57 310 000 0000</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="border-3 rounded-md border-primary-900 bg-primary-700 p-1">
+                <Location className="fill-white" />
+              </div>
+              <p>Medellín, Colombia.</p>
+            </div>
           </div>
         </div>
         <nav>
@@ -47,9 +55,9 @@ export default function Footer() {
           </div>
         </nav>
       </div>
-      <Separator />
-      <div className="grid grid-cols-2">
-        <div className="flex">
+      <Separator className="bg-black" />
+      <div className="my-4 grid grid-cols-2">
+        <div className="flex items-center gap-2">
           <NavLink href="/t&c">Términos del servicio</NavLink>
           <div>|</div>
           <NavLink href="/t&c#privacy">Política de privacidad</NavLink>
@@ -57,14 +65,20 @@ export default function Footer() {
           <NavLink href="/t&c#cookies">Política de Cookies</NavLink>
         </div>
 
-        <div className="flex justify-end">
-          <Facebook />
-          <Instagram />
-          <Linkedin />
+        <div className="flex items-center justify-end gap-2">
+          <div className="border-3 rounded-md border-primary-900 bg-primary-700 p-2">
+            <Facebook className="fill-white" />
+          </div>
+          <div className="border-3 rounded-md border-primary-900 bg-primary-700 p-2">
+            <Instagram className="fill-white" />
+          </div>
+          <div className="border-3 rounded-md border-primary-900 bg-primary-700 p-2">
+            <Linkedin className="fill-white" />
+          </div>
         </div>
       </div>
-      <Separator />
-      <div className="text-center font-extralight">
+      <Separator className="bg-black" />
+      <div className="mt-8 text-center font-extralight">
         <p>Copyright &copy; [2024] Global Talk Medallo. All rights reserved.</p>
       </div>
     </footer>

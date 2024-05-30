@@ -35,9 +35,11 @@ export default function Road() {
     },
   ];
   return (
-    <section id="road" className="py-16">
-      <h2>¿Por qué estudiar con nosotros?</h2>
-      <div className="grid grid-cols-4 gap-9">
+    <section id="road" className="px-0 pb-48 pt-28">
+      <h2 className="mb-20 mt-20 text-center text-5xl font-semibold">
+        Tu camino al éxito en el inglés
+      </h2>
+      <div className="relative grid grid-cols-4 gap-8">
         {roads.map((road, index) => (
           <RoadCard key={index} level={road.level} points={road.points} />
         ))}
@@ -54,7 +56,7 @@ const RoadCard = ({ level, points }: { level: string; points: string[] }) => {
         {points.map((point, index) => (
           <li className="flex gap-2" key={index}>
             <span className="font-bold text-primary">{"★"}</span>{" "}
-            <p className="hover:text-primary">{point}</p>
+            <p className="transition-colors hover:text-primary">{point}</p>
           </li>
         ))}
       </ul>
