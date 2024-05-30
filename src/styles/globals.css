@@ -58,3 +58,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+.gradient {
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    rgba(234, 154, 255, 0.15) -6.98%,
+    rgba(252, 252, 253, 0.15) 106.98%
+  );
+}

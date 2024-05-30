@@ -64,7 +64,7 @@ export default function Questions() {
   };
 
   return (
-    <section id="questions" className="my-20 space-y-20">
+    <section id="questions" className="mb-40 mt-20 space-y-20">
       <div className="flex flex-col gap-6 text-center">
         <h2 className="text-5xl font-semibold">Preguntas frecuentes</h2>
         <p className="w-[680px] self-center">

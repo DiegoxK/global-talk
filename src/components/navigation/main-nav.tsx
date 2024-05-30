@@ -47,8 +47,8 @@ export function NavLink({
   return (
     <Link
       className={cn(
-        "transition-colors hover:text-primary",
-        pathname === href ? "text-primary" : "text-foreground",
+        "text-base transition-colors hover:text-primary",
+        pathname === href ? "font-bold text-primary" : "text-foreground",
         className,
       )}
       onClick={toggleOpen !== undefined ? () => toggleOpen(false) : undefined}
