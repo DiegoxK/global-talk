@@ -89,7 +89,7 @@ const Card = ({ picture, name, experience, description }: CardProps) => {
         <Image src={picture} alt={name} className="block" />
       </div>
       <h3 className="text-xl font-bold text-primary-900">{name}</h3>
-      <p className="text-lg font-semibold text-primary-900">★ {experience} ★</p>
+      <p className="text-lg font-semibold text-primary-900">{`[ ${experience} ]`}</p>
       <p>{description}</p>
     </div>
   );

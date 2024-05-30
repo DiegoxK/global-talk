@@ -9,6 +9,7 @@ import {
 import { NavLink } from "@/components/navigation/main-nav";
 import { Separator } from "@/components/ui/separator";
 import { siteConfig } from "@/config";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -97,9 +98,9 @@ interface FooterLinksProps extends NavigationLink {
 const FooterLinks = ({ label, url, subLinks }: FooterLinksProps) => {
   return (
     <div>
-      <NavLink href={url} className="font-extrabold">
+      <Link href={url} className="font-extrabold hover:text-primary">
         {label}
-      </NavLink>
+      </Link>
       <div className="flex flex-col">
         {subLinks.map((subLink, index) => (
           <NavLink key={index} href={subLink.url}>
