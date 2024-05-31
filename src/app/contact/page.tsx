@@ -2,11 +2,14 @@ import Image from "next/image";
 import Questions from "../(landing)/sections/questions";
 import ContactForm from "./components/contact-form";
 
+import vector from "../../../public/contact/group.svg";
+
 export default function Contact() {
   return (
     <>
       <div className="flex w-full flex-col xl:flex-row">
-        <Image src="/contact/group.svg" alt="Imagen decorativa" />
+        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+        <Image src={vector} alt="Imagen decorativa" />
         <div className="w-full">
           <div className="flex items-center justify-center bg-primary-800 px-3 py-16 xl:h-[606px]">
             <div className="w-fit rounded-sm bg-primary-200 px-6 md:px-8">
