@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/components/ui/use-toast";
+import { toast, useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
 
 import axios from "axios";
@@ -33,9 +33,28 @@ export default function ContactForm() {
     },
   });
 
+  const onSubmit = (values: ContactType) => {
+    const toastAlert = toast({
+      title: "Enviando mensaje",
+      description: "Por favor espera un momento",
+      duration: 2000,
+    });
+
+    toastAlert.update(
+      toast({
+        title: "Atualmente en mantenimiento!",
+        description: "Por favor inténtalo más tarde.",
+        duration: 4000,
+      }),
+    );
+  };
+
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-y-2 pb-8 pt-6 lg:px-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-y-2 pb-8 pt-6 lg:px-4"
+      >
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <FormField
             control={form.control}
