@@ -6,6 +6,7 @@ export default function Contact() {
   return (
     <>
       <div className="flex w-full flex-col xl:flex-row">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/contact/group.svg" alt="Imagen decorativa" />
         <div className="w-full">
           <div className="flex items-center justify-center bg-primary-800 px-3 py-16 xl:h-[606px]">
