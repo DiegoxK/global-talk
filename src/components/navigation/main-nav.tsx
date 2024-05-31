@@ -14,7 +14,9 @@ export default function MainNav() {
             {link.label}
           </NavLink>
         ))}
-        <Button className="bg-primary px-6">¡Quiero unirme!</Button>
+        <Link href="/contact">
+          <Button className="bg-primary px-6">¡Quiero unirme!</Button>
+        </Link>
       </div>
     </nav>
   );
