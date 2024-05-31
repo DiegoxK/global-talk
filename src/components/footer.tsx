@@ -103,7 +103,7 @@ const FooterLinks = ({ label, url, subLinks }: FooterLinksProps) => {
       </Link>
       <div className="flex flex-col">
         {subLinks.map((subLink, index) => (
-          <NavLink key={index} href={subLink.url}>
+          <NavLink className="w-[150px]" key={index} href={subLink.url}>
             {subLink.label}
           </NavLink>
         ))}
