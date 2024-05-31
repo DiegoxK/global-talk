@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import { Outfit } from "next/font/google";
+import { Toaster } from "@/components/ui/toaster";
 import { TRPCReactProvider } from "@/trpc/react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -23,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${outfit.className} antialiased`}>
       <body>
+        <Toaster />
         <TRPCReactProvider>
           <Header />
           <main className="[&_section]:container md:[&_section]:px-20">

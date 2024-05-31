@@ -40,13 +40,15 @@ export default function ContactForm() {
       duration: 2000,
     });
 
-    toastAlert.update(
-      toast({
-        title: "Atualmente en mantenimiento!",
-        description: "Por favor inténtalo más tarde.",
-        duration: 4000,
-      }),
-    );
+    setTimeout(() => {
+      toastAlert.update(
+        toast({
+          title: "Atualmente en mantenimiento!",
+          description: "Por favor inténtalo más tarde.",
+          duration: 4000,
+        }),
+      );
+    }, 3000);
   };
 
   return (
@@ -65,7 +67,6 @@ export default function ContactForm() {
                 <FormControl>
                   <Input placeholder="Juan Pérez" {...field} />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -78,7 +79,6 @@ export default function ContactForm() {
                 <FormControl>
                   <Input placeholder="321000000" {...field} />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -92,7 +92,6 @@ export default function ContactForm() {
               <FormControl>
                 <Input placeholder="alfonso@globtm.com" {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -105,7 +104,6 @@ export default function ContactForm() {
               <FormControl>
                 <Input placeholder="Medellín" {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -118,7 +116,6 @@ export default function ContactForm() {
               <FormControl>
                 <Textarea placeholder="Tu mensaje" {...field} />
               </FormControl>
-              <FormMessage className="text-white" />
             </FormItem>
           )}
         />
