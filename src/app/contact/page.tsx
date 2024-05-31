@@ -10,6 +10,8 @@ export default function Contact() {
           src="/contact/group.png"
           width={675}
           height={675}
+          className="w-full object-cover xl:h-[675]
+          xl:w-[675]"
           alt="Imagen decorativa"
         />
         <div className="w-full">
