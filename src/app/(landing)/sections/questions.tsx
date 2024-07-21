@@ -9,39 +9,56 @@ import { ChevronDown } from "lucide-react";
 export default function Questions() {
   const questions = [
     {
-      question: "¿Cómo se compone el horario?",
+      question: "¿Qué cursos ofrecemos?",
       answer:
-        "Nuestra escuela te ofrece: 4 horas virtuales. Jornadas mañana, tarde o noche. ¡Escoje la que mejor se adapte a tu agenda!",
+        "En este momento los siguientes cuatro programas: \n De A2 a B1. \n De B1 a B2. \n Inglés para los negocios. \n Preparación para exámenes oficiales.",
     },
     {
-      question: "¿Qué plataformas usan para enseñar?",
-      answer: "Estamos trabajando para darte la mejor experiencia!",
+      question: "¿Cómo funciona el programa De A2 a B1?",
+      answer: "Consta de 5 niveles, con una duración de 1 año y una intensidad de 4 horas semanales.",
+    },
+    {
+      question: "¿Cómo funciona el programa De B1 a B2?",
+      answer: "Consta de 5 niveles, con una duración de 1 año y una intensidad de 4 horas semanales.",
+    },
+    {
+      question: '¿Cómo funciona el programa "Inglés para los negocios"?',
+      answer: "Consta de 5 niveles, con una duración de 1 año y una intensidad de 4 horas semanales. \n Prerequisito: B1",
+    },
+    {
+      question: '¿Cómo funciona el programa "Preparación para exámenes oficiales"?',
+      answer: "Te preparamos para los siguientes exámenes: TOEFL, IELTS, APTIS. \n Cursos con intensidad según tus necesidades y disponibilidad. \n Simulador del examen.",
     },
     {
       question: "¿Tengo que estar en Medellín?",
-      answer: "Estamos trabajando para darte la mejor experiencia!",
+      answer: "No, nuestros cursos son virtuales por lo tanto no es necesario que vivas en nuestra ciudad para aprender con Global Talk Medallo.",
     },
     {
-      question: "¿De qué tamaño son los grupos?",
-      answer: "Estamos trabajando para darte la mejor experiencia!",
-    },
-    {
-      question: "¿Qué hacer si cuento con conocimientos previos?",
-      answer: "Estamos trabajando para darte la mejor experiencia!",
-    },
-    {
-      question: "¿Hay actividades extracurriculares?",
-      answer: "Estamos trabajando para darte la mejor experiencia!",
+      question: "¿Qué sucede si cuento con conocimientos previos?",
+      answer: "Dentro de nuestra academia, podrás realizar un exámen de nivelación completo para reconocer tu nivel actual. En base a tus resultados te recomendaremos el programa que más se ajuste a tus conocimientos.",
     },
     {
       question: "¿Cómo sé si hay cupos disponibles?",
-      answer: "Estamos trabajando para darte la mejor experiencia!",
+      answer: "Dentro de nuestra sección academia podrás ver los cupos disponibles en diferentes grupos. \n Cada grupo de compone de 5 estudiantes.",
+    },
+    {
+      question: "¿Qué plataformas usan para enseñar?",
+      answer: "Utilizamos diferentes plataformas para darte la mejor experiencia de aprendizaje, algunas de estas son: \n Google Meet \n Off 2 Class \n Write and Improve \n Globi, ¡nuestra propia IA!",
+    },
+    {
+      question: "¿De qué tamaño son los grupos?",
+      answer: "Cada grupo se compone de 5 estudiantes, con el fin de brindarte una enseñanza completamente personalizada.",
+    },
+    {
+      question: "¿Dan clases privadas?",
+      answer: "Así es, si estás interesado pregunta por su disponibilidad.",
     },
     {
       question: "¿En cuanto tiempo se llega a B2?",
-      answer: "Estamos trabajando para darte la mejor experiencia!",
+      answer: "Depende de tu punto de partida. Por ejemplo, si inicias sin conocimientos previos, llegarás a B2 en 2 años con la intensidad de 4 horas semanales.",
     },
   ];
+  
 
   const Column = ({ position }: { position: "left" | "right" }) => {
     const columnQuestions =
