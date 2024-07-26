@@ -2,8 +2,6 @@ import "@/styles/globals.css";
 import { Outfit } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import { TRPCReactProvider } from "@/trpc/react";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 
 export const metadata = {
   title: "Global Talk Medallo",
@@ -25,13 +23,7 @@ export default function RootLayout({
     <html lang="es" className={`${outfit.className} antialiased`}>
       <body>
         <Toaster />
-        <TRPCReactProvider>
-          <Header />
-          <main className="[&_section]:container md:[&_section]:px-20">
-            {children}
-          </main>
-          <Footer />
-        </TRPCReactProvider>
+        <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>
   );

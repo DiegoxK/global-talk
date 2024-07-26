@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-import Julio from "../../../../public/teachers/julian.jpg";
-import Jose from "../../../../public/teachers/jose.jpg";
-import Luis from "../../../../public/teachers/luis.jpg";
+import Julio from "../../../../../../public/teachers/julian.jpg";
+import Jose from "../../../../../../public/teachers/jose.jpg";
+import Luis from "../../../../../../public/teachers/luis.jpg";
 
 import type { StaticImageData } from "next/image";
 import { Button } from "@/components/ui/button";
@@ -84,7 +84,7 @@ interface CardProps {
 
 const Card = ({ picture, name, experience, description }: CardProps) => {
   return (
-    <div className="border-3 flex flex-col gap-3 rounded-lg border-primary-900 p-8 text-center shadow-md">
+    <div className="flex flex-col gap-3 rounded-lg border-3 border-primary-900 p-8 text-center shadow-md">
       <div className="h-40 w-40 self-center overflow-hidden rounded-full border-2 border-primary-900">
         <Image src={picture} alt={name} className="block" />
       </div>

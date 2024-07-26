@@ -1,5 +1,4 @@
-import Image from "next/image";
-import Questions from "../(landing)/sections/questions";
+import Questions from "../(home)/sections/questions";
 import ContactForm from "./components/contact-form";
 
 export default function Contact() {

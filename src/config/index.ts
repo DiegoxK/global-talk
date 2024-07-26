@@ -15,10 +15,9 @@ export const siteConfig = {
       url: "/academy",
       subLinks: [
         {
-          label: "Herramientas educativas",
-          url: "/academy#tools",
+          label: "Dashboard estudiante",
+          url: "/academy",
         },
-        { label: "Camino a la certificación", url: "/academy#certification" },
       ],
     },
     {
@@ -34,10 +33,7 @@ export const siteConfig = {
     {
       label: "Contacto",
       url: "/contact",
-      subLinks: [
-        { label: "Información", url: "/contact#info" },
-        { label: "Formulario", url: "/contact#form" },
-      ],
+      subLinks: [{ label: "Formulario de contacto", url: "/contact#form" }],
     },
   ],
 };
