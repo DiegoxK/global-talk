@@ -5,7 +5,7 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
-import DiscordProvider from "next-auth/providers/discord";
+import EmailProvider from "next-auth/providers/email";
 
 import { env } from "@/env";
 import { db } from "@/server/db";
@@ -16,6 +16,14 @@ import {
   verificationTokens,
 } from "@/server/db/schema";
 
+import {
+  sendVerificationRequest,
+  generateVerificationToken,
+} from "@/lib/email-config";
+
+import type { User } from "@/lib/definitions";
+import { cookies } from "next/headers";
+
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -24,17 +32,13 @@ import {
  */
 declare module "next-auth" {
   interface Session extends DefaultSession {
-    user: {
-      id: string;
-      // ...other properties
-      // role: UserRole;
-    } & DefaultSession["user"];
+    user: User;
   }
+}
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+declare module "next-auth/adapters" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface AdapterUser extends User {}
 }
 
 /**
@@ -43,11 +47,49 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  pages: {
+    signIn: "/auth/login",
+    error: "/auth/error", // Error code passed in query string as ?error=
+    verifyRequest: "/auth/verify-request", // (used for check email message)
+  },
   callbacks: {
+    signIn: async ({ user, account }) => {
+      if (account) {
+        const accountProvider = account.provider;
+
+        // If the user is signing in with another provider, redirect them the provider sign in
+        if (accountProvider !== "email") {
+          return true;
+        }
+
+        /**  If the user is signing in with email, check if the email exists in the User db
+         *@see https://next-auth.js.org/providers/email#sending-magic-links-to-existing-users
+         */
+
+        const userEmail = user.email;
+        if (userEmail) {
+          const userExist = await db.query.users.findFirst({
+            where: (table, funcs) => funcs.eq(table.email, userEmail),
+          });
+          if (userExist) {
+            cookies().set({
+              name: "otp-email",
+              value: userEmail,
+              maxAge: 10 * 60,
+              sameSite: "lax",
+            });
+            return true; //if the email exists in the User schema, email them a magic code link
+          }
+          return "/pricing?email=" + userEmail; //if the email does not exist in the User schema, redirect them to the pricing page with the email pre-filled in the form
+        }
+      }
+      return false; // Return false to display a default error message
+    },
     session: ({ session, user }) => ({
       ...session,
       user: {
         ...session.user,
+        userRole: user.userRole,
         id: user.id,
       },
     }),
@@ -59,9 +101,19 @@ export const authOptions: NextAuthOptions = {
     verificationTokensTable: verificationTokens,
   }) as Adapter,
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
+    EmailProvider({
+      server: {
+        host: env.EMAIL_SERVER_HOST,
+        port: env.EMAIL_SERVER_PORT,
+        auth: {
+          user: env.EMAIL_SERVER_USER,
+          pass: env.EMAIL_SERVER_PASSWORD,
+        },
+      },
+      from: env.EMAIL_FROM,
+      maxAge: 10 * 60, // 10 minutes
+      sendVerificationRequest,
+      generateVerificationToken,
     }),
     /**
      * ...add more providers here.
