@@ -1,3 +1,20 @@
+import { Logo } from "@/vectors/logo";
+import LoginForm from "./_components/login-form";
+
 export default function Login() {
-  return <div>Login</div>;
+  return (
+    <main className="grid grid-cols-2">
+      <div className="bg-pattern flex h-screen items-center justify-center">
+        <LoginForm />
+      </div>
+      <div className="login-background relative flex items-center justify-center text-white">
+        <div className="absolute h-screen w-full bg-primary opacity-65" />
+        <div className="relative flex flex-col items-center">
+          <Logo className="mb-4 h-48 w-48 fill-white" />
+          <h2 className="text-4xl font-bold uppercase">Global Talk Medallo</h2>
+          <p className="font-light uppercase">Your personal english coaches</p>
+        </div>
+      </div>
+    </main>
+  );
 }
