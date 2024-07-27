@@ -1,15 +1,25 @@
+import { env } from "@/env";
 import { relations, sql } from "drizzle-orm";
 import {
   index,
   integer,
+  pgEnum,
   pgTableCreator,
   primaryKey,
-  serial,
   text,
   timestamp,
+  uniqueIndex,
   varchar,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
+
+const STUDENT = env.STUDENT_ROLE;
+const TEACHER = env.TEACHER_ROLE;
+const ADMIN = env.ADMIN_ROLE;
+
+export const UserRole = pgEnum("userRole", [STUDENT, TEACHER, ADMIN]);
+export const Status = pgEnum("status", ["TODO", "IN_PROGRESS", "DONE"]);
+export const Priority = pgEnum("priority", ["LOW", "MEDIUM", "HIGH"]);
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -19,40 +29,28 @@ import { type AdapterAccount } from "next-auth/adapters";
  */
 export const createTable = pgTableCreator((name) => `global-talk_${name}`);
 
-export const posts = createTable(
-  "post",
+export const users = createTable(
+  "user",
   {
-    id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdById: varchar("created_by", { length: 255 })
+    id: varchar("id", { length: 255 })
       .notNull()
-      .references(() => users.id),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date(),
-    ),
+      .primaryKey()
+      .$defaultFn(() => sql`gen_random_uuid()`),
+    name: varchar("name", { length: 255 }),
+    email: varchar("email", { length: 255 }).notNull(),
+    emailVerified: timestamp("emailVerified", {
+      mode: "date",
+      withTimezone: true,
+    }).default(sql`CURRENT_TIMESTAMP`),
+    image: varchar("image", { length: 255 }),
+    userRole: UserRole("userRole").default(STUDENT).notNull(),
   },
-  (example) => ({
-    createdByIdIdx: index("created_by_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
-  }),
+  (table) => {
+    return {
+      emailIndex: uniqueIndex("email_idx").on(table.email),
+    };
+  },
 );
-
-export const users = createTable("user", {
-  id: varchar("id", { length: 255 })
-    .notNull()
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
-  name: varchar("name", { length: 255 }),
-  email: varchar("email", { length: 255 }).notNull(),
-  emailVerified: timestamp("email_verified", {
-    mode: "date",
-    withTimezone: true,
-  }).default(sql`CURRENT_TIMESTAMP`),
-  image: varchar("image", { length: 255 }),
-});
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
