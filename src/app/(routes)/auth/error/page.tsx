@@ -16,24 +16,27 @@ export default function ErrorPage({ searchParams }: ErrorPageProps) {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      <div className="flex max-w-[400px] flex-col items-center gap-5 rounded-md bg-accent px-8 py-10 text-center shadow-md">
-        <CircleSlash size={80} className="text-primary" />
-        <h1 className="text-4xl font-bold text-primary">Unable to sign in</h1>
+    <main className="bg-pattern flex min-h-screen flex-col items-center justify-center">
+      <div className="flex max-w-[480px] flex-col items-center gap-2 rounded-md px-8 py-10 text-center text-white">
+        <CircleSlash size={80} />
+        <h1 className="text-4xl font-bold">
+          {/* Unable to sign in */}
+          No se pudo iniciar sesión
+        </h1>
         <p className="text-center">
-          An error occurred while trying to sign in.{" "}
-          <Link className="text-primary" href="/auth/login">
-            Please try again.
-          </Link>
+          Ocurrió un error al intentar iniciar sesión. <br />
+          <Link href="/auth/login">Por favor intenta de nuevo.</Link>
         </p>
-        <p className="text-sm text-accent-foreground">
-          If the problem persists, please contact{" "}
-          <Link className="text-primary" href="mailto:">
-            support
+        <p className="text-sm text-primary-800">
+          Si el problema persiste, por favor contacta a <br />
+          <Link className="font-bold" href="mailto:contact@globtm.co">
+            Soporte.
           </Link>
         </p>
         <Link className="w-full" href="/auth/login">
-          <Button className="w-full">Ingresa</Button>
+          <Button className="w-full rounded-md bg-primary-800">
+            Intenta de nuevo
+          </Button>
         </Link>
       </div>
     </main>
@@ -42,20 +45,20 @@ export default function ErrorPage({ searchParams }: ErrorPageProps) {
 
 const VerificationError = () => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      <div className="flex max-w-[400px] flex-col items-center gap-5 rounded-md bg-accent px-8 py-10 text-center shadow-md">
-        <ShieldAlert size={80} className="text-primary" />
-        <h1 className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-4xl font-bold text-transparent">
-          Unable to sign in
-        </h1>
+    <main className="bg-pattern flex min-h-screen flex-col items-center justify-center text-white">
+      <div className="flex max-w-[400px] flex-col items-center gap-2 rounded-md px-8 py-10 text-center">
+        <ShieldAlert size={80} className="text-white" />
+        <h1 className="text-4xl font-bold">No se pudo verificar el acceso.</h1>
         <div className="space-y-1">
-          <p className="text-center">The sign in code is invalid.</p>
-          <p className="text-sm text-accent-foreground">
-            It may have been used already or it may have expired.
+          <p className="text-center">El código de acceso no es válido.</p>
+          <p className="text-sm font-bold text-primary-800">
+            Puede que ya se haya utilizado o haya expirado.
           </p>
         </div>
         <Link replace className="w-full" href="/auth/verify-request">
-          <Button className="w-full">Try again</Button>
+          <Button className="w-full rounded-md bg-primary-800">
+            Intenta de nuevo
+          </Button>
         </Link>
       </div>
     </main>
