@@ -1,7 +1,15 @@
 import { Logo } from "@/vectors/logo";
 import LoginForm from "./_components/login-form";
+import { getServerAuthSession } from "@/server/auth";
+import { redirect } from "next/navigation";
 
-export default function Login() {
+export default async function Login() {
+  const session = await getServerAuthSession();
+
+  if (session) {
+    redirect("/academy");
+  }
+
   return (
     <main className="grid grid-cols-2">
       <div className="bg-pattern flex h-screen items-center justify-center">
