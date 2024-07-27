@@ -12,7 +12,7 @@ export const siteConfig = {
     },
     {
       label: "Academia",
-      url: "/academy",
+      url: "/auth/login",
       subLinks: [
         {
           label: "Dashboard estudiante",
