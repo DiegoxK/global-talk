@@ -40,8 +40,8 @@ export const users = createTable(
       .$defaultFn(() => sql`gen_random_uuid()`),
     userRole: UserRole("userRole").default(STUDENT).notNull(),
     image: varchar("image", { length: 255 }),
-    name: varchar("name", { length: 255 }),
-    last_name: varchar("last_name", { length: 255 }),
+    name: varchar("name", { length: 255 }).notNull(),
+    last_name: varchar("last_name", { length: 255 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
     emailVerified: timestamp("emailVerified", {
       mode: "date",
