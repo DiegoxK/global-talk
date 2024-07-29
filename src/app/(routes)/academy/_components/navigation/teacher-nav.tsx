@@ -8,7 +8,7 @@ export default function TeacherNav() {
   return (
     <>
       <Separator className="my-2" />
-      <NavLink Icon={BookOpenCheck} location="/academy" href="/profesor">
+      <NavLink Icon={BookOpenCheck} location="/academy" href="/teacher">
         Profesor
       </NavLink>
     </>
