@@ -22,7 +22,7 @@ export default function Navigation({ location }: NavigationProps) {
     {
       label: "Prácticas con IA",
       icon: BrainCog,
-      href: "/ai",
+      href: "/chat",
     },
   ];
   return (

@@ -38,7 +38,7 @@ export default function Sidebar({ user }: SidebarProps) {
         <p className="font-light text-primary-400">A0: Principiante</p>
       </div>
       <nav className="flex grow flex-col justify-between overflow-auto text-nowrap rounded-md bg-white p-4">
-        <div className="overflow-auto rounded-sm">
+        <div className="overflow-auto rounded-sm pr-1">
           <Navigation location={"/academy"} />
           {user.userRole === env.TEACHER_ROLE && <TeacherNav />}
           {user.userRole === env.ADMIN_ROLE && (
