@@ -3,10 +3,10 @@ import {
   Container,
   Head,
   Heading,
-  Hr,
   Html,
   Link,
   Preview,
+  Img,
   Text,
   Font,
 } from "@react-email/components";
@@ -27,39 +27,57 @@ export function Verification({ token }: { token: string }) {
           fontStyle="normal"
         />
       </Head>
-      <Preview>Sign in to your account</Preview>
+      <Preview>Ingresa a tu cuenta</Preview>
 
       <Body>
-        <Container style={main}>
-          <Heading as="h1" style={h1}>
-            To<span style={span}>do.</span>
-          </Heading>
-
-          <Heading as="h2" style={h2}>
-            Join <span style={span}>The dark side</span> with my{" "}
-            <span style={span}>Todo App</span>
+        <Container style={top}>
+          <Img
+            style={{
+              width: "120px",
+              margin: "20px auto",
+            }}
+            src="/email/images/logo.png"
+          />
+          <Heading
+            as="h1"
+            style={{
+              ...h1,
+              fontSize: "30px",
+            }}
+          >
+            GLOBAL TALK MEDALLO
           </Heading>
           <Text
             style={{
-              ...text,
               textAlign: "center" as const,
-              color: colors.accentForeground,
               fontSize: "14px",
-              margin: "10px 38px 0 38px",
+              fontWeight: 400,
+              marginTop: "0",
             }}
           >
-            Hello and welcome back to the best application you&apos;ll ever
-            see!?!?.
+            YOUR PERSONAL ENGLISH COACHES
           </Text>
           <Text
             style={{
               ...text,
               textAlign: "center" as const,
-              color: colors.primary,
+
+              fontSize: "20px",
+              margin: "10px 38px 0 38px",
+            }}
+          >
+            ¡Hola, este es tu código para entrar en la mejor academia de inglés!
+          </Text>
+          <Text
+            style={{
+              ...text,
+              textAlign: "center" as const,
+              fontWeight: 900,
+              color: colors.secondary,
               margin: "10px 38px",
             }}
           >
-            {"Here it is"} 🪄!
+            Código de verificación
           </Text>
           <Text
             style={{
@@ -75,17 +93,20 @@ export function Verification({ token }: { token: string }) {
           <Text
             style={{ ...text, textAlign: "center" as const, marginTop: "10px" }}
           >
-            Use the magic code above to <span style={span}>sign in</span> to
-            your account.
+            Usa este código para{" "}
+            <span
+              style={{
+                color: colors.secondary,
+              }}
+            >
+              entrar
+            </span>{" "}
+            en tu cuenta
           </Text>
-          <Hr
-            style={{
-              borderTop: `1px solid ${colors.primary}`,
-              margin: "30px 0",
-            }}
-          />
+        </Container>
+        <Container style={bottom}>
           <Text style={text}>
-            <strong>Need help?</strong>
+            <strong>¿Necesitas ayuda?</strong>
           </Text>
           <Text
             style={{
@@ -93,20 +114,27 @@ export function Verification({ token }: { token: string }) {
               color: colors.accentForeground,
             }}
           >
-            If you didn&apos;t request this email, please ignore it. If you
-            haveany questions or need further assistance, feel free to contact
-            our support team at{" "}
-            <Link href="mailto:support@todos.com">
-              <span style={span}>support@todos.com.</span>
+            Si no solicitaste este código, puedes ignorar este correo
+            electrónico de forma segura. Si tienes más preguntas, contacta a
+            nuestro correo de soporte.
+            <Link href="mailto:contacto@globtm.com">
+              <span
+                style={{
+                  color: colors.primary,
+                }}
+              >
+                contacto@globtm.com
+              </span>
             </Link>
           </Text>
           <Text
             style={{
               ...text,
+              color: colors.accentForeground,
               margin: "10px 34px 34px 34px",
             }}
           >
-            Thank you, <span style={span}>The To-do team.</span>
+            Gracias!, <span>El equipo de Global Talk.</span>
           </Text>
         </Container>
       </Body>
@@ -116,18 +144,27 @@ export function Verification({ token }: { token: string }) {
 
 const colors = {
   primary: "#916bff",
-  secondary: "#f87171",
-  background: "#18181c",
-  foreground: "#f9fafb",
-  accentForeground: "#86869f",
+  secondary: "#4F3569",
+  background: "#9876ba",
+  foreground: "#fff",
+  accentForeground: "#B197CB",
 };
 
-const main = {
+const top = {
   backgroundColor: colors.background,
   color: colors.foreground,
-  borderRadius: "8px",
+  borderRadius: "8px 8px 0 0",
   maxWidth: "500px",
-  border: `1px solid ${colors.primary}`,
+  fontFamily: "Poppins, Verdana, sans-serif",
+  fontSize: "16px",
+  fontWeight: 400,
+};
+
+const bottom = {
+  backgroundColor: colors.secondary,
+  color: colors.foreground,
+  borderRadius: "0 0 8px 8px",
+  maxWidth: "500px",
   fontFamily: "Poppins, Verdana, sans-serif",
   fontSize: "16px",
   fontWeight: 400,
@@ -142,14 +179,6 @@ const h1 = {
   lineHeight: "1.2",
 };
 
-const h2 = {
-  color: colors.foreground,
-  textAlign: "center" as const,
-  fontSize: "24px",
-  fontWeight: 600,
-  margin: "24px 60px",
-};
-
 const text = {
   color: colors.foreground,
   fontSize: "16px",
@@ -159,5 +188,5 @@ const text = {
 };
 
 const span = {
-  color: colors.primary,
+  color: colors.secondary,
 };
