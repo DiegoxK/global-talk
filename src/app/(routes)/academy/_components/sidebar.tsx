@@ -14,7 +14,7 @@ interface SidebarProps {
 
 export default function Sidebar({ user }: SidebarProps) {
   return (
-    <div className="sticky top-0 flex h-screen w-96 flex-col space-y-2 bg-primary-50 p-2">
+    <div className="sticky top-0 flex h-screen max-h-screen w-96 flex-col space-y-2 bg-primary-50 p-2">
       <div className="flex flex-col items-center justify-center text-nowrap rounded-md bg-white py-8">
         <Avatar className="h-24 w-24 bg-primary-700">
           <AvatarImage src={user.image ?? undefined} />
@@ -37,8 +37,8 @@ export default function Sidebar({ user }: SidebarProps) {
         {/* TODO: add user level to schema */}
         <p className="font-light text-primary-400">A0: Principiante</p>
       </div>
-      <nav className="flex grow flex-col justify-between text-nowrap rounded-md bg-white p-4">
-        <div>
+      <nav className="flex grow flex-col justify-between overflow-auto text-nowrap rounded-md bg-white p-4">
+        <div className="overflow-auto rounded-sm">
           <Navigation location={"/academy"} />
           {user.userRole === env.TEACHER_ROLE && <TeacherNav />}
           {user.userRole === env.ADMIN_ROLE && (
