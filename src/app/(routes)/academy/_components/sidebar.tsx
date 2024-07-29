@@ -6,6 +6,7 @@ import { UserRound } from "lucide-react";
 import Navigation from "./navigation/navigation";
 import UserNav from "./navigation/user-nav";
 import AdminNav from "./navigation/admin-nav";
+import TeacherNav from "./navigation/teacher-nav";
 
 interface SidebarProps {
   user: User;
@@ -39,7 +40,13 @@ export default function Sidebar({ user }: SidebarProps) {
       <nav className="flex grow flex-col justify-between text-nowrap rounded-md bg-white p-4">
         <div>
           <Navigation location={"/academy"} />
-          {user.userRole === env.ADMIN_ROLE && <AdminNav />}
+          {user.userRole === env.TEACHER_ROLE && <TeacherNav />}
+          {user.userRole === env.ADMIN_ROLE && (
+            <>
+              <TeacherNav />
+              <AdminNav />
+            </>
+          )}
         </div>
         <UserNav />
       </nav>
