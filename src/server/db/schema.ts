@@ -31,19 +31,22 @@ export const createTable = pgTableCreator((name) => `global-talk_${name}`);
 
 export const users = createTable(
   "user",
+
+  // TODO: Make notNull the values that required it
   {
     id: varchar("id", { length: 255 })
       .notNull()
       .primaryKey()
       .$defaultFn(() => sql`gen_random_uuid()`),
+    userRole: UserRole("userRole").default(STUDENT).notNull(),
+    image: varchar("image", { length: 255 }),
     name: varchar("name", { length: 255 }),
+    last_name: varchar("last_name", { length: 255 }),
     email: varchar("email", { length: 255 }).notNull(),
     emailVerified: timestamp("emailVerified", {
       mode: "date",
       withTimezone: true,
     }).default(sql`CURRENT_TIMESTAMP`),
-    image: varchar("image", { length: 255 }),
-    userRole: UserRole("userRole").default(STUDENT).notNull(),
   },
   (table) => {
     return {
