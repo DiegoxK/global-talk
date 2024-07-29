@@ -5,6 +5,7 @@ import { Logo } from "@/vectors/logo";
 import { UserRound } from "lucide-react";
 import Navigation from "./navigation/navigation";
 import UserNav from "./navigation/user-nav";
+import AdminNav from "./navigation/admin-nav";
 
 interface SidebarProps {
   user: User;
@@ -12,7 +13,7 @@ interface SidebarProps {
 
 export default function Sidebar({ user }: SidebarProps) {
   return (
-    <div className="flex h-screen w-96 flex-col space-y-2 bg-primary-50 p-2">
+    <div className="sticky top-0 flex h-screen w-96 flex-col space-y-2 bg-primary-50 p-2">
       <div className="flex flex-col items-center justify-center text-nowrap rounded-md bg-white py-8">
         <Avatar className="h-24 w-24 bg-primary-700">
           <AvatarImage src={user.image ?? undefined} />
@@ -35,10 +36,13 @@ export default function Sidebar({ user }: SidebarProps) {
         {/* TODO: add user level to schema */}
         <p className="font-light text-primary-400">A0: Principiante</p>
       </div>
-      <div className="flex grow flex-col justify-between">
-        <Navigation location={"/academy"} />
+      <nav className="flex grow flex-col justify-between text-nowrap rounded-md bg-white p-4">
+        <div>
+          <Navigation location={"/academy"} />
+          {user.userRole === env.ADMIN_ROLE && <AdminNav />}
+        </div>
         <UserNav />
-      </div>
+      </nav>
     </div>
   );
 }
