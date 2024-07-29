@@ -26,19 +26,17 @@ export default function Navigation({ location }: NavigationProps) {
     },
   ];
   return (
-    <nav className="text-nowrap rounded-md bg-white p-4">
-      <div className="space-y-2">
-        {links.map((link) => (
-          <NavLink
-            Icon={link.icon}
-            location={location}
-            key={link.href}
-            href={link.href}
-          >
-            {link.label}
-          </NavLink>
-        ))}
-      </div>
-    </nav>
+    <div className="space-y-2">
+      {links.map((link) => (
+        <NavLink
+          Icon={link.icon}
+          location={location}
+          key={link.href}
+          href={link.href}
+        >
+          {link.label}
+        </NavLink>
+      ))}
+    </div>
   );
 }
