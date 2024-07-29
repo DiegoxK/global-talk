@@ -6,6 +6,27 @@
   outline: 1px solid rgb(129, 82, 161);
 } */
 
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+  background: #95959575;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6e6e6e;
+}
+
 @layer base {
   :root {
     --background: hsl(0 0% 100%);
