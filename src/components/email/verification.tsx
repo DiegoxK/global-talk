@@ -12,7 +12,6 @@ import {
 } from "@react-email/components";
 
 export function Verification({ token }: { token: string }) {
-  // TODO: Edit the email template to match global talk design
   return (
     <Html lang="en">
       <Head>
@@ -34,9 +33,10 @@ export function Verification({ token }: { token: string }) {
           <Img
             style={{
               width: "120px",
-              margin: "20px auto",
+              margin: "0 auto",
+              marginTop: "34px",
             }}
-            src="/email/images/logo.png"
+            src="https://utfs.io/f/ed5cc691-65f6-438d-af70-34fef4088270-1zbfv.png"
           />
           <Heading
             as="h1"
