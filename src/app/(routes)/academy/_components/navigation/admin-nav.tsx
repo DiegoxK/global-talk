@@ -8,7 +8,7 @@ export default function AdminNav() {
   return (
     <>
       <Separator className="my-2" />
-      <NavLink Icon={ShieldCheck} href="/admin" location="/academy">
+      <NavLink Icon={ShieldCheck} location="/academy" href="/admin">
         Administrador
       </NavLink>
     </>
