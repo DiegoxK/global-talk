@@ -3,7 +3,7 @@ import { DoorClosed, UserRoundPen } from "lucide-react";
 
 export default function UserNav() {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 pt-2">
       <Button
         className="justify-start border-primary text-primary"
         variant="outline"
