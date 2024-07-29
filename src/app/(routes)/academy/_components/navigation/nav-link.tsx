@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
@@ -32,8 +34,8 @@ export function NavLink({
   return (
     <Link
       className={cn(
-        "flex items-center p-2 ps-4 text-primary-700",
-        isActive(href) && "rounded-md bg-primary text-white",
+        "flex items-center p-2 text-primary-700",
+        isActive(href) && "rounded-md bg-primary ps-4 text-white",
         className,
       )}
       onClick={toggleOpen !== undefined ? () => toggleOpen(false) : undefined}
