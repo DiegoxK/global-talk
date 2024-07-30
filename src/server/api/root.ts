@@ -1,5 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { userRouter } from "./routers/user";
+import { lectureRouter } from "./routers/lectures";
+import { scheduleRouter } from "./routers/schedule";
 
 /**
  * This is the primary router for your server.
@@ -7,7 +9,9 @@ import { userRouter } from "./routers/user";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
+  schedule: scheduleRouter,
   user: userRouter,
+  lecture: lectureRouter,
 });
 
 // export type definition of API
