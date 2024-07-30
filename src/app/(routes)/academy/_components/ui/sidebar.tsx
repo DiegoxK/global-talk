@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { env } from "@/env";
-import type { User } from "@/lib/definitions";
+import type { CoruseInfo, Level, User } from "@/lib/definitions";
 import { Logo } from "@/vectors/logo";
 import { UserRound } from "lucide-react";
 import Navigation from "../navigation/navigation";
@@ -10,9 +10,13 @@ import TeacherNav from "../navigation/teacher-nav";
 
 interface SidebarProps {
   user: User;
+  firstLevel?: {
+    id: Level["id"];
+  };
+  course: CoruseInfo;
 }
 
-export default function Sidebar({ user }: SidebarProps) {
+export default function Sidebar({ user, course, firstLevel }: SidebarProps) {
   return (
     <div className="sticky top-0 flex h-screen max-h-screen w-96 flex-col space-y-2 bg-primary-50 p-2">
       <div className="flex flex-col items-center justify-center text-nowrap rounded-md bg-white py-8">
@@ -26,8 +30,8 @@ export default function Sidebar({ user }: SidebarProps) {
           {user.name + " " + user.lastName}
         </p>
         <p className="mt-[-5px] font-thin">{user.email}</p>
-        <p className="mt-1 font-semibold text-primary-700">
-          <UserRound className="mr-2 inline-block" />
+        <p className="mt-1 flex items-center gap-1 font-semibold text-primary-700">
+          <UserRound />
           {user.role === env.STUDENT_ROLE
             ? "Estudiante"
             : user.role === env.TEACHER_ROLE
@@ -35,11 +39,15 @@ export default function Sidebar({ user }: SidebarProps) {
               : "Administrador"}
         </p>
         {/* TODO: add user level to schema */}
-        <p className="font-light text-primary-400">A0: Principiante</p>
+        {course && (
+          <p className="font-light text-primary-400">
+            {course.proficiency}: {course.name}
+          </p>
+        )}
       </div>
       <nav className="flex grow flex-col justify-between overflow-auto text-nowrap rounded-md bg-white p-4">
         <div className="overflow-auto rounded-sm pr-1">
-          <Navigation location={"/academy"} />
+          <Navigation location={"/academy"} firstLevelId={firstLevel?.id} />
           {user.role === env.TEACHER_ROLE && <TeacherNav />}
           {user.role === env.ADMIN_ROLE && (
             <>
