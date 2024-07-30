@@ -114,9 +114,9 @@ export const lectures = createTable("lecture", {
   levelId: uuid("level_id")
     .references(() => levels.id)
     .notNull(),
-  teacherId: uuid("teacher_id")
-    .references(() => users.id)
-    .notNull(),
+  teacherId: varchar("teacher_id", { length: 255 })
+    .notNull()
+    .references(() => users.id),
   name: varchar("name", { length: 25 }).notNull(),
   description: varchar("description", { length: 255 }).notNull(),
   meet_url: varchar("meet_url", { length: 255 }).notNull(),
