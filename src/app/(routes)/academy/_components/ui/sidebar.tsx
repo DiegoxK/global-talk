@@ -3,10 +3,10 @@ import { env } from "@/env";
 import type { User } from "@/lib/definitions";
 import { Logo } from "@/vectors/logo";
 import { UserRound } from "lucide-react";
-import Navigation from "./navigation/navigation";
-import UserNav from "./navigation/user-nav";
-import AdminNav from "./navigation/admin-nav";
-import TeacherNav from "./navigation/teacher-nav";
+import Navigation from "../navigation/navigation";
+import UserNav from "../navigation/user-nav";
+import AdminNav from "../navigation/admin-nav";
+import TeacherNav from "../navigation/teacher-nav";
 
 interface SidebarProps {
   user: User;
