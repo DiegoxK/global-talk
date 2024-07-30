@@ -1,14 +1,19 @@
 import { env } from "@/env";
-import { relations, sql } from "drizzle-orm";
+import { desc, relations, sql } from "drizzle-orm";
 import {
+  boolean,
+  date,
+  decimal,
   index,
   integer,
   pgEnum,
   pgTableCreator,
   primaryKey,
   text,
+  time,
   timestamp,
   uniqueIndex,
+  uuid,
   varchar,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
@@ -18,8 +23,7 @@ const TEACHER = env.TEACHER_ROLE;
 const ADMIN = env.ADMIN_ROLE;
 
 export const UserRole = pgEnum("userRole", [STUDENT, TEACHER, ADMIN]);
-export const Status = pgEnum("status", ["TODO", "IN_PROGRESS", "DONE"]);
-export const Priority = pgEnum("priority", ["LOW", "MEDIUM", "HIGH"]);
+export const Status = pgEnum("status", ["PENDING", "CANCELED", "ACCEOPTED"]);
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -29,21 +33,21 @@ export const Priority = pgEnum("priority", ["LOW", "MEDIUM", "HIGH"]);
  */
 export const createTable = pgTableCreator((name) => `global-talk_${name}`);
 
+// ============================== USERS ==============================
 export const users = createTable(
   "user",
-
-  // TODO: Make notNull the values that required it
   {
     id: varchar("id", { length: 255 })
       .notNull()
       .primaryKey()
       .$defaultFn(() => sql`gen_random_uuid()`),
-    userRole: UserRole("userRole").default(STUDENT).notNull(),
+    role: UserRole("role").default(STUDENT).notNull(),
     image: varchar("image", { length: 255 }),
     name: varchar("name", { length: 255 }).notNull(),
-    last_name: varchar("last_name", { length: 255 }).notNull(),
+    lastName: varchar("last_name", { length: 255 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
-    emailVerified: timestamp("emailVerified", {
+    courseId: uuid("course_id").references(() => courses.id),
+    emailVerified: timestamp("email_verified", {
       mode: "date",
       withTimezone: true,
     }).default(sql`CURRENT_TIMESTAMP`),
@@ -55,10 +59,111 @@ export const users = createTable(
   },
 );
 
-export const usersRelations = relations(users, ({ many }) => ({
+export const usersRelations = relations(users, ({ one, many }) => ({
+  courses: one(courses, {
+    fields: [users.courseId],
+    references: [courses.id],
+  }),
+  schedules: many(schedules),
+  lectures: many(lectures),
   accounts: many(accounts),
 }));
 
+// ============================ Transactions ============================
+export const transactions = createTable("transaction", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  courseId: uuid("course_id")
+    .notNull()
+    .references(() => courses.id),
+  description: text("description").notNull(),
+  receipt: varchar("receipt", { length: 6 }).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  last_name: varchar("last_name", { length: 255 }).notNull(),
+  phone: varchar("phone", { length: 10 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  date: date("date").notNull(),
+  status: Status("status").default("PENDING").notNull(),
+});
+
+// ============================== LEVELS ================================
+export const levels = createTable("level", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  courseId: uuid("course_id")
+    .references(() => courses.id)
+    .notNull(),
+  name: varchar("name", { length: 20 }).notNull(),
+});
+
+export const levelsRelations = relations(levels, ({ one }) => ({
+  course: one(courses, {
+    fields: [levels.courseId],
+    references: [courses.id],
+  }),
+}));
+
+// ============================== LECTURES ==============================
+export const lectures = createTable("lecture", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  levelId: uuid("level_id")
+    .references(() => levels.id)
+    .notNull(),
+  teacherId: uuid("teacher_id")
+    .references(() => users.id)
+    .notNull(),
+  name: varchar("name", { length: 25 }).notNull(),
+  description: varchar("description", { length: 255 }).notNull(),
+  meet_url: varchar("meet_url", { length: 255 }).notNull(),
+  off2class_url: varchar("off2class_url", { length: 255 }).notNull(),
+  date: date("date").notNull(),
+  start_time: time("start_time").notNull(),
+  end_time: time("end_time").notNull(),
+  finished: boolean("finished").default(false).notNull(),
+});
+
+export const lecturesRelations = relations(lectures, ({ one, many }) => ({
+  level: one(levels, { fields: [lectures.levelId], references: [levels.id] }),
+  teacher: one(users, {
+    fields: [lectures.teacherId],
+    references: [users.id],
+  }),
+  schedules: many(schedules),
+}));
+
+// ============================== COURSES ==============================
+export const courses = createTable("course", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: varchar("name", { length: 255 }).notNull(),
+  price: decimal("price").notNull(),
+});
+
+export const coursesRelations = relations(courses, ({ many }) => ({
+  students: many(users),
+  levels: many(levels),
+}));
+
+// ============================== SCHEDULES ==============================
+export const schedules = createTable("schedule", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  studentId: varchar("student_id", { length: 255 })
+    .notNull()
+    .references(() => users.id),
+  lectureId: uuid("lecture_id")
+    .references(() => lectures.id)
+    .notNull(),
+});
+
+export const schedulesRelations = relations(schedules, ({ one }) => ({
+  student: one(users, {
+    fields: [schedules.studentId],
+    references: [users.id],
+  }),
+  lecture: one(lectures, {
+    fields: [schedules.lectureId],
+    references: [lectures.id],
+  }),
+}));
+
+// ============================== AUTH ===============================
 export const accounts = createTable(
   "account",
   {
