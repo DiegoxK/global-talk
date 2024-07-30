@@ -69,6 +69,13 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   accounts: many(accounts),
 }));
 
+// ============================ Prompts ================================
+export const prompts = createTable("prompt", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: varchar("name", { length: 20 }).notNull(),
+  prompt: text("prompt").notNull(),
+});
+
 // ============================ Transactions ============================
 export const transactions = createTable("transaction", {
   id: uuid("id").primaryKey().defaultRandom(),
