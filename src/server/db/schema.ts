@@ -24,9 +24,18 @@ const ADMIN = env.ADMIN_ROLE;
 
 export const UserRole = pgEnum("userRole", [STUDENT, TEACHER, ADMIN]);
 export const Status = pgEnum("status", ["PENDING", "CANCELED", "ACCEOPTED"]);
+export const Proficiency = pgEnum("proficiency", [
+  "A0",
+  "A1",
+  "A2",
+  "B1",
+  "B2",
+  "C1",
+  "C2",
+]);
 
 /**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
+ * This is an example of how to use the multi-project schema  feature of Drizzle ORM. Use the same
  * database instance for multiple projects.
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
@@ -140,6 +149,7 @@ export const lecturesRelations = relations(lectures, ({ one, many }) => ({
 export const courses = createTable("course", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: varchar("name", { length: 255 }).notNull(),
+  proficiency: Proficiency("proficiency").notNull(),
   price: decimal("price").notNull(),
 });
 
