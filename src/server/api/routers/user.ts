@@ -14,6 +14,8 @@ export const userRouter = createTRPCRouter({
   createUser: publicProcedure
     .input(
       z.object({
+        name: z.string(),
+        lastName: z.string(),
         email: z.string().email(),
       }),
     )
@@ -29,6 +31,8 @@ export const userRouter = createTRPCRouter({
       }
 
       return await ctx.db.insert(users).values({
+        name: input.name,
+        last_name: input.lastName,
         email: userEmail,
       });
     }),
