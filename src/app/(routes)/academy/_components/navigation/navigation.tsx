@@ -4,10 +4,14 @@ import { BrainCog, DoorOpen, School } from "lucide-react";
 import { NavLink } from "./nav-link";
 
 interface NavigationProps {
+  firstLevelId?: string;
   location: string;
 }
 
-export default function Navigation({ location }: NavigationProps) {
+export default function Navigation({
+  location,
+  firstLevelId,
+}: NavigationProps) {
   const links = [
     {
       label: "Inicio",
@@ -17,7 +21,7 @@ export default function Navigation({ location }: NavigationProps) {
     {
       label: "Clases",
       icon: School,
-      href: "/lectures",
+      href: `/lectures/${firstLevelId}`,
     },
     {
       label: "Prácticas con IA",
