@@ -17,13 +17,13 @@ export default async function RootLayout({
   return (
     <div className="flex">
       <Sidebar user={session.user} />
-      <div className="m-4 flex w-full flex-col">
+      <div className="mx-4 mt-4 flex w-full flex-col">
         {/* TODO: Imagen? */}
         <div className="flex w-full items-center justify-center gap-1 rounded-lg bg-primary-700 py-10 text-3xl font-extrabold text-white">
           <Logo className="fill-white" height={40} width={38} />
           lobal talk medallo
         </div>
-        <main className="grow overflow-auto p-4">{children}</main>
+        <main className="relative grow px-0 pt-4">{children}</main>
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ export default function LectureCard({
   const level = lecture.level;
 
   return (
-    <div className="w-[253px] rounded-md shadow-md">
+    <div className="rounded-md border shadow-md">
       <div
         style={{
           backgroundSize: "100px",
