@@ -23,14 +23,14 @@ export default function Sidebar({ user }: SidebarProps) {
           </AvatarFallback>
         </Avatar>
         <p className="mt-1 text-lg font-bold">
-          {user.name + " " + user.last_name}
+          {user.name + " " + user.lastName}
         </p>
         <p className="mt-[-5px] font-thin">{user.email}</p>
         <p className="mt-1 font-semibold text-primary-700">
           <UserRound className="mr-2 inline-block" />
-          {user.userRole === env.STUDENT_ROLE
+          {user.role === env.STUDENT_ROLE
             ? "Estudiante"
-            : user.userRole === env.TEACHER_ROLE
+            : user.role === env.TEACHER_ROLE
               ? "Profesor"
               : "Administrador"}
         </p>
@@ -40,8 +40,8 @@ export default function Sidebar({ user }: SidebarProps) {
       <nav className="flex grow flex-col justify-between overflow-auto text-nowrap rounded-md bg-white p-4">
         <div className="overflow-auto rounded-sm pr-1">
           <Navigation location={"/academy"} />
-          {user.userRole === env.TEACHER_ROLE && <TeacherNav />}
-          {user.userRole === env.ADMIN_ROLE && (
+          {user.role === env.TEACHER_ROLE && <TeacherNav />}
+          {user.role === env.ADMIN_ROLE && (
             <>
               <TeacherNav />
               <AdminNav />
