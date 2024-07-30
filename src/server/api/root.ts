@@ -2,6 +2,8 @@ import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { userRouter } from "./routers/user";
 import { lectureRouter } from "./routers/lectures";
 import { scheduleRouter } from "./routers/schedule";
+import { levelRouter } from "./routers/levels";
+import { courseRouter } from "./routers/courses";
 
 /**
  * This is the primary router for your server.
@@ -9,7 +11,9 @@ import { scheduleRouter } from "./routers/schedule";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
+  course: courseRouter,
   schedule: scheduleRouter,
+  level: levelRouter,
   user: userRouter,
   lecture: lectureRouter,
 });
