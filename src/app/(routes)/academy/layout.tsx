@@ -1,6 +1,6 @@
 import { getServerAuthSession } from "@/server/auth";
 import { redirect } from "next/navigation";
-import Sidebar from "./_components/sidebar";
+import Sidebar from "./_components/ui/sidebar";
 import { Logo } from "@/vectors/logo";
 
 export default async function RootLayout({
@@ -23,7 +23,7 @@ export default async function RootLayout({
           <Logo className="fill-white" height={40} width={38} />
           lobal talk medallo
         </div>
-        <main className="relative grow px-0 pt-4">{children}</main>
+        <main className="relative grow px-0">{children}</main>
       </div>
     </div>
   );

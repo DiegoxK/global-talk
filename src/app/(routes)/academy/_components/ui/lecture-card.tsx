@@ -38,7 +38,7 @@ export default function LectureCard({
           <AvatarFallback>{teacher.name.slice(0, 2)}</AvatarFallback>
         </Avatar>
         <div className="p-3">
-          <div className="mb-4 flex justify-between">
+          <div className="mb-6 flex justify-between">
             <Badge variant="outline">{level.name}</Badge>
             <Badge variant="outline">A1</Badge>
           </div>
