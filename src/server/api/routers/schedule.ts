@@ -4,18 +4,20 @@ import { count, eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const scheduleRouter = createTRPCRouter({
-  scheduleNumber: protectedProcedure
-    .input(
-      z.object({
-        lectureId: z.string().uuid(),
-      }),
-    )
-    .query(async ({ input, ctx }) => {
-      const schedule = await ctx.db
-        .select({ count: count() })
-        .from(schedules)
-        .where(eq(schedules.lectureId, input.lectureId));
+  getScheduledLectures: protectedProcedure.query(async ({ ctx }) => {
+    const user = ctx.session.user;
 
-      return schedule[0];
-    }),
+    return ctx.db.query.schedules.findMany({
+      with: {
+        lecture: {
+          with: {
+            schedules: true,
+            level: true,
+            teacher: true,
+          },
+        },
+      },
+      where: eq(schedules.studentId, user.id),
+    });
+  }),
 });
