@@ -21,7 +21,8 @@ export default function Navigation({
     {
       label: "Clases",
       icon: School,
-      href: `/lectures/${firstLevelId}`,
+      href: "/lectures",
+      subRoute: firstLevelId,
     },
     {
       label: "Prácticas con IA",
@@ -35,6 +36,7 @@ export default function Navigation({
         <NavLink
           Icon={link.icon}
           location={location}
+          subRoute={link.subRoute}
           key={link.href}
           href={link.href}
         >

@@ -9,6 +9,7 @@ interface NavLinkProps {
   Icon: LucideIcon;
   href: string;
   location: string;
+  subRoute?: string;
   className?: string;
   children: React.ReactNode;
   toggleOpen?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,6 +20,7 @@ export function NavLink({
   href,
   location,
   className,
+  subRoute,
   children,
   toggleOpen,
   ...props
@@ -39,7 +41,7 @@ export function NavLink({
         className,
       )}
       onClick={toggleOpen !== undefined ? () => toggleOpen(false) : undefined}
-      href={`${location}${href}`}
+      href={`${location}${href}/${subRoute ?? ""}`}
       {...props}
     >
       <Icon className="mr-2 h-5 w-5" />
