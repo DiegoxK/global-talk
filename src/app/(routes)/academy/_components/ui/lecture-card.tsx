@@ -12,7 +12,7 @@ import { formatDate, formatTime } from "@/lib/utils";
 
 interface LectureCardProps {
   lecture: Lecture;
-  scheduleCount?: number;
+  scheduleCount: number;
 }
 
 export default function LectureCard({
