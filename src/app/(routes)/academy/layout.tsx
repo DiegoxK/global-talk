@@ -10,17 +10,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerAuthSession();
-  // const course = await api.course.getCourseName();
-  // const firstLevel = await api.level.getFirstLevel();
+
+  if (!session) {
+    redirect("/auth/login");
+  }
 
   const [course, firstLevel] = await Promise.all([
     api.course.getCourseName(),
     api.level.getFirstLevel(),
   ]);
-
-  if (!session) {
-    redirect("/auth/login");
-  }
 
   return (
     <div className="flex">
