@@ -3,20 +3,25 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Calendar,
+  CheckCheck,
+  CircleCheck,
+  CircleCheckBig,
   CirclePlus,
   Clock,
   type LucideIcon,
   UserRound,
 } from "lucide-react";
-import { formatDate, formatTime } from "@/lib/utils";
+import { cn, formatDate, formatTime } from "@/lib/utils";
 
 interface LectureCardProps {
+  state: "available" | "scheduled" | "finished";
   lecture: Lecture;
   scheduleCount: number;
 }
 
 export default function LectureCard({
   lecture,
+  state,
   scheduleCount,
 }: LectureCardProps) {
   const teacher = lecture.teacher;
@@ -56,13 +61,46 @@ export default function LectureCard({
           </div>
         </div>
       </div>
-      <button className="flex w-full items-center justify-center gap-2 text-nowrap rounded-b-md border-t bg-accent py-2 text-base font-extrabold text-primary-300">
-        Agendar
-        <CirclePlus className="h-5 w-5" />
-      </button>
+      {state === "available" ? (
+        <CardButton Icon={CirclePlus}>Agendar</CardButton>
+      ) : state === "scheduled" ? (
+        <CardButton
+          className="bg-primary-700 font-semibold text-white"
+          Icon={CircleCheckBig}
+        >
+          Ver Clase
+        </CardButton>
+      ) : (
+        <CardButton Icon={CirclePlus}>No disponible</CardButton>
+      )}
     </div>
   );
 }
+
+interface CardButtonProps {
+  className?: string;
+  onClick?: () => void;
+  children: React.ReactNode;
+  Icon: LucideIcon;
+}
+
+const CardButton = ({
+  children,
+  Icon,
+  className,
+  onClick,
+}: CardButtonProps) => (
+  <button
+    onClick={onClick}
+    className={cn(
+      "flex w-full items-center justify-center gap-1 text-nowrap rounded-b-md border-t bg-accent py-2 text-base font-extrabold text-primary-300",
+      className,
+    )}
+  >
+    {children}
+    <Icon className="h-5 w-5" />
+  </button>
+);
 
 interface CardParagraphProps {
   children: React.ReactNode;
