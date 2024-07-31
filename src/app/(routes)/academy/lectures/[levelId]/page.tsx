@@ -1,87 +1,24 @@
-import { api } from "@/trpc/server";
-import LectureCard from "../../_components/ui/lecture-card";
+import { Separator } from "@/components/ui/separator";
+import Available from "./_components/available";
+import Scheduled from "./_components/scheduled";
 
 interface LecturesProps {
   params: { levelId: string };
 }
 
-export default async function Lectures({ params: { levelId } }: LecturesProps) {
-  const lectures = await api.lecture.getLectures({
-    levelId,
-  });
-
+export default function Lectures({ params: { levelId } }: LecturesProps) {
   return (
-    <div className="grid h-fit w-full grid-cols-1 gap-3 pb-4 pt-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-      {lectures.map(async (lecture) => {
-        const scheduleNumber = await api.schedule.scheduleNumber({
-          lectureId: lecture.id,
-        });
-
-        return (
-          <>
-            <LectureCard
-              key={lecture.id}
-              lecture={lecture}
-              scheduleCount={scheduleNumber?.count}
-            />
-            <LectureCard
-              key={lecture.id}
-              lecture={lecture}
-              scheduleCount={scheduleNumber?.count}
-            />
-            <LectureCard
-              key={lecture.id}
-              lecture={lecture}
-              scheduleCount={scheduleNumber?.count}
-            />
-            <LectureCard
-              key={lecture.id}
-              lecture={lecture}
-              scheduleCount={scheduleNumber?.count}
-            />
-            <LectureCard
-              key={lecture.id}
-              lecture={lecture}
-              scheduleCount={scheduleNumber?.count}
-            />
-            <LectureCard
-              key={lecture.id}
-              lecture={lecture}
-              scheduleCount={scheduleNumber?.count}
-            />
-            <LectureCard
-              key={lecture.id}
-              lecture={lecture}
-              scheduleCount={scheduleNumber?.count}
-            />
-            <LectureCard
-              key={lecture.id}
-              lecture={lecture}
-              scheduleCount={scheduleNumber?.count}
-            />
-            <LectureCard
-              key={lecture.id}
-              lecture={lecture}
-              scheduleCount={scheduleNumber?.count}
-            />
-            <LectureCard
-              key={lecture.id}
-              lecture={lecture}
-              scheduleCount={scheduleNumber?.count}
-            />
-            <LectureCard
-              key={lecture.id}
-              lecture={lecture}
-              scheduleCount={scheduleNumber?.count}
-            />
-            <LectureCard
-              key={lecture.id}
-              lecture={lecture}
-              scheduleCount={scheduleNumber?.count}
-            />
-          </>
-        );
-      })}
+    <div className="flex w-full flex-col">
+      <div className="mt-4">
+        <h1 className="text-xl font-bold text-primary">Clases agendadas</h1>
+        <Separator />
+        <Scheduled />
+      </div>
+      <div className="mt-4">
+        <h1 className="text-xl font-bold text-primary">Clases disponibles</h1>
+        <Separator />
+        <Available levelId={levelId} />
+      </div>
     </div>
   );
 }
