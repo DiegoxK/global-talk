@@ -17,6 +17,7 @@ export default async function Available({ levelId }: LecturesProps) {
 
         return (
           <LectureCard
+            state={lecture.finished ? "finished" : "available"}
             key={lecture.id}
             lecture={lecture}
             scheduleCount={scheduleNumber}

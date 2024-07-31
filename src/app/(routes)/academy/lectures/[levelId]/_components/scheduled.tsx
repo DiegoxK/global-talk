@@ -11,6 +11,7 @@ export default async function Scheduled() {
 
         return (
           <LectureCard
+            state="scheduled"
             key={schedule.id}
             lecture={schedule.lecture}
             scheduleCount={scheduleNumber}
