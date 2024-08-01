@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { Button } from "@/components/ui/button";
+
 import {
   Form,
   FormControl,
@@ -28,6 +29,18 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { api } from "@/trpc/react";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 import Combobox from "./combobox";
 import Required from "@/components/ui/required";
@@ -98,6 +111,7 @@ export default function LectureForm({
 }: LectureFormProps) {
   // TODO: Error and loading handling for api calls
   const { data: courses } = api.course.getCoursesIds.useQuery();
+  const { mutate: editLecture } = api.lecture.editLecture.useMutation();
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -114,7 +128,10 @@ export default function LectureForm({
   });
 
   function onSubmit(values: FormSchema) {
-    console.log(values);
+    editLecture({
+      id: lecture.id,
+      ...values,
+    });
   }
 
   return (
@@ -136,9 +153,9 @@ export default function LectureForm({
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <DialogDescription>
-                Llena los campos para editar la clase
+                Aqui puedes revisar los detalles de la clase
               </DialogDescription>
-              <div className="mt-4 max-h-[60vh] space-y-2 overflow-y-auto rounded-sm px-2 pb-4">
+              <div className="mt-4 max-h-[60vh] space-y-2 overflow-y-auto rounded-sm px-2">
                 <FormField
                   control={form.control}
                   name="courseId"
@@ -299,9 +316,46 @@ export default function LectureForm({
                   />
                 </div>
               </div>
-              <DialogFooter>
-                <Button disabled={!form.formState.isDirty} type="submit">
-                  Submit
+              <DialogFooter className="mt-4 justify-start">
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      className="rounded-sm bg-destructive text-destructive-foreground hover:bg-background hover:text-destructive hover:outline hover:outline-1 hover:outline-destructive"
+                      type="button"
+                    >
+                      Eliminar clase
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="w-[470px]">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        {/* Are you absolutely sure? */}
+                        ¿Estás completamente seguro?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Esta acción no se puede deshacer. Esto eliminará la
+                        clase y no se podrá recuperar.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                      <AlertDialogAction asChild>
+                        <Button
+                          className="rounded-sm bg-destructive text-destructive-foreground hover:bg-background hover:text-destructive hover:outline hover:outline-1 hover:outline-destructive"
+                          type="button"
+                        >
+                          Continuar
+                        </Button>
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+                <Button
+                  disabled={!form.formState.isDirty}
+                  className="rounded-sm"
+                  type="submit"
+                >
+                  Guardar cambios
                 </Button>
               </DialogFooter>
             </form>
