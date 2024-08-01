@@ -6,11 +6,11 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatDate(input: string): string {
-  const date = new Date(input);
+  const date = input.split("-");
 
-  const day = date.getDate();
-  const month = date.getMonth() + 1; // Months are zero-indexed
-  const year = date.getFullYear();
+  const year = date[0];
+  const month = parseInt(date[1]!) - 1;
+  const day = date[2];
 
   const monthNames = [
     "Enero",
