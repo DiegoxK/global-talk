@@ -83,4 +83,19 @@ export const lectureRouter = createTRPCRouter({
         })
         .where(eq(lectures.id, input.id));
     }),
+
+  createLecture: protectedProcedure
+    .input(createLectureSchema)
+    .mutation(async ({ input, ctx }) => {
+      const user = ctx.session.user;
+
+      if (user.role !== env.TEACHER_ROLE && user.role !== env.ADMIN_ROLE) {
+        throw new Error("Only teachers can create lectures");
+      }
+
+      await ctx.db.insert(lectures).values({
+        ...input,
+        teacherId: user.id,
+      });
+    }),
 });
