@@ -99,8 +99,8 @@ const formSchema = z.object({
 interface LectureFormProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  lecture: Lecture;
-  setLecture: Dispatch<SetStateAction<Lecture | null>>;
+  lecture?: Lecture | null;
+  setLecture: Dispatch<SetStateAction<Lecture | undefined | null>>;
 }
 
 export default function LectureForm({
@@ -109,29 +109,48 @@ export default function LectureForm({
   lecture,
   setLecture,
 }: LectureFormProps) {
+  const isEditing = Boolean(lecture);
+
   // TODO: Error and loading handling for api calls
   const { data: courses } = api.course.getCoursesIds.useQuery();
   const { mutate: editLecture } = api.lecture.editLecture.useMutation();
+  const { mutate: createLecture } = api.lecture.createLecture.useMutation();
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      courseId: lecture?.level.courseId,
-      ...lecture,
+      courseId: lecture?.level.courseId ?? "",
+      levelId: lecture?.levelId ?? "",
+      name: lecture?.name ?? "",
+      description: lecture?.description ?? "",
+      meet_url: lecture?.meet_url ?? "",
+      off2class_url: lecture?.off2class_url ?? "",
+      date: lecture?.date ?? "",
+      start_time: lecture?.start_time ?? "",
+      end_time: lecture?.end_time ?? "",
     },
   });
 
   const courseId = form.watch("courseId");
 
-  const { data: levels } = api.level.getCourseLevelsIds.useQuery({
-    courseId,
-  });
+  const { data: levels } = api.level.getCourseLevelsIds.useQuery(
+    {
+      courseId,
+    },
+    {
+      enabled: Boolean(courseId),
+    },
+  );
 
   function onSubmit(values: FormSchema) {
-    editLecture({
-      id: lecture.id,
-      ...values,
-    });
+    if (isEditing) {
+      editLecture({
+        id: lecture?.id,
+        ...values,
+      });
+    } else {
+      createLecture(values);
+    }
   }
 
   return (
@@ -140,7 +159,8 @@ export default function LectureForm({
       onOpenChange={(open) => {
         if (!open) {
           setTimeout(() => {
-            setLecture(null);
+            setLecture(undefined);
+            form.reset();
           }, 100);
         }
 
@@ -149,11 +169,15 @@ export default function LectureForm({
     >
       <DialogContent className="max-h-[90vh]">
         <DialogHeader>
-          <DialogTitle>Editar clase</DialogTitle>
+          <DialogTitle>
+            {isEditing ? "Editar clase" : "Crear clase"}
+          </DialogTitle>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <DialogDescription>
-                Aqui puedes revisar los detalles de la clase
+                {isEditing
+                  ? "Aqui puedes revisar los detalles de la clase"
+                  : "Aqui puedes crear una nueva clase"}
               </DialogDescription>
               <div className="mt-4 max-h-[60vh] space-y-2 overflow-y-auto rounded-sm px-2">
                 <FormField
@@ -317,45 +341,47 @@ export default function LectureForm({
                 </div>
               </div>
               <DialogFooter className="mt-4 justify-start">
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button
-                      className="rounded-sm bg-destructive text-destructive-foreground hover:bg-background hover:text-destructive hover:outline hover:outline-1 hover:outline-destructive"
-                      type="button"
-                    >
-                      Eliminar clase
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent className="w-[470px]">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        {/* Are you absolutely sure? */}
-                        ¿Estás completamente seguro?
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Esta acción no se puede deshacer. Esto eliminará la
-                        clase y no se podrá recuperar.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                      <AlertDialogAction asChild>
-                        <Button
-                          className="rounded-sm bg-destructive text-destructive-foreground hover:bg-background hover:text-destructive hover:outline hover:outline-1 hover:outline-destructive"
-                          type="button"
-                        >
-                          Continuar
-                        </Button>
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                {isEditing && (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        className="rounded-sm bg-destructive text-destructive-foreground hover:bg-background hover:text-destructive hover:outline hover:outline-1 hover:outline-destructive"
+                        type="button"
+                      >
+                        Eliminar clase
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="w-[470px]">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          {/* Are you absolutely sure? */}
+                          ¿Estás completamente seguro?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Esta acción no se puede deshacer. Esto eliminará la
+                          clase y no se podrá recuperar.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                        <AlertDialogAction asChild>
+                          <Button
+                            className="rounded-sm bg-destructive text-destructive-foreground hover:bg-background hover:text-destructive hover:outline hover:outline-1 hover:outline-destructive"
+                            type="button"
+                          >
+                            Continuar
+                          </Button>
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                )}
                 <Button
                   disabled={!form.formState.isDirty}
                   className="rounded-sm"
                   type="submit"
                 >
-                  Guardar cambios
+                  {isEditing ? "Actualizar clase" : "Crear clase"}
                 </Button>
               </DialogFooter>
             </form>
