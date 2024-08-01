@@ -1,20 +1,24 @@
+"use client";
+
 import type { Lecture } from "@/lib/definitions";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Calendar,
-  CheckCheck,
-  CircleCheck,
   CircleCheckBig,
   CirclePlus,
   Clock,
   type LucideIcon,
+  Pencil,
   UserRound,
 } from "lucide-react";
 import { cn, formatDate, formatTime } from "@/lib/utils";
+import type { Dispatch, SetStateAction } from "react";
 
 interface LectureCardProps {
-  state: "available" | "scheduled" | "finished";
+  state: "available" | "scheduled" | "finished" | "teacher";
+  setLecture: Dispatch<SetStateAction<Lecture | null>>;
+  setModalState: Dispatch<SetStateAction<boolean>>;
   lecture: Lecture;
   scheduleCount: number;
 }
@@ -22,6 +26,8 @@ interface LectureCardProps {
 export default function LectureCard({
   lecture,
   state,
+  setLecture,
+  setModalState,
   scheduleCount,
 }: LectureCardProps) {
   const teacher = lecture.teacher;
@@ -62,16 +68,43 @@ export default function LectureCard({
         </div>
       </div>
       {state === "available" ? (
-        <CardButton Icon={CirclePlus}>Agendar</CardButton>
+        <CardButton
+          action={() => {
+            console.log(lecture);
+          }}
+          Icon={CirclePlus}
+        >
+          Agendar
+        </CardButton>
       ) : state === "scheduled" ? (
         <CardButton
+          action={() => {
+            console.log(lecture);
+          }}
           className="bg-primary-700 font-semibold text-white"
           Icon={CircleCheckBig}
         >
           Ver Clase
         </CardButton>
+      ) : state === "teacher" ? (
+        <CardButton
+          action={() => {
+            setModalState(true);
+            setLecture(lecture);
+          }}
+          Icon={Pencil}
+        >
+          Editar Clase
+        </CardButton>
       ) : (
-        <CardButton Icon={CirclePlus}>No disponible</CardButton>
+        <CardButton
+          action={() => {
+            console.log(lecture);
+          }}
+          Icon={CirclePlus}
+        >
+          No disponible
+        </CardButton>
       )}
     </div>
   );
@@ -79,19 +112,14 @@ export default function LectureCard({
 
 interface CardButtonProps {
   className?: string;
-  onClick?: () => void;
+  action: () => void;
   children: React.ReactNode;
   Icon: LucideIcon;
 }
 
-const CardButton = ({
-  children,
-  Icon,
-  className,
-  onClick,
-}: CardButtonProps) => (
+const CardButton = ({ children, Icon, className, action }: CardButtonProps) => (
   <button
-    onClick={onClick}
+    onClick={action}
     className={cn(
       "flex w-full items-center justify-center gap-1 text-nowrap rounded-b-md border-t bg-accent py-2 text-base font-extrabold text-primary-300",
       className,
