@@ -3,8 +3,11 @@ import { lectures } from "@/server/db/schema";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { eq } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
+import { env } from "@/env";
 
-const createLectureSchema = createInsertSchema(lectures, {});
+const createLectureSchema = createInsertSchema(lectures, {
+  teacherId: z.undefined(),
+});
 
 export const lectureRouter = createTRPCRouter({
   getLectures: protectedProcedure
@@ -59,9 +62,25 @@ export const lectureRouter = createTRPCRouter({
     return myLectures;
   }),
 
-  createLecture: protectedProcedure
+  editLecture: protectedProcedure
     .input(createLectureSchema)
     .mutation(async ({ input, ctx }) => {
       const user = ctx.session.user;
+
+      if (user.role !== env.TEACHER_ROLE && user.role !== env.ADMIN_ROLE) {
+        throw new Error("Only teachers can edit lectures");
+      }
+
+      if (!input.id) {
+        throw new Error("Lecture id is required");
+      }
+
+      await ctx.db
+        .update(lectures)
+        .set({
+          ...input,
+          teacherId: user.id,
+        })
+        .where(eq(lectures.id, input.id));
     }),
 });
