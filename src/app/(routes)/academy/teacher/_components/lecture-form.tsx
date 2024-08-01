@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 import type { Lecture } from "@/lib/definitions";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,22 +27,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { api } from "@/trpc/react";
-import { cn } from "@/lib/utils";
-import { Check, ChevronsUpDown } from "lucide-react";
+
 import Combobox from "./combobox";
 
 export type FormSchema = z.infer<typeof formSchema>;
@@ -108,16 +94,11 @@ export default function LectureForm({
     },
   });
 
-  const courseId = form.getValues("courseId");
+  const courseId = form.watch("courseId");
 
-  const { data: levels } = api.level.getCourseLevelsIds.useQuery(
-    {
-      courseId,
-    },
-    {
-      refetchOnMount: true,
-    },
-  );
+  const { data: levels } = api.level.getCourseLevelsIds.useQuery({
+    courseId,
+  });
 
   function onSubmit(values: FormSchema) {
     console.log(values);
