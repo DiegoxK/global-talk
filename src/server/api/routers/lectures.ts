@@ -1,7 +1,10 @@
 import { z } from "zod";
-import { lectures, schedules } from "@/server/db/schema";
+import { lectures } from "@/server/db/schema";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { and, eq, ne } from "drizzle-orm";
+import { eq } from "drizzle-orm";
+import { createInsertSchema } from "drizzle-zod";
+
+const createLectureSchema = createInsertSchema(lectures, {});
 
 export const lectureRouter = createTRPCRouter({
   getLectures: protectedProcedure
@@ -20,7 +23,7 @@ export const lectureRouter = createTRPCRouter({
           level: true,
           teacher: true,
         },
-        where: and(eq(lectures.levelId, input.levelId)),
+        where: eq(lectures.levelId, input.levelId),
       });
 
       const availableLectures = levelLectures.filter((lecture) => {
@@ -35,5 +38,30 @@ export const lectureRouter = createTRPCRouter({
       });
 
       return availableLectures;
+    }),
+
+  getMyLectures: protectedProcedure.query(async ({ ctx }) => {
+    const user = ctx.session.user;
+
+    const myLectures = await ctx.db.query.lectures.findMany({
+      with: {
+        schedules: true,
+        level: {
+          with: {
+            course: true,
+          },
+        },
+        teacher: true,
+      },
+      where: eq(lectures.teacherId, user.id),
+    });
+
+    return myLectures;
+  }),
+
+  createLecture: protectedProcedure
+    .input(createLectureSchema)
+    .mutation(async ({ input, ctx }) => {
+      const user = ctx.session.user;
     }),
 });
