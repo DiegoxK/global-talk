@@ -32,6 +32,7 @@ interface ComboboxProps {
 
 export default function Combobox({ values, field, fieldName }: ComboboxProps) {
   const [open, setOpen] = useState(false);
+  const label = values?.find((value) => value.value === field.value)?.label;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -46,8 +47,8 @@ export default function Combobox({ values, field, fieldName }: ComboboxProps) {
               !field.value && "text-muted-foreground",
             )}
           >
-            {field.value && values && values.length > 0
-              ? values.find((value) => value.value === field.value)?.label
+            {field.value && values && label
+              ? label
               : `Seleccionar ${fieldName}`}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
