@@ -30,44 +30,56 @@ import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
 
 import Combobox from "./combobox";
+import Required from "@/components/ui/required";
+import { Textarea } from "@/components/ui/textarea";
 
 export type FormSchema = z.infer<typeof formSchema>;
 
 const formSchema = z.object({
-  levelId: z.string().uuid({
-    message: "Nivel de la clase es requerido",
-  }),
   courseId: z.string().uuid({
-    message: "Un curso es requerido",
+    message: "Campo requerido",
+  }),
+  levelId: z.string().uuid({
+    message: "Campo requerido",
   }),
   name: z
     .string()
     .min(1, {
-      message: "Nombre de la clase es requerido",
+      message: "Campo requerido",
     })
     .max(25, {
-      message: "Nombre de la clase no puede ser mayor a 25 caracteres",
+      message: "No puede ser mayor a 25 caracteres",
     }),
   description: z
     .string()
     .min(1, {
-      message: "Descripción de la clase es requerida",
+      message: "Campo requerido",
     })
     .max(255, {
-      message: "Descripción de la clase no puede ser mayor a 255 caracteres",
+      message: "No puede ser mayor a 255 caracteres",
     }),
-  meet_url: z.string().url({
-    message: "URL de la clase de Google Meet es requerida",
-  }),
-  off2class_url: z.string().url({
-    message: "URL del material de Off2Class es requerida",
-  }),
+  meet_url: z
+    .string()
+    .url({
+      message: "Campo requerido",
+    })
+    .max(255, {
+      message: "No puede ser mayor a 255 caracteres",
+    }),
+  off2class_url: z
+    .string()
+    .url({
+      message: "Campo requerido",
+    })
+    .max(255, {
+      message: "No puede ser mayor a 255 caracteres",
+    }),
   date: z.string().date(),
   start_time: z.string().time({
-    message: "Hora de inicio de la clase es requerida",
+    message: "Campo requerido",
   }),
   end_time: z.string().time({
-    message: "Hora de finalización de la clase es requerida",
+    message: "Campo requerido",
   }),
 });
 
@@ -84,6 +96,7 @@ export default function LectureForm({
   lecture,
   setLecture,
 }: LectureFormProps) {
+  // TODO: Error and loading handling for api calls
   const { data: courses } = api.course.getCoursesIds.useQuery();
 
   const form = useForm<FormSchema>({
@@ -132,14 +145,13 @@ export default function LectureForm({
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>
-                        Curso <span className="text-primary">*</span>
+                        Curso <Required /> <FormMessage />
                       </FormLabel>
                       <Combobox
                         fieldName="curso"
                         values={courses}
                         field={field}
                       />
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -149,14 +161,14 @@ export default function LectureForm({
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>
-                        Nivel <span className="text-primary">*</span>
+                        Nivel <Required />
+                        <FormMessage />
                       </FormLabel>
                       <Combobox
                         fieldName="nivel"
                         values={levels}
                         field={field}
                       />
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -165,17 +177,132 @@ export default function LectureForm({
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Nombre de la clase</FormLabel>
+                      <FormLabel>
+                        Nombre de la clase <Required /> <FormMessage />
+                      </FormLabel>
                       <FormControl>
                         <Input placeholder="Hobbies e intereses" {...field} />
                       </FormControl>
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        Descripcion de la clase <Required />
+                        <FormMessage />
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Notas o comentarios que deseas compartir con tus estudiantes"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="meet_url"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        URL de Google Meet <Required /> <FormMessage />
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="url"
+                          placeholder="https://meet.google.com/..."
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="off2class_url"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        URL de Off2Class <Required /> <FormMessage />
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="url"
+                          placeholder="https://off2class.com/..."
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="date"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        Fecha <Required /> <FormMessage />
+                      </FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="start_time"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Hora de inicio <Required /> <FormMessage />
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="time"
+                            {...field}
+                            onChange={(e) => {
+                              const time = e.currentTarget.value;
+                              field.onChange(time + ":00");
+                            }}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="end_time"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Hora de finalizacion <Required /> <FormMessage />
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            type="time"
+                            {...field}
+                            onChange={(e) => {
+                              const time = e.currentTarget.value;
+                              field.onChange(time + ":00");
+                            }}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
               <DialogFooter>
-                <Button type="submit">Submit</Button>
+                <Button disabled={!form.formState.isDirty} type="submit">
+                  Submit
+                </Button>
               </DialogFooter>
             </form>
           </Form>
