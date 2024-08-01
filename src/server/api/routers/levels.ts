@@ -1,6 +1,6 @@
 import { levels } from "@/server/db/schema";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { count, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const levelRouter = createTRPCRouter({
@@ -24,7 +24,7 @@ export const levelRouter = createTRPCRouter({
     });
   }),
 
-  getLevels: protectedProcedure.query(({ ctx }) => {
+  getUserLevels: protectedProcedure.query(({ ctx }) => {
     const user = ctx.session.user;
     const courseId = user.courseId;
 
@@ -36,4 +36,20 @@ export const levelRouter = createTRPCRouter({
       where: eq(levels.courseId, courseId),
     });
   }),
+
+  getCourseLevelsIds: protectedProcedure
+    .input(
+      z.object({
+        courseId: z.string().uuid(),
+      }),
+    )
+    .query(({ input, ctx }) => {
+      return ctx.db
+        .select({
+          value: levels.id,
+          label: levels.name,
+        })
+        .from(levels)
+        .where(eq(levels.courseId, input.courseId));
+    }),
 });
