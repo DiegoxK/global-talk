@@ -12,7 +12,7 @@ export default function Lectures({ params: { levelId } }: LecturesProps) {
       <div className="mt-4">
         <h1 className="text-xl font-bold text-primary">Clases agendadas</h1>
         <Separator />
-        <Scheduled />
+        <Scheduled levelId={levelId} />
       </div>
       <div className="mt-4">
         <h1 className="text-xl font-bold text-primary">Clases disponibles</h1>
