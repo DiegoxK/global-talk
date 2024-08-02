@@ -17,7 +17,7 @@ import type { Dispatch, SetStateAction } from "react";
 
 interface LectureCardProps {
   state: "available" | "scheduled" | "finished" | "teacher";
-  setLecture: Dispatch<SetStateAction<Lecture | undefined | null>>;
+  setLecture?: Dispatch<SetStateAction<Lecture | undefined | null>>;
   setModalState: Dispatch<SetStateAction<boolean>>;
   lecture: Lecture;
   scheduleCount: number;
@@ -30,9 +30,6 @@ export default function LectureCard({
   setModalState,
   scheduleCount,
 }: LectureCardProps) {
-  const teacher = lecture.teacher;
-  const level = lecture.level;
-
   return (
     <div className="rounded-md border shadow-md">
       <div
@@ -41,16 +38,16 @@ export default function LectureCard({
         }}
         className="bg-pattern flex items-center justify-center text-nowrap rounded-t-md py-4 text-xl font-extrabold text-white"
       >
-        {teacher.name + " " + teacher.lastName}
+        {lecture.teacherName}
       </div>
       <div className="relative">
         <Avatar className="absolute left-[calc(50%-24px)] top-[-1em] h-[55px] w-[55px] border border-primary-700">
-          <AvatarImage src={teacher.image ?? undefined} />
-          <AvatarFallback>{teacher.name.slice(0, 2)}</AvatarFallback>
+          <AvatarImage src={lecture.teacherImage ?? undefined} />
+          <AvatarFallback>{lecture.teacherName.slice(0, 2)}</AvatarFallback>
         </Avatar>
         <div className="p-3">
           <div className="mb-6 flex justify-between">
-            <Badge variant="outline">{level.name}</Badge>
+            <Badge variant="outline">{lecture.levelName}</Badge>
             <Badge variant="outline">A1</Badge>
           </div>
           <div className="space-y-3">
@@ -59,7 +56,7 @@ export default function LectureCard({
               {formatDate(lecture.date)}
             </CardParagraph>
             <CardParagraph Icon={Clock}>
-              {formatTime(lecture.start_time)} - {formatTime(lecture.end_time)}
+              {formatTime(lecture.startTime)} - {formatTime(lecture.endTime)}
             </CardParagraph>
             <CardParagraph Icon={UserRound}>
               {scheduleCount} / 5 estudiantes
@@ -90,7 +87,9 @@ export default function LectureCard({
         <CardButton
           action={() => {
             setModalState(true);
-            setLecture(lecture);
+            if (setLecture) {
+              setLecture(lecture);
+            }
           }}
           Icon={Pencil}
         >
