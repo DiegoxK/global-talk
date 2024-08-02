@@ -6,7 +6,7 @@ export default async function LecturesLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const levels = await api.level.getLevels();
+  const levels = await api.level.getUserLevels();
 
   return (
     <div className="flex justify-between">
