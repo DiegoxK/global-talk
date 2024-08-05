@@ -18,16 +18,29 @@ import type { Dispatch, SetStateAction } from "react";
 interface LectureInformationProps {
   open: boolean;
   lecture: Lecture;
+  setLecture: Dispatch<SetStateAction<Lecture | undefined>>;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function LectureInformation({
   open,
   lecture,
+  setLecture,
   setOpen,
 }: LectureInformationProps) {
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(open) => {
+        if (!open) {
+          setTimeout(() => {
+            setLecture(undefined);
+          }, 100);
+        }
+
+        setOpen(open);
+      }}
+    >
       <DialogContent className="flex max-h-[90vh] flex-col items-center text-center">
         <DialogHeader>
           <DialogTitle className="text-center">{lecture.name}</DialogTitle>
