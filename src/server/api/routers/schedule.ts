@@ -13,6 +13,8 @@ export const scheduleRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const user = ctx.session.user;
 
+      // TODO: Prevent submition if the lecture already has 5 scheduled students
+
       await ctx.db.insert(schedules).values({
         lectureId: input.lectureId,
         studentId: user.id,
