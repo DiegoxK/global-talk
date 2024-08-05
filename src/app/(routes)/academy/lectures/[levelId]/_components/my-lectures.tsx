@@ -22,7 +22,12 @@ export default function MyLectures({
   return (
     <>
       {lecture !== undefined && (
-        <LectureInformation lecture={lecture} open={open} setOpen={setOpen} />
+        <LectureInformation
+          lecture={lecture}
+          setLecture={setLecture}
+          open={open}
+          setOpen={setOpen}
+        />
       )}
       <div className="mt-4">
         <h1 className="text-xl font-bold text-primary">Clases agendadas</h1>
@@ -31,8 +36,10 @@ export default function MyLectures({
           {scheduledLectures.map((lecture) => {
             return (
               <LectureCard
-                setModalState={setOpen}
-                setLecture={setLecture}
+                action={() => {
+                  setOpen(true);
+                  setLecture(lecture);
+                }}
                 state="scheduled"
                 key={lecture.id}
                 lecture={lecture}
@@ -49,7 +56,10 @@ export default function MyLectures({
           {availableLectures.map((lecture) => {
             return (
               <LectureCard
-                setModalState={setOpen}
+                action={() => {
+                  setOpen(true);
+                  setLecture(lecture);
+                }}
                 state={lecture.isFinished ? "finished" : "available"}
                 key={lecture.id}
                 lecture={lecture}
