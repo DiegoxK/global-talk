@@ -76,7 +76,10 @@ export default function LectureCard({
       ) : state === "scheduled" ? (
         <CardButton
           action={() => {
-            console.log(lecture);
+            setModalState(true);
+            if (setLecture) {
+              setLecture(lecture);
+            }
           }}
           className="bg-primary-700 font-semibold text-white"
           Icon={CircleCheckBig}
