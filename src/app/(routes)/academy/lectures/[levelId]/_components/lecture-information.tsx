@@ -37,31 +37,31 @@ export default function LectureInformation({
         </DialogHeader>
         <div className="max-h-[70vh] w-full space-y-4 overflow-y-auto p-1">
           <div>
-            <p className="text-primary">Profesor</p>
+            <p className="text-primary-700">Profesor</p>
             <p>{lecture.teacherName}</p>
           </div>
           <Separator />
 
           <div>
-            <p className="text-primary">Fecha</p>
+            <p className="text-primary-700">Fecha</p>
             <p>{formatDate(lecture.date)}</p>
           </div>
           <Separator />
 
           <div className="flex justify-center space-x-4">
             <div>
-              <p className="text-primary">Hora de inicio</p>
+              <p className="text-primary-700">Hora de inicio</p>
               <p> {formatTime(lecture.startTime)}</p>
             </div>
             <div>
-              <p className="text-primary">Hora de fin</p>
+              <p className="text-primary-700">Hora de fin</p>
               <p>{formatTime(lecture.endTime)}</p>
             </div>
           </div>
           <Separator />
           <div className="flex justify-center space-x-4">
             <div>
-              <p className="text-primary">Ingresar</p>
+              <p className="text-primary-700">Ingresar</p>
               <Link
                 href={lecture.meetUrl}
                 target="_blank"
@@ -73,7 +73,7 @@ export default function LectureInformation({
               </Link>
             </div>
             <div>
-              <p className="text-primary">Material</p>
+              <p className="text-primary-700">Material</p>
               <Link
                 href={lecture.off2classUrl}
                 target="_blank"
