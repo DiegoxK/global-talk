@@ -99,7 +99,7 @@ const formSchema = z.object({
 interface LectureFormProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  lecture?: Lecture | null;
+  lecture: Lecture | null;
   setLecture: Dispatch<SetStateAction<Lecture | undefined | null>>;
 }
 
