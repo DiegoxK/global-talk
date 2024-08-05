@@ -49,8 +49,10 @@ export default function MyLectures({ lectures }: MyLecturesProps) {
           {lectures.map((lecture) => (
             <LectureCard
               lecture={lecture}
-              setLecture={setLecture}
-              setModalState={setOpen}
+              action={() => {
+                setOpen(true);
+                setLecture(lecture);
+              }}
               key={lecture.id}
               state="teacher"
               scheduleCount={2}
