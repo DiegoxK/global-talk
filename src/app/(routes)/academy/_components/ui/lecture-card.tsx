@@ -17,7 +17,9 @@ import type { Dispatch, SetStateAction } from "react";
 
 interface LectureCardProps {
   state: "available" | "scheduled" | "finished" | "teacher";
-  setLecture?: Dispatch<SetStateAction<Lecture | undefined | null>>;
+  setLecture?:
+    | Dispatch<SetStateAction<Lecture | undefined | null>>
+    | Dispatch<SetStateAction<Lecture | undefined>>;
   setModalState: Dispatch<SetStateAction<boolean>>;
   lecture: Lecture;
   scheduleCount: number;
