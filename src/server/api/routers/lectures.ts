@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { lectures, levels, schedules, users } from "@/server/db/schema";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { and, count, eq, ne, sql } from "drizzle-orm";
+import { and, count, eq, isNull, ne, not, or, sql } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { env } from "@/env";
 import { db } from "@/server/db";
@@ -21,44 +21,25 @@ const sq = db
   .groupBy(lectures.id)
   .as("sq");
 
-const getLecturesQuery = db
-  .select({
-    id: lectures.id,
-    name: lectures.name,
-    description: lectures.description,
-    meetUrl: lectures.meet_url,
-    off2classUrl: lectures.off2class_url,
-    date: lectures.date,
-    startTime: lectures.start_time,
-    endTime: lectures.end_time,
-    isFinished: lectures.finished,
-    teacherName: sql<string>`concat(${users.name}, ' ', ${users.lastName})`.as(
-      "teacher_name",
-    ),
-    teacherImage: users.image,
-    levelName: levels.name,
-    schedulesCount: sq.schedulesCount,
-  })
-  .from(lectures)
-  .leftJoin(sq, eq(lectures.id, sq.lectureId))
-  .leftJoin(users, eq(lectures.teacherId, users.id))
-  .leftJoin(levels, eq(lectures.levelId, levels.id));
+const lectureCardSchema = {
+  id: lectures.id,
+  name: lectures.name,
+  description: lectures.description,
+  meetUrl: lectures.meet_url,
+  off2classUrl: lectures.off2class_url,
+  date: lectures.date,
+  startTime: lectures.start_time,
+  endTime: lectures.end_time,
+  isFinished: lectures.finished,
+  teacherName: sql<string>`concat(${users.name}, ' ', ${users.lastName})`.as(
+    "teacher_name",
+  ),
+  teacherImage: users.image,
+  levelName: levels.name,
+  schedulesCount: sq.schedulesCount,
+};
 
 export const lectureRouter = createTRPCRouter({
-  getAvailableLectures: protectedProcedure
-    .input(
-      z.object({
-        levelId: z.string().uuid(),
-      }),
-    )
-    .query(({ input, ctx }) => {
-      const user = ctx.session.user;
-
-      return getLecturesQuery.where(
-        and(eq(lectures.levelId, input.levelId), ne(users.id, user.id)),
-      );
-    }),
-
   getScheduledLectures: protectedProcedure
     .input(
       z.object({
@@ -68,14 +49,51 @@ export const lectureRouter = createTRPCRouter({
     .query(({ input, ctx }) => {
       const user = ctx.session.user;
 
-      return getLecturesQuery.where(
-        and(eq(lectures.levelId, input.levelId), eq(users.id, user.id)),
-      );
+      return ctx.db
+        .select(lectureCardSchema)
+        .from(lectures)
+        .leftJoin(sq, eq(lectures.id, sq.lectureId))
+        .leftJoin(users, eq(lectures.teacherId, users.id))
+        .leftJoin(levels, eq(lectures.levelId, levels.id))
+        .leftJoin(schedules, eq(lectures.id, schedules.lectureId))
+        .where(
+          and(
+            eq(lectures.levelId, input.levelId),
+            eq(schedules.studentId, user.id),
+          ),
+        );
+    }),
+
+  getAvailableLectures: protectedProcedure
+    .input(
+      z.object({
+        levelId: z.string().uuid(),
+      }),
+    )
+    .query(({ input, ctx }) => {
+      const user = ctx.session.user;
+
+      return ctx.db
+        .select(lectureCardSchema)
+        .from(lectures)
+        .leftJoin(sq, eq(lectures.id, sq.lectureId))
+        .leftJoin(users, eq(lectures.teacherId, users.id))
+        .leftJoin(levels, eq(lectures.levelId, levels.id))
+        .leftJoin(schedules, eq(lectures.id, schedules.lectureId))
+        .where(
+          and(
+            eq(lectures.levelId, input.levelId),
+            or(
+              isNull(schedules.studentId),
+              not(eq(schedules.studentId, user.id)),
+            ),
+          ),
+        );
     }),
 
   getMyLectures: protectedProcedure.query(async ({ ctx }) => {
     const user = ctx.session.user;
-    return getLecturesQuery.where(eq(lectures.teacherId, user.id));
+    // return getLecturesQuery.where(eq(lectures.teacherId, user.id));
   }),
 
   editLecture: protectedProcedure
