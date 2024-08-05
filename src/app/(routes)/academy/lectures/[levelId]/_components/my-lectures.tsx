@@ -16,13 +16,16 @@ export default function MyLectures({
   scheduledLectures,
   availableLectures,
 }: ScheduledProps) {
+  // TODO: optimize re renders
   const [open, setOpen] = useState(true);
+  const [state, setState] = useState<"view" | "schedule">("view");
   const [lecture, setLecture] = useState<Lecture | undefined>(undefined);
 
   return (
     <>
       {lecture !== undefined && (
         <LectureInformation
+          state={state}
           lecture={lecture}
           setLecture={setLecture}
           open={open}
@@ -38,6 +41,7 @@ export default function MyLectures({
               <LectureCard
                 action={() => {
                   setOpen(true);
+                  setState("view");
                   setLecture(lecture);
                 }}
                 state="scheduled"
@@ -58,6 +62,7 @@ export default function MyLectures({
               <LectureCard
                 action={() => {
                   setOpen(true);
+                  setState("schedule");
                   setLecture(lecture);
                 }}
                 state={lecture.isFinished ? "finished" : "available"}
