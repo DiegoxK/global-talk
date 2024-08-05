@@ -17,10 +17,13 @@ export default function MyLectures({
   availableLectures,
 }: ScheduledProps) {
   const [open, setOpen] = useState(true);
+  const [lecture, setLecture] = useState<Lecture | undefined>(undefined);
 
   return (
     <>
-      <LectureInformation open={open} setOpen={setOpen} />
+      {lecture !== undefined && (
+        <LectureInformation lecture={lecture} open={open} setOpen={setOpen} />
+      )}
       <div className="mt-4">
         <h1 className="text-xl font-bold text-primary">Clases agendadas</h1>
         <Separator />
@@ -29,6 +32,7 @@ export default function MyLectures({
             return (
               <LectureCard
                 setModalState={setOpen}
+                setLecture={setLecture}
                 state="scheduled"
                 key={lecture.id}
                 lecture={lecture}
