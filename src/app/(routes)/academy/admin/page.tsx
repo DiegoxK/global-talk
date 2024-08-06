@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator";
-import Users from "./sections/users";
-import Prompts from "./sections/prompts";
-import Transactions from "./sections/transactions";
+import Users from "./_sections/users";
+import Prompts from "./_sections/prompts";
+import Transactions from "./_sections/transactions";
 
 export default function Admin() {
   return (
