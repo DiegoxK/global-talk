@@ -1,5 +1,5 @@
 import { env } from "@/env";
-import { desc, relations, sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   boolean,
   date,
@@ -34,12 +34,6 @@ export const Proficiency = pgEnum("proficiency", [
   "C2",
 ]);
 
-/**
- * This is an example of how to use the multi-project schema  feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
 export const createTable = pgTableCreator((name) => `global-talk_${name}`);
 
 // ============================== USERS ==============================
@@ -165,7 +159,7 @@ export const schedules = createTable("schedule", {
     .notNull()
     .references(() => users.id),
   lectureId: uuid("lecture_id")
-    .references(() => lectures.id)
+    .references(() => lectures.id, { onDelete: "cascade" })
     .notNull(),
 });
 
