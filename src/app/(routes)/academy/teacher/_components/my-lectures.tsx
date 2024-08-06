@@ -57,7 +57,7 @@ export default function MyLectures({ lectures }: MyLecturesProps) {
               }}
               key={lecture.id}
               state="teacher"
-              scheduleCount={2}
+              scheduleCount={lecture.schedulesCount}
             />
           ))}
         </div>
