@@ -150,4 +150,20 @@ export const lectureRouter = createTRPCRouter({
         teacherId: user.id,
       });
     }),
+
+  deleteLecture: protectedProcedure
+    .input(
+      z.object({
+        lectureId: z.string().uuid(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const user = ctx.session.user;
+
+      if (user.role !== env.TEACHER_ROLE && user.role !== env.ADMIN_ROLE) {
+        throw new Error("Only teachers can delete lectures");
+      }
+
+      await ctx.db.delete(lectures).where(eq(lectures.id, input.lectureId));
+    }),
 });
