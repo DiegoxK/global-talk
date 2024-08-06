@@ -62,7 +62,12 @@ export default function LectureCard({
         </div>
       </div>
       {state === "available" ? (
-        <CardButton action={action} Icon={CirclePlus}>
+        <CardButton
+          disabled={scheduleCount === 5}
+          className="disabled:text-primary-100"
+          action={action}
+          Icon={CirclePlus}
+        >
           Agendar
         </CardButton>
       ) : state === "scheduled" ? (
@@ -88,13 +93,21 @@ export default function LectureCard({
 
 interface CardButtonProps {
   className?: string;
+  disabled?: boolean;
   action?: () => void;
   children: React.ReactNode;
   Icon: LucideIcon;
 }
 
-const CardButton = ({ children, Icon, className, action }: CardButtonProps) => (
+const CardButton = ({
+  children,
+  Icon,
+  className,
+  disabled,
+  action,
+}: CardButtonProps) => (
   <button
+    disabled={disabled}
     onClick={action}
     className={cn(
       "flex w-full items-center justify-center gap-1 text-nowrap rounded-b-md border-t bg-accent py-2 text-base font-extrabold text-primary-300",
