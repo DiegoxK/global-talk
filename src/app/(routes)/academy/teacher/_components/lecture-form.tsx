@@ -1,7 +1,7 @@
 "use client";
 
 import { type Dispatch, type SetStateAction } from "react";
-import type { Lecture } from "@/lib/definitions";
+import type { TeacherLecture } from "@/lib/definitions";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -99,8 +99,8 @@ const formSchema = z.object({
 interface LectureFormProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  lecture: Lecture | null;
-  setLecture: Dispatch<SetStateAction<Lecture | undefined | null>>;
+  lecture: TeacherLecture | null;
+  setLecture: Dispatch<SetStateAction<TeacherLecture | undefined | null>>;
 }
 
 export default function LectureForm({
@@ -119,15 +119,15 @@ export default function LectureForm({
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      courseId: lecture?.level.courseId ?? "",
+      courseId: lecture?.courseId ?? "",
       levelId: lecture?.levelId ?? "",
       name: lecture?.name ?? "",
       description: lecture?.description ?? "",
-      meet_url: lecture?.meet_url ?? "",
-      off2class_url: lecture?.off2class_url ?? "",
+      meet_url: lecture?.meetUrl ?? "",
+      off2class_url: lecture?.off2classUrl ?? "",
       date: lecture?.date ?? "",
-      start_time: lecture?.start_time ?? "",
-      end_time: lecture?.end_time ?? "",
+      start_time: lecture?.startTime ?? "",
+      end_time: lecture?.endTime ?? "",
     },
   });
 
