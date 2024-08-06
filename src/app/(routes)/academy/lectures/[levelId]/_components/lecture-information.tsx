@@ -34,12 +34,26 @@ export default function LectureInformation({
   setOpen,
 }: LectureInformationProps) {
   const router = useRouter();
-  const { mutate: createSchedule } = api.schedule.createSchedule.useMutation();
-  const { mutate: removeSchedule } = api.schedule.removeSchedule.useMutation();
+
+  const onSuccessfulSubmit = () => {
+    setOpen(false);
+    setLecture(undefined);
+    router.refresh();
+  };
+
+  const { mutate: createSchedule } = api.schedule.createSchedule.useMutation({
+    onSuccess: onSuccessfulSubmit,
+  });
+  const { mutate: removeSchedule } = api.schedule.removeSchedule.useMutation({
+    onSuccess: onSuccessfulSubmit,
+  });
 
   const createScheduleHandler = () => {
     createSchedule({ lectureId: lecture.id });
-    router.refresh();
+  };
+
+  const removeScheduleHandler = () => {
+    removeSchedule({ lectureId: lecture.id });
   };
 
   return (
@@ -114,10 +128,7 @@ export default function LectureInformation({
               <div className="m-0">
                 <p className="text-destructive">Desagendar</p>
                 <Button
-                  onClick={() => {
-                    removeSchedule({ lectureId: lecture.id });
-                    router.refresh();
-                  }}
+                  onClick={removeScheduleHandler}
                   className="mt-2 bg-destructive text-destructive-foreground hover:bg-background hover:text-destructive hover:outline hover:outline-1 hover:outline-destructive"
                   size="icon"
                 >
