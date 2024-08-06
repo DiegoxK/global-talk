@@ -88,10 +88,11 @@ const formSchema = z.object({
       message: "No puede ser mayor a 255 caracteres",
     }),
   date: z.string().date(),
-  start_time: z.string().time({
+
+  start_time: z.string().regex(/^(?:[01]\d|2[0-3]):[0-5]\d$/, {
     message: "Campo requerido",
   }),
-  end_time: z.string().time({
+  end_time: z.string().regex(/^(?:[01]\d|2[0-3]):[0-5]\d$/, {
     message: "Campo requerido",
   }),
 });
@@ -179,7 +180,7 @@ export default function LectureForm({
                   ? "Aqui puedes revisar los detalles de la clase"
                   : "Aqui puedes crear una nueva clase"}
               </DialogDescription>
-              <div className="mt-4 max-h-[60vh] space-y-2 overflow-y-auto rounded-sm px-2">
+              <div className="mt-4 max-h-[60vh] space-y-2 overflow-y-auto rounded-sm px-2 pb-2">
                 <FormField
                   control={form.control}
                   name="courseId"
@@ -305,14 +306,7 @@ export default function LectureForm({
                           Hora de inicio <Required /> <FormMessage />
                         </FormLabel>
                         <FormControl>
-                          <Input
-                            type="time"
-                            {...field}
-                            onChange={(e) => {
-                              const time = e.currentTarget.value;
-                              field.onChange(time + ":00");
-                            }}
-                          />
+                          <Input type="time" {...field} />
                         </FormControl>
                       </FormItem>
                     )}
@@ -326,14 +320,7 @@ export default function LectureForm({
                           Hora de finalizacion <Required /> <FormMessage />
                         </FormLabel>
                         <FormControl>
-                          <Input
-                            type="time"
-                            {...field}
-                            onChange={(e) => {
-                              const time = e.currentTarget.value;
-                              field.onChange(time + ":00");
-                            }}
-                          />
+                          <Input type="time" {...field} />
                         </FormControl>
                       </FormItem>
                     )}
