@@ -45,6 +45,7 @@ import {
 import Combobox from "./combobox";
 import Required from "@/components/ui/required";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 
 export type FormSchema = z.infer<typeof formSchema>;
 
@@ -110,12 +111,8 @@ export default function LectureForm({
   lecture,
   setLecture,
 }: LectureFormProps) {
+  const router = useRouter();
   const isEditing = Boolean(lecture);
-
-  // TODO: Error and loading handling for api calls
-  const { data: courses } = api.course.getCoursesIds.useQuery();
-  const { mutate: editLecture } = api.lecture.editLecture.useMutation();
-  const { mutate: createLecture } = api.lecture.createLecture.useMutation();
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -130,6 +127,25 @@ export default function LectureForm({
       start_time: lecture?.startTime ?? "",
       end_time: lecture?.endTime ?? "",
     },
+  });
+
+  const onSuccessfulSubmit = () => {
+    setOpen(false);
+    setLecture(undefined);
+    form.reset();
+    router.refresh();
+  };
+
+  // TODO: Error and loading handling for api calls
+  const { data: courses } = api.course.getCoursesIds.useQuery();
+  const { mutate: editLecture } = api.lecture.editLecture.useMutation({
+    onSuccess: onSuccessfulSubmit,
+  });
+  const { mutate: createLecture } = api.lecture.createLecture.useMutation({
+    onSuccess: onSuccessfulSubmit,
+  });
+  const { mutate: deleteLecture } = api.lecture.deleteLecture.useMutation({
+    onSuccess: onSuccessfulSubmit,
   });
 
   const courseId = form.watch("courseId");
@@ -151,6 +167,14 @@ export default function LectureForm({
       });
     } else {
       createLecture(values);
+    }
+  }
+
+  function onDelete() {
+    if (isEditing && lecture) {
+      deleteLecture({
+        lectureId: lecture.id,
+      });
     }
   }
 
@@ -353,6 +377,7 @@ export default function LectureForm({
                         <AlertDialogCancel>Cancelar</AlertDialogCancel>
                         <AlertDialogAction asChild>
                           <Button
+                            onClick={onDelete}
                             className="rounded-sm bg-destructive text-destructive-foreground hover:bg-background hover:text-destructive hover:outline hover:outline-1 hover:outline-destructive"
                             type="button"
                           >
