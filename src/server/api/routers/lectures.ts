@@ -1,5 +1,11 @@
 import { z } from "zod";
-import { lectures, levels, schedules, users } from "@/server/db/schema";
+import {
+  courses,
+  lectures,
+  levels,
+  schedules,
+  users,
+} from "@/server/db/schema";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { and, count, eq, isNull, ne, not, or, sql } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
@@ -91,9 +97,21 @@ export const lectureRouter = createTRPCRouter({
         );
     }),
 
-  getMyLectures: protectedProcedure.query(async ({ ctx }) => {
+  getMyTeacherLectures: protectedProcedure.query(async ({ ctx }) => {
     const user = ctx.session.user;
-    // return getLecturesQuery.where(eq(lectures.teacherId, user.id));
+
+    return ctx.db
+      .select({
+        ...lectureCardSchema,
+        courseId: courses.id,
+        levelId: levels.id,
+      })
+      .from(lectures)
+      .leftJoin(sq, eq(lectures.id, sq.lectureId))
+      .leftJoin(users, eq(lectures.teacherId, users.id))
+      .leftJoin(levels, eq(lectures.levelId, levels.id))
+      .leftJoin(courses, eq(levels.courseId, courses.id))
+      .where(eq(lectures.teacherId, user.id));
   }),
 
   editLecture: protectedProcedure
