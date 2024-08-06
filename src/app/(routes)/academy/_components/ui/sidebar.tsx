@@ -38,7 +38,6 @@ export default function Sidebar({ user, course, firstLevel }: SidebarProps) {
               ? "Profesor"
               : "Administrador"}
         </p>
-        {/* TODO: add user level to schema */}
         {course && (
           <p className="font-light text-primary-400">
             {course.proficiency}: {course.name}
