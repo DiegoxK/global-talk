@@ -37,6 +37,7 @@ const lectureCardSchema = {
   startTime: lectures.start_time,
   endTime: lectures.end_time,
   isFinished: lectures.finished,
+  proficiency: courses.proficiency,
   teacherName: sql<string>`concat(${users.name}, ' ', ${users.lastName})`.as(
     "teacher_name",
   ),
@@ -62,6 +63,7 @@ export const lectureRouter = createTRPCRouter({
         .leftJoin(users, eq(lectures.teacherId, users.id))
         .leftJoin(levels, eq(lectures.levelId, levels.id))
         .leftJoin(schedules, eq(lectures.id, schedules.lectureId))
+        .leftJoin(courses, eq(levels.courseId, courses.id))
         .where(
           and(
             eq(lectures.levelId, input.levelId),
@@ -86,6 +88,7 @@ export const lectureRouter = createTRPCRouter({
         .leftJoin(users, eq(lectures.teacherId, users.id))
         .leftJoin(levels, eq(lectures.levelId, levels.id))
         .leftJoin(schedules, eq(lectures.id, schedules.lectureId))
+        .leftJoin(courses, eq(levels.courseId, courses.id))
         .where(
           and(
             eq(lectures.levelId, input.levelId),
