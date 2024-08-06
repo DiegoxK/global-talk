@@ -1,3 +1,4 @@
+import { env } from "@/env";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -8,9 +9,48 @@ import { eq } from "drizzle-orm";
 import { createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
+interface UserWithRole {
+  name: string;
+  lastName: string;
+  email: string;
+  role: "Admin" | "Profesor" | "Estudiante";
+  image: string | null;
+}
+
 export const userSchema = createSelectSchema(users);
 
 export const userRouter = createTRPCRouter({
+  getAllUsers: protectedProcedure.query(async ({ ctx }) => {
+    const user = ctx.session.user;
+
+    if (user.role !== env.ADMIN_ROLE) {
+      throw new Error("Unauthorized");
+    }
+
+    const users = await ctx.db.query.users.findMany({
+      columns: {
+        image: true,
+        name: true,
+        lastName: true,
+        email: true,
+        role: true,
+      },
+    });
+
+    const usersWithRole: UserWithRole[] = users.map((user) => {
+      return {
+        ...user,
+        role:
+          user.role === env.ADMIN_ROLE
+            ? "Admin"
+            : user.role === env.TEACHER_ROLE
+              ? "Profesor"
+              : "Estudiante",
+      };
+    });
+
+    return usersWithRole;
+  }),
   createUser: publicProcedure
     .input(
       z.object({
