@@ -45,7 +45,7 @@ export default function LectureCard({
         <div className="p-3">
           <div className="mb-6 flex justify-between">
             <Badge variant="outline">{lecture.levelName}</Badge>
-            <Badge variant="outline">A1</Badge>
+            <Badge variant="outline">{lecture.proficiency}</Badge>
           </div>
           <div className="space-y-3">
             <p className="text-xl font-extrabold">{lecture.name}</p>
