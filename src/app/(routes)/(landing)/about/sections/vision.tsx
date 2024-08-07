@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export default function VisionSection() {
   return (
-    <section className="my-24 flex items-center justify-center gap-10">
+    <section className="my-24 flex items-center justify-center gap-x-12">
       <div>
         <Image src={Vision} alt="Mision" />
       </div>
