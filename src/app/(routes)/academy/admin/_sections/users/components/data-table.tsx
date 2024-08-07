@@ -15,16 +15,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import DataTableActions from "./data-table-actions";
+import { useState } from "react";
+import type { UserWithRole } from "@/lib/definitions";
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends UserWithRole, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends UserWithRole, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   const table = useReactTable({
     data,
     columns,
@@ -54,6 +59,8 @@ export function DataTable<TData, TValue>({
                   </TableHead>
                 );
               })}
+
+              <TableHead>Acciones</TableHead>
             </TableRow>
           ))}
         </TableHeader>
@@ -69,6 +76,9 @@ export function DataTable<TData, TValue>({
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
+                <TableCell>
+                  <DataTableActions user={row.original} />
+                </TableCell>
               </TableRow>
             ))
           ) : (
