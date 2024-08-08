@@ -107,7 +107,12 @@ export default function ContactForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tu nombre completo*</FormLabel>
+                <FormLabel>
+                  Tu nombre completo{" "}
+                  <span className="text-primary">
+                    <span className="text-primary">*</span>
+                  </span>
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Juan Pérez" {...field} />
                 </FormControl>
@@ -119,7 +124,9 @@ export default function ContactForm() {
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tu celular *</FormLabel>
+                <FormLabel>
+                  Tu celular <span className="text-primary">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="321000000" {...field} />
                 </FormControl>
@@ -132,7 +139,9 @@ export default function ContactForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Tu correo *</FormLabel>
+              <FormLabel>
+                Tu correo <span className="text-primary">*</span>
+              </FormLabel>
               <FormControl>
                 <Input placeholder="alfonso@globtm.com" {...field} />
               </FormControl>
@@ -144,7 +153,9 @@ export default function ContactForm() {
           name="city"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Escoge tu Ciudad *</FormLabel>
+              <FormLabel>
+                Escoge tu Ciudad <span className="text-primary">*</span>
+              </FormLabel>
               <FormControl>
                 <Input placeholder="Medellín" {...field} />
               </FormControl>
@@ -156,14 +167,16 @@ export default function ContactForm() {
           name="message"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mensaje *</FormLabel>
+              <FormLabel>
+                Mensaje <span className="text-primary">*</span>
+              </FormLabel>
               <FormControl>
                 <Textarea placeholder="Tu mensaje" {...field} />
               </FormControl>
             </FormItem>
           )}
         />
-        <Button type="submit" className="mt-4">
+        <Button type="submit" className="mt-4 rounded-md">
           ¡Enviar Mensaje!
         </Button>
       </form>
