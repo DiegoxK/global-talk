@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@auth/drizzle-adapter':
-        specifier: ^1.4.2
-        version: 1.4.2(nodemailer@6.9.14)
+        specifier: ^1.4.1
+        version: 1.4.1(nodemailer@6.9.14)
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.52.2(react@18.3.1))
@@ -57,7 +57,7 @@ importers:
         specifier: ^0.10.1
         version: 0.10.1(typescript@5.5.4)(zod@3.23.8)
       '@tanstack/react-query':
-        specifier: ^5.51.23
+        specifier: ^5.51.11
         version: 5.51.23(react@18.3.1)
       '@tanstack/react-table':
         specifier: ^8.20.1
@@ -120,7 +120,7 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-hook-form:
-        specifier: ^7.52.2
+        specifier: ^7.52.1
         version: 7.52.2(react@18.3.1)
       server-only:
         specifier: ^0.0.1
@@ -142,7 +142,7 @@ importers:
         specifier: ^8.56.11
         version: 8.56.11
       '@types/node':
-        specifier: ^20.14.14
+        specifier: ^20.14.12
         version: 20.14.14
       '@types/nodemailer':
         specifier: ^6.4.15
@@ -154,10 +154,10 @@ importers:
         specifier: ^18.3.0
         version: 18.3.0
       '@typescript-eslint/eslint-plugin':
-        specifier: ^7.18.0
+        specifier: ^7.17.0
         version: 7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4)
       '@typescript-eslint/parser':
-        specifier: ^7.18.0
+        specifier: ^7.17.0
         version: 7.18.0(eslint@8.57.0)(typescript@5.5.4)
       drizzle-kit:
         specifier: ^0.21.4
@@ -172,7 +172,7 @@ importers:
         specifier: ^0.2.3
         version: 0.2.3(eslint@8.57.0)
       postcss:
-        specifier: ^8.4.41
+        specifier: ^8.4.40
         version: 8.4.41
       prettier:
         specifier: ^3.3.3
@@ -181,7 +181,7 @@ importers:
         specifier: ^0.6.5
         version: 0.6.5(prettier@3.3.3)
       tailwindcss:
-        specifier: ^3.4.9
+        specifier: ^3.4.6
         version: 3.4.9
       typescript:
         specifier: ^5.5.4
@@ -193,8 +193,8 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@auth/core@0.34.2':
-    resolution: {integrity: sha512-KywHKRgLiF3l7PLyL73fjLSIBe1YNcA6sMeew4yMP6cfCWGXZrkkXd32AjRi1hlJ9nvovUBGZHvbn+LijO6ZeQ==}
+  '@auth/core@0.34.1':
+    resolution: {integrity: sha512-tuYU2VIbI8rFbkSwP710LmybB2FXJsPN7j3sjRVfN9SXVQBK2ej6LdewQaofpBGp4Mk+cC2UeiGNH0or4tgaeA==}
     peerDependencies:
       '@simplewebauthn/browser': ^9.0.1
       '@simplewebauthn/server': ^9.0.2
@@ -207,8 +207,8 @@ packages:
       nodemailer:
         optional: true
 
-  '@auth/drizzle-adapter@1.4.2':
-    resolution: {integrity: sha512-rqukaT9CeWB8VOt6g2bQ6uYMHVOQIYCBkzddZXWshi8aqwLABatpRWAc+pehpcMDn0RSW/uvKMs7tkON+Bho9Q==}
+  '@auth/drizzle-adapter@1.4.1':
+    resolution: {integrity: sha512-pUC8D0jfANDvThH1CrcUXmjZyF98ccVMY3iEZUQzUTr0U1csuppvRoz5JccOLzjv3tu+Nb9Qd6SvrmmsnuYgSw==}
 
   '@babel/runtime@7.25.0':
     resolution: {integrity: sha512-7dRy4DwXwtzBrPbZflqxnvfxLF8kdZXPkhymtDeFoFqE6ldzjQFgYTtYIFARcLEYDrqfBfYcZt1WqFxRoyC9Rw==}
@@ -3409,7 +3409,7 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@auth/core@0.34.2(nodemailer@6.9.14)':
+  '@auth/core@0.34.1(nodemailer@6.9.14)':
     dependencies:
       '@panva/hkdf': 1.2.1
       '@types/cookie': 0.6.0
@@ -3421,9 +3421,9 @@ snapshots:
     optionalDependencies:
       nodemailer: 6.9.14
 
-  '@auth/drizzle-adapter@1.4.2(nodemailer@6.9.14)':
+  '@auth/drizzle-adapter@1.4.1(nodemailer@6.9.14)':
     dependencies:
-      '@auth/core': 0.34.2(nodemailer@6.9.14)
+      '@auth/core': 0.34.1(nodemailer@6.9.14)
     transitivePeerDependencies:
       - '@simplewebauthn/browser'
       - '@simplewebauthn/server'
