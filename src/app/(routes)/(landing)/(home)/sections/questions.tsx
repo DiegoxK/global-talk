@@ -150,7 +150,7 @@ const Card = ({ index, question, answer }: CardProps) => {
             <ChevronDown className="h-4 w-4 shrink-0 text-primary transition-transform duration-200" />
           </div>
         </AccordionTrigger>
-        <AccordionContent className="mb-3 rounded-md bg-white px-4 py-3">
+        <AccordionContent className="mb-3 rounded-md bg-white/10 px-4 py-3 text-white">
           <Answer />
         </AccordionContent>
       </AccordionItem>
