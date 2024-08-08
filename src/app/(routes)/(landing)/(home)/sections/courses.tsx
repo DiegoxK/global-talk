@@ -7,6 +7,7 @@ import Course3 from "../../../../../../public/courses/course3.png";
 import Image from "next/image";
 import { Laptop, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "@react-email/components";
 
 export default function Courses() {
   const courses = [
@@ -30,10 +31,10 @@ export default function Courses() {
     },
     {
       plan: "Mensual",
-      proficiency: "A2",
+      proficiency: "B2",
       price: "400,000",
       image: Course3,
-      title: "De A2 a B1",
+      title: "De B1 a B2",
       levels: 5,
       students: 5,
     },
@@ -51,7 +52,7 @@ export default function Courses() {
           curso y comienza hoy!
         </p>
       </div>
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {courses.map((course) => (
           <div key={course.title} className="flex flex-col items-center">
             <CourseCard {...course} />
@@ -82,8 +83,8 @@ const CourseCard = ({
   students,
 }: CourseCardProps) => {
   return (
-    <div className="w-fit rounded-md border shadow-md">
-      <Image src={image} alt={title} />
+    <div className="w-full rounded-md border shadow-md md:w-auto">
+      <Image className="w-full md:w-auto" src={image} alt={title} />
       <div className="space-y-4 p-4">
         <div className="flex justify-between">
           <Badge className="rounded-md">Plan {plan}</Badge>
@@ -102,12 +103,14 @@ const CourseCard = ({
           </div>
         </div>
       </div>
-      <Button
-        size="lg"
-        className="w-full rounded-none rounded-b-md bg-primary-600 text-lg"
-      >
-        ¡Me interesa!
-      </Button>
+      <Link href="/join">
+        <Button
+          size="lg"
+          className="w-full rounded-none rounded-b-md bg-primary-600 text-lg"
+        >
+          ¡Me interesa!
+        </Button>
+      </Link>
     </div>
   );
 };
