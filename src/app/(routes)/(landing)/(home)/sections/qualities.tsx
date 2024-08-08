@@ -48,7 +48,7 @@ export default function Qualities() {
   ];
 
   return (
-    <section id="qualities" className="pb-48 pt-16">
+    <section id="qualities">
       <div className="flex flex-col gap-6 text-center">
         <h2 className="text-5xl font-semibold text-primary">
           ¿Por qué estudiar con nosotros?
@@ -59,7 +59,7 @@ export default function Qualities() {
           y certificar tu inglés.
         </p>
       </div>
-      <div className="mt-20 grid gap-10 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-20 grid gap-10 gap-y-16 lg:grid-cols-2 xl:grid-cols-3">
         {qualities.map((quality, index) => (
           <Card
             key={index}
@@ -81,7 +81,7 @@ interface CardProps {
 
 const Card = ({ title, description, Icon }: CardProps) => {
   return (
-    <div className="relative flex rounded-xl border bg-white">
+    <div className="relative flex rounded-xl border bg-white shadow-md">
       <div className="absolute left-[20px] top-[-30px] flex h-16 w-16 items-center justify-center rounded-lg bg-primary">
         <Icon className="fill-white" />
       </div>
