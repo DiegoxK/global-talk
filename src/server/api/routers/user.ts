@@ -12,6 +12,8 @@ import { z } from "zod";
 interface UserWithRole {
   name: string;
   lastName: string;
+  course: string;
+  proficiency: string;
   email: string;
   role: "Admin" | "Profesor" | "Estudiante";
   image: string | null;
@@ -35,11 +37,16 @@ export const userRouter = createTRPCRouter({
         email: true,
         role: true,
       },
+      with: {
+        courses: true,
+      },
     });
 
     const usersWithRole: UserWithRole[] = users.map((user) => {
       return {
         ...user,
+        course: user.courses?.name ?? "Sin curso",
+        proficiency: user.courses?.proficiency ?? "A0",
         role:
           user.role === env.ADMIN_ROLE
             ? "Admin"
