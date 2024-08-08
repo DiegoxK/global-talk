@@ -123,14 +123,10 @@ const Card = ({ index, question, answer }: CardProps) => {
         <>
           {paragraphs.map((paragraph, index) => {
             if (index === 0) {
-              return (
-                <p key={index} className="text-justify">
-                  {paragraph.paragraph}
-                </p>
-              );
+              return <p key={index}>{paragraph.paragraph}</p>;
             }
             return (
-              <p key={index} className="ml-2 text-justify">
+              <p key={index} className="ml-2">
                 • {paragraph.paragraph}
               </p>
             );
@@ -138,7 +134,7 @@ const Card = ({ index, question, answer }: CardProps) => {
         </>
       );
     }
-    return <p className="text-justify">{answer}</p>;
+    return <p>{answer}</p>;
   };
 
   return (
