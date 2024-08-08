@@ -47,12 +47,16 @@ export default function Road() {
           <RoadCard key={index} level={road.level} points={road.points} />
         ))}
       </div>
-      <div className="mt-32 hidden items-center justify-between rounded-full bg-primary px-10 py-8 text-white md:flex">
+      <div className="mt-32 hidden items-center justify-between rounded-full bg-primary px-12 py-8 text-white md:flex">
         <h2 className="text-3xl">
           ¡Transforma tu futuro con el poder del inglés!
         </h2>
-        <Link href="/contact">
-          <Button className="ms-10 flex gap-2" variant="secondary">
+        <Link href="/join">
+          <Button
+            className="ms-10 flex gap-2 text-lg"
+            variant="secondary"
+            size="lg"
+          >
             Registrarme ahora
             <svg
               width="21"
