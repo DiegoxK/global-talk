@@ -1,5 +1,6 @@
 import Questions from "../(home)/sections/questions";
 import MisionSection from "./sections/mision";
+import Team from "./sections/team";
 import VisionSection from "./sections/vision";
 
 export default function About() {
@@ -7,6 +8,7 @@ export default function About() {
     <>
       <MisionSection />
       <VisionSection />
+      <Team />
       <Questions />
     </>
   );
