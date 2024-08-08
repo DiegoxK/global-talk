@@ -41,8 +41,8 @@ export default function Courses() {
 
   return (
     <section className="py-48" id="courses">
-      <div className="flex flex-col gap-6 pb-8 text-center">
-        <h2 className="text-5xl font-semibold text-primary">
+      <div className="flex flex-col items-center gap-6 pb-8 text-center">
+        <h2 className="text-5xl font-semibold text-primary md:w-[800px]">
           ¡Impulsa tu inglés con nuestros cursos más populares!
         </h2>
         <p className="self-center text-primary-900 md:w-[840px]">
@@ -104,7 +104,7 @@ const CourseCard = ({
       </div>
       <Button
         size="lg"
-        className="w-full rounded-none rounded-b-md bg-primary-700 text-lg"
+        className="w-full rounded-none rounded-b-md bg-primary-600 text-lg"
       >
         ¡Me interesa!
       </Button>
