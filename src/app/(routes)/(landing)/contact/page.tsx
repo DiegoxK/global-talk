@@ -11,10 +11,12 @@ export default function Contact() {
           <div className="flex items-center justify-center bg-primary-800 px-3 py-16 xl:h-[606px]">
             <div className="w-fit rounded-sm bg-primary-200 px-6 md:px-8">
               <div className="flex flex-col items-center">
-                <h1 className="mt-6 text-2xl font-semibold">¡Unete ya!</h1>
+                <h1 className="mt-6 text-2xl font-semibold">
+                  Formulario de contacto
+                </h1>
                 <p className="text-center xl:w-[400px]">
                   Deja tus datos aquí y nos pondremos en contacto contigo lo
-                  antes posible.
+                  antes posible
                 </p>
               </div>
               <ContactForm />
