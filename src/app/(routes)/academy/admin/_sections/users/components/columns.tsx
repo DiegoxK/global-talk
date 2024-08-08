@@ -36,6 +36,15 @@ export const columns: ColumnDef<UserWithRole>[] = [
     header: "Email",
   },
   {
+    accessorKey: "course",
+    size: 200,
+    header: "Curso",
+  },
+  {
+    accessorKey: "proficiency",
+    header: "Nivel",
+  },
+  {
     accessorKey: "role",
     header: "Rol",
   },
