@@ -143,7 +143,7 @@ const Card = ({ index, question, answer }: CardProps) => {
 
   return (
     <Accordion
-      className="rounded-lg border-none bg-primary px-5 py-1 transition-colors duration-200 hover:bg-primary-600"
+      className="rounded-lg border-none bg-primary px-5 py-1 shadow-md transition-colors duration-200 hover:bg-primary-600"
       type="single"
       collapsible
     >
