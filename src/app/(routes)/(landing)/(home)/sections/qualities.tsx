@@ -5,8 +5,6 @@ import {
   QualitiesHat,
   Calendar,
   Heart,
-  WaveTop,
-  WaveBottom,
 } from "@/vectors/miscellaneous";
 
 export default function Qualities() {
@@ -50,34 +48,28 @@ export default function Qualities() {
   ];
 
   return (
-    <>
-      <WaveTop className="mb-[-3px] w-[calc(100%+1)] fill-primary-200" />
-      <div className="bg-primary-200">
-        <section id="qualities" className="pb-48 pt-16">
-          <div className="flex flex-col gap-6 text-center">
-            <h2 className="text-5xl font-semibold text-primary-900">
-              ¿Por qué estudiar con nosotros?
-            </h2>
-            <p className="self-center text-primary-900 md:w-[840px]">
-              Con un equipo dedicado de profesores experimentados, herramientas
-              modernas para la enseñanza y la mejor actitud, te ayudaremos a
-              dominar y certificar tu inglés.
-            </p>
-          </div>
-          <div className="mt-20 grid gap-10 lg:grid-cols-2 xl:grid-cols-3">
-            {qualities.map((quality, index) => (
-              <Card
-                key={index}
-                title={quality.title}
-                description={quality.description}
-                Icon={quality.icon}
-              />
-            ))}
-          </div>
-        </section>
+    <section id="qualities" className="pb-48 pt-16">
+      <div className="flex flex-col gap-6 text-center">
+        <h2 className="text-5xl font-semibold text-primary">
+          ¿Por qué estudiar con nosotros?
+        </h2>
+        <p className="self-center text-primary-900 md:w-[840px]">
+          Con un equipo dedicado de profesores experimentados, herramientas
+          modernas para la enseñanza y la mejor actitud, te ayudaremos a dominar
+          y certificar tu inglés.
+        </p>
       </div>
-      <WaveBottom className="mt-[-1px] w-[calc(100%+1)] fill-primary-200" />
-    </>
+      <div className="mt-20 grid gap-10 lg:grid-cols-2 xl:grid-cols-3">
+        {qualities.map((quality, index) => (
+          <Card
+            key={index}
+            title={quality.title}
+            description={quality.description}
+            Icon={quality.icon}
+          />
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -89,8 +81,8 @@ interface CardProps {
 
 const Card = ({ title, description, Icon }: CardProps) => {
   return (
-    <div className="border-3 relative flex rounded-xl border-primary-900 bg-white">
-      <div className="border-3 absolute left-[20px] top-[-30px] flex h-16 w-16 items-center justify-center rounded-lg border-primary-900 bg-primary-800">
+    <div className="relative flex rounded-xl border bg-white">
+      <div className="absolute left-[20px] top-[-30px] flex h-16 w-16 items-center justify-center rounded-lg bg-primary">
         <Icon className="fill-white" />
       </div>
       <div className="space-y-1 self-center px-8 pb-10">
