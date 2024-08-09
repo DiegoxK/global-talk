@@ -19,19 +19,16 @@ export default function MyLectures({
   // TODO: optimize re renders
   const [open, setOpen] = useState(true);
   const [state, setState] = useState<"view" | "schedule">("view");
-  const [lecture, setLecture] = useState<Lecture | undefined>(undefined);
+  const [lecture, setLecture] = useState<Lecture>();
 
   return (
     <>
-      {lecture !== undefined && (
-        <LectureInformation
-          state={state}
-          lecture={lecture}
-          setLecture={setLecture}
-          open={open}
-          setOpen={setOpen}
-        />
-      )}
+      <LectureInformation
+        state={state}
+        lecture={lecture}
+        open={open}
+        setOpen={setOpen}
+      />
       <div className="mt-4">
         <h1 className="text-xl font-bold text-primary">Clases agendadas</h1>
         <Separator />
