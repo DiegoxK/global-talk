@@ -6,6 +6,7 @@ import type { Lecture } from "@/lib/definitions";
 import LectureInformation from "./lecture-information";
 import { useState } from "react";
 import LectureCard from "../../../_components/ui/lecture-card";
+import { api } from "@/trpc/react";
 
 interface ScheduledProps {
   scheduledLectures: Lecture[];
@@ -20,6 +21,9 @@ export default function MyLectures({
   const [open, setOpen] = useState(true);
   const [state, setState] = useState<"view" | "schedule">("view");
   const [lecture, setLecture] = useState<Lecture>();
+
+  // testing
+  const { mutate: createSchedule } = api.schedule.createSchedule.useMutation();
 
   return (
     <>
