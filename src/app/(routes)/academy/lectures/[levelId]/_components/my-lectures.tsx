@@ -22,9 +22,6 @@ export default function MyLectures({
   const [state, setState] = useState<"view" | "schedule">("view");
   const [lecture, setLecture] = useState<Lecture>();
 
-  // testing
-  const { mutate: createSchedule } = api.schedule.createSchedule.useMutation();
-
   return (
     <>
       <LectureInformation
