@@ -124,8 +124,8 @@ export default function LectureForm({
       meet_url: lecture?.meetUrl ?? "",
       off2class_url: lecture?.off2classUrl ?? "",
       date: lecture?.date ?? "",
-      start_time: lecture?.startTime ?? "",
-      end_time: lecture?.endTime ?? "",
+      start_time: lecture?.startTime.substring(0, 5) ?? "",
+      end_time: lecture?.endTime.substring(0, 5) ?? "",
     },
   });
 
