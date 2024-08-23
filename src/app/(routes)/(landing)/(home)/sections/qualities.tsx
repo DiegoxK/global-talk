@@ -16,9 +16,9 @@ export default function Qualities() {
       icon: QualitiesHat,
     },
     {
-      title: "Certificación oficial ",
+      title: "Preparación examenes",
       description:
-        "Nuestro compromiso es asegurar que todos nuestros estudiantes obtengan una certificación de mínimo B2 en inglés.",
+        "Para contribuir en tu desarrollo profesional, te prepararemos para tus exámenes oficiales internacionales.",
       icon: Certificate,
     },
     {
@@ -36,7 +36,7 @@ export default function Qualities() {
     {
       title: "Atención individual",
       description:
-        "Con grupos pequeños, garantizamos atención individual para maximizar el progreso y la comprensión de cada estudiante.",
+        "Con grupos pequeños, garantizamos atención individual para maximizar el progreso de cada estudiante.",
       icon: Heart,
     },
     {
