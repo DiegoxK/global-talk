@@ -2,7 +2,7 @@
 import type { TeacherLecture } from "@/lib/definitions";
 import { useState } from "react";
 import LectureForm from "./lecture-form";
-import LectureCard from "../../_components/ui/lecture-card";
+import LectureCard from "../../../_components/ui/lecture-card";
 
 import { Plus } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
