@@ -7,7 +7,6 @@ export default function Transactions() {
         Gestion de transacciones
       </h1>
       <Separator />
-      <Transactions />
     </div>
   );
 }
