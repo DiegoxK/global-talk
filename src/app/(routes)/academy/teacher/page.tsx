@@ -1,4 +1,4 @@
-import { Lectures, Users } from "@/vectors/miscellaneous";
+import { Lectures, Students } from "@/vectors/miscellaneous";
 import Link from "next/link";
 
 export default function Teacher() {
@@ -13,7 +13,7 @@ export default function Teacher() {
       </Link>
       <Link href="/academy/teacher/lectures">
         <button className="flex h-[410px] w-[410px] flex-col items-center justify-center rounded-md border shadow-md">
-          <Users width={280} height={280} />
+          <Students width={280} height={280} />
           <h2 className="text-2xl font-bold text-primary-600">Estudiantes</h2>
           <p>Gestion de estudiantes</p>
         </button>
