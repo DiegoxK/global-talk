@@ -6,7 +6,7 @@ export default function Admin() {
     <div className="flex h-full flex-wrap items-center justify-center gap-x-14 gap-y-10 py-10">
       <Link href="/academy/admin/users">
         <button className="flex h-[410px] w-[410px] flex-col items-center justify-center rounded-md border shadow-md">
-          <Users width={280} height={280} />
+          <Users className="mb-6" width={250} height={250} />
           <h2 className="text-2xl font-bold text-primary-600">Usuarios</h2>
           <p>Gestion de usuarios</p>
         </button>
