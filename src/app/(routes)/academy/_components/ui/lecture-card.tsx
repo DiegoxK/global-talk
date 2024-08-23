@@ -28,36 +28,38 @@ export default function LectureCard({
   scheduleCount,
 }: LectureCardProps) {
   return (
-    <div className="rounded-md border shadow-md">
-      <div
-        style={{
-          backgroundSize: "100px",
-        }}
-        className="bg-pattern flex items-center justify-center text-nowrap rounded-t-md py-4 text-xl font-extrabold text-white"
-      >
-        {lecture.teacherName}
-      </div>
-      <div className="relative">
-        <Avatar className="absolute left-[calc(50%-24px)] top-[-1em] h-[55px] w-[55px] border border-primary-700">
-          <AvatarImage src={lecture.teacherImage ?? undefined} />
-          <AvatarFallback>{lecture.teacherName.slice(0, 2)}</AvatarFallback>
-        </Avatar>
-        <div className="p-3">
-          <div className="mb-6 flex justify-between">
-            <Badge variant="outline">{lecture.levelName}</Badge>
-            <Badge variant="outline">{lecture.proficiency}</Badge>
-          </div>
-          <div className="space-y-3">
-            <p className="text-xl font-extrabold">{lecture.name}</p>
-            <CardParagraph Icon={Calendar}>
-              {formatDate(lecture.date)}
-            </CardParagraph>
-            <CardParagraph Icon={Clock}>
-              {formatTime(lecture.startTime)} - {formatTime(lecture.endTime)}
-            </CardParagraph>
-            <CardParagraph Icon={UserRound}>
-              {scheduleCount} / 5 estudiantes
-            </CardParagraph>
+    <div className="flex flex-col justify-between rounded-md border shadow-md">
+      <div>
+        <div
+          style={{
+            backgroundSize: "100px",
+          }}
+          className="bg-pattern flex items-center justify-center text-nowrap rounded-t-md py-4 text-xl font-extrabold text-white"
+        >
+          {lecture.teacherName}
+        </div>
+        <div className="relative">
+          <Avatar className="absolute left-[calc(50%-24px)] top-[-1em] h-[55px] w-[55px] border border-primary-700">
+            <AvatarImage src={lecture.teacherImage ?? undefined} />
+            <AvatarFallback>{lecture.teacherName.slice(0, 2)}</AvatarFallback>
+          </Avatar>
+          <div className="p-3">
+            <div className="mb-6 flex justify-between">
+              <Badge variant="outline">{lecture.levelName}</Badge>
+              <Badge variant="outline">{lecture.proficiency}</Badge>
+            </div>
+            <div className="space-y-3">
+              <p className="text-xl font-extrabold">{lecture.name}</p>
+              <CardParagraph Icon={Calendar}>
+                {formatDate(lecture.date)}
+              </CardParagraph>
+              <CardParagraph Icon={Clock}>
+                {formatTime(lecture.startTime)} - {formatTime(lecture.endTime)}
+              </CardParagraph>
+              <CardParagraph Icon={UserRound}>
+                {scheduleCount} / 5 estudiantes
+              </CardParagraph>
+            </div>
           </div>
         </div>
       </div>
