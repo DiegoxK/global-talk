@@ -21,16 +21,19 @@ import {
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
-import type { ControllerRenderProps } from "react-hook-form";
-import type { FormSchema } from "../../app/(routes)/academy/teacher/lectures/_components/lecture-form";
+import type { ControllerRenderProps, FieldValues } from "react-hook-form";
 
-interface ComboboxProps {
+interface ComboboxProps<TFieldValues extends FieldValues> {
   values?: { label: string; value: string }[];
-  field: ControllerRenderProps<FormSchema>;
+  field: ControllerRenderProps<TFieldValues>;
   fieldName: string;
 }
 
-export default function Combobox({ values, field, fieldName }: ComboboxProps) {
+export default function Combobox<TFieldValues extends FieldValues>({
+  values,
+  field,
+  fieldName,
+}: ComboboxProps<TFieldValues>) {
   const [open, setOpen] = useState(false);
   const label = values?.find((value) => value.value === field.value)?.label;
 
