@@ -10,12 +10,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
+import type { Dispatch, SetStateAction } from "react";
 
 interface DataTableActionsProps {
   user: UserWithRole;
+  setUser: Dispatch<SetStateAction<UserWithRole | undefined>>;
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function DataTableActions({ user }: DataTableActionsProps) {
+export default function DataTableActions({
+  user,
+  setUser,
+  setIsDialogOpen,
+}: DataTableActionsProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -27,9 +34,19 @@ export default function DataTableActions({ user }: DataTableActionsProps) {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
         <DropdownMenuItem
+          onClick={() => {
+            setUser(user);
+            setIsDialogOpen(true);
+          }}
+        >
+          Editar
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          className="text-destructive focus:bg-red-100 focus:text-destructive"
           onClick={() => navigator.clipboard.writeText(user.name)}
         >
-          Nombre
+          Eliminar
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
