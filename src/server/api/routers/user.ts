@@ -32,6 +32,7 @@ export const userRouter = createTRPCRouter({
           columns: {
             id: true,
             name: true,
+            proficiency: true,
           },
         },
       },
