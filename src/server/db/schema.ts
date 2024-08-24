@@ -46,8 +46,8 @@ export const users = createTable(
       .$defaultFn(() => sql`gen_random_uuid()`),
     role: UserRole("role").default(STUDENT).notNull(),
     image: varchar("image", { length: 255 }),
-    name: varchar("name", { length: 255 }).notNull(),
-    lastName: varchar("last_name", { length: 255 }).notNull(),
+    name: varchar("name", { length: 25 }).notNull(),
+    lastName: varchar("last_name", { length: 25 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
     courseId: uuid("course_id")
       .references(() => courses.id)
