@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
 import type { ControllerRenderProps } from "react-hook-form";
-import type { FormSchema } from "./lecture-form";
+import type { FormSchema } from "../../app/(routes)/academy/teacher/lectures/_components/lecture-form";
 
 interface ComboboxProps {
   values?: { label: string; value: string }[];
