@@ -5,27 +5,29 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import type { UserWithRole } from "@/lib/definitions";
 import { type Dispatch, type SetStateAction } from "react";
 
 interface DataTableDialogProps {
+  user?: UserWithRole;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function DataTableDialog({
+  user,
   open,
   setOpen,
 }: DataTableDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Are you absolutely sure?</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </DialogDescription>
-        </DialogHeader>
+        {user && (
+          <DialogHeader>
+            <DialogTitle>{user.name}</DialogTitle>
+            <DialogDescription></DialogDescription>
+          </DialogHeader>
+        )}
       </DialogContent>
     </Dialog>
   );
