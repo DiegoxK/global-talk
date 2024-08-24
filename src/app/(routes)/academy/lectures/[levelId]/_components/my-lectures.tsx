@@ -6,7 +6,6 @@ import type { Lecture } from "@/lib/definitions";
 import LectureInformation from "./lecture-information";
 import { useState } from "react";
 import LectureCard from "../../../_components/ui/lecture-card";
-import { api } from "@/trpc/react";
 
 interface ScheduledProps {
   scheduledLectures: Lecture[];
