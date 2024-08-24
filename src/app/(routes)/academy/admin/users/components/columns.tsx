@@ -42,7 +42,7 @@ export const columns: ColumnDef<UserWithRole>[] = [
     header: "Nivel",
   },
   {
-    accessorKey: "roleName",
+    accessorKey: "role",
     header: "Rol",
   },
 ];
