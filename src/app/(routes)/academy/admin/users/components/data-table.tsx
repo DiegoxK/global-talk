@@ -38,18 +38,13 @@ export function DataTable<TData extends UserWithRole, TValue>({
 
   return (
     <div className="rounded-md border">
-      <Table className="table-fixed" style={{ minWidth: table.getTotalSize() }}>
+      <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead
-                    key={header.id}
-                    style={{
-                      width: header.getSize(),
-                    }}
-                  >
+                  <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -60,7 +55,9 @@ export function DataTable<TData extends UserWithRole, TValue>({
                 );
               })}
 
-              <TableHead>Acciones</TableHead>
+              <TableHead className="flex items-center justify-end">
+                Acciones
+              </TableHead>
             </TableRow>
           ))}
         </TableHeader>
@@ -76,7 +73,7 @@ export function DataTable<TData extends UserWithRole, TValue>({
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
-                <TableCell>
+                <TableCell className="mr-3 mt-1 flex items-center justify-end">
                   <DataTableActions user={row.original} />
                 </TableCell>
               </TableRow>
