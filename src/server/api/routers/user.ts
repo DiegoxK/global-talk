@@ -9,16 +9,6 @@ import { eq } from "drizzle-orm";
 import { createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
-interface UserWithRole {
-  name: string;
-  lastName: string;
-  course: string;
-  proficiency: string;
-  email: string;
-  role: "Admin" | "Profesor" | "Estudiante";
-  image: string | null;
-}
-
 export const userSchema = createSelectSchema(users);
 
 export const userRouter = createTRPCRouter({
@@ -38,15 +28,18 @@ export const userRouter = createTRPCRouter({
         role: true,
       },
       with: {
-        courses: true,
+        courses: {
+          columns: {
+            id: true,
+            name: true,
+          },
+        },
       },
     });
 
-    const usersWithRole: UserWithRole[] = users.map((user) => {
+    const usersWithRole = users.map((user) => {
       return {
         ...user,
-        course: user.courses?.name ?? "Sin curso",
-        proficiency: user.courses?.proficiency ?? "A0",
         role:
           user.role === env.ADMIN_ROLE
             ? "Admin"
@@ -77,11 +70,11 @@ export const userRouter = createTRPCRouter({
         throw new Error("User already exists");
       }
 
-      return await ctx.db.insert(users).values({
-        name: input.name,
-        lastName: input.lastName,
-        email: userEmail,
-      });
+      // return await ctx.db.insert(users).values({
+      //   name: input.name,
+      //   lastName: input.lastName,
+      //   email: userEmail,
+      // });
     }),
 
   updateUserName: protectedProcedure
