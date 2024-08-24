@@ -19,13 +19,15 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import Required from "@/components/ui/required";
+import Combobox from "@/components/ui/combobox";
+import { api } from "@/trpc/react";
 
 const formSchema = z.object({
   name: z
@@ -45,16 +47,21 @@ const formSchema = z.object({
       message: "No puede ser mayor a 25 caracteres",
     }),
   email: z.string().email({ message: "Campo requerido" }),
-  roleId: z.string().uuid({
-    message: "Campo requerido",
-  }),
+  role: z
+    .string()
+    .min(1, {
+      message: "Campo requerido",
+    })
+    .max(10, {
+      message: "No puede ser mayor a 10 caracteres",
+    }),
   courseId: z.string().uuid({
     message: "Campo requerido",
   }),
 });
 
 interface DataTableDialogProps {
-  user?: UserWithRole;
+  user?: UserWithRole | null;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -64,6 +71,8 @@ export default function DataTableDialog({
   open,
   setOpen,
 }: DataTableDialogProps) {
+  const { data: courses } = api.course.getCoursesIds.useQuery();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -71,7 +80,7 @@ export default function DataTableDialog({
       lastName: user?.lastName ?? "",
       email: user?.email ?? "",
       courseId: user?.courses.id ?? "",
-      roleId: user?.role ?? "",
+      role: user?.role ?? "student",
     },
   });
 
@@ -82,14 +91,12 @@ export default function DataTableDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-h-[90vh]">
-        {user && (
-          <DialogHeader>
-            <DialogTitle>Editar usuario</DialogTitle>
-            <DialogDescription>
-              Formulario de edicion del usuario.
-            </DialogDescription>
-          </DialogHeader>
-        )}
+        <DialogHeader>
+          <DialogTitle>Editar usuario</DialogTitle>
+          <DialogDescription>
+            Formulario de edicion del usuario.
+          </DialogDescription>
+        </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="max-h-[60vh] space-y-2 overflow-y-auto rounded-sm px-2 pb-2">
@@ -98,21 +105,96 @@ export default function DataTableDialog({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>
+                      Nombre <Required /> <FormMessage />
+                    </FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} />
+                      <Input placeholder="Antonio" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
-                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Apellido <Required /> <FormMessage />
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="Casas" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Correo electronico <Required /> <FormMessage />
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="ejemplo@globtm.co"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="courseId"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>
+                      Curso <Required /> <FormMessage />
+                    </FormLabel>
+                    <Combobox
+                      fieldName="curso"
+                      values={courses}
+                      field={field}
+                    />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>
+                      Rol <Required /> <FormMessage />
+                    </FormLabel>
+                    <Combobox
+                      fieldName="Rol"
+                      values={[
+                        {
+                          label: "Admin",
+                          value: "Admin",
+                        },
+                        {
+                          label: "Estudiante",
+                          value: "Estudiante",
+                        },
+                        {
+                          label: "Profesor",
+                          value: "Profesor",
+                        },
+                      ]}
+                      field={field}
+                    />
                   </FormItem>
                 )}
               />
             </div>
-            <DialogFooter>
+            <DialogFooter className="mt-2">
               <Button className="rounded-sm" type="submit">
-                Submit
+                Actualizar usuario
               </Button>
             </DialogFooter>
           </form>
