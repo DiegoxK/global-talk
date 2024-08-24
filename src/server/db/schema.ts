@@ -49,7 +49,9 @@ export const users = createTable(
     name: varchar("name", { length: 255 }).notNull(),
     lastName: varchar("last_name", { length: 255 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
-    courseId: uuid("course_id").references(() => courses.id),
+    courseId: uuid("course_id")
+      .references(() => courses.id)
+      .notNull(),
     emailVerified: timestamp("email_verified", {
       mode: "date",
       withTimezone: true,
