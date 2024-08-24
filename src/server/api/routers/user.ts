@@ -40,7 +40,7 @@ export const userRouter = createTRPCRouter({
     const usersWithRole = users.map((user) => {
       return {
         ...user,
-        role:
+        roleName:
           user.role === env.ADMIN_ROLE
             ? "Admin"
             : user.role === env.TEACHER_ROLE
