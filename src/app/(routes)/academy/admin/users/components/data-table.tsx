@@ -37,8 +37,8 @@ export function DataTable<TData extends UserWithRole, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [user, setUser] = useState<UserWithRole | undefined | null>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [user, setUser] = useState<UserWithRole>();
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -56,11 +56,13 @@ export function DataTable<TData extends UserWithRole, TValue>({
 
   return (
     <>
-      <DataTableDialog
-        open={isDialogOpen}
-        user={user}
-        setOpen={setIsDialogOpen}
-      />
+      {user !== undefined && (
+        <DataTableDialog
+          open={isDialogOpen}
+          user={user}
+          setOpen={setIsDialogOpen}
+        />
+      )}
       <div className="flex items-center justify-between pb-4">
         <Input
           placeholder="Buscar por email..."
