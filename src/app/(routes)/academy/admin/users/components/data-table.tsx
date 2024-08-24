@@ -25,6 +25,8 @@ import { useState } from "react";
 import type { UserWithRole } from "@/lib/definitions";
 import DataTableDialog from "./data-table-dialog";
 import { DataTablePagination } from "./data-table-pagination";
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
 
 interface DataTableProps<TData extends UserWithRole, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -54,8 +56,12 @@ export function DataTable<TData extends UserWithRole, TValue>({
 
   return (
     <>
-      <DataTableDialog open={isDialogOpen} setOpen={setIsDialogOpen} />
-      <div className="flex items-center pb-4">
+      <DataTableDialog
+        open={isDialogOpen}
+        user={user}
+        setOpen={setIsDialogOpen}
+      />
+      <div className="flex items-center justify-between pb-4">
         <Input
           placeholder="Buscar por email..."
           value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
@@ -64,6 +70,10 @@ export function DataTable<TData extends UserWithRole, TValue>({
           }
           className="max-w-sm"
         />
+        <Button className="rounded-sm">
+          <PlusCircle className="mr-2 h-5 w-5" />
+          Añadir usuario
+        </Button>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -105,7 +115,11 @@ export function DataTable<TData extends UserWithRole, TValue>({
                     </TableCell>
                   ))}
                   <TableCell className="mr-3 mt-1 flex items-center justify-end">
-                    <DataTableActions user={row.original} />
+                    <DataTableActions
+                      user={row.original}
+                      setIsDialogOpen={setIsDialogOpen}
+                      setUser={setUser}
+                    />
                   </TableCell>
                 </TableRow>
               ))
