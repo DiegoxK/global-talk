@@ -42,7 +42,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-import Combobox from "./combobox";
+import Combobox from "@/components/ui/combobox";
 import Required from "@/components/ui/required";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
