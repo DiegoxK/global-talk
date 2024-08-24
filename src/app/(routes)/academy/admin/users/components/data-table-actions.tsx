@@ -14,7 +14,7 @@ import type { Dispatch, SetStateAction } from "react";
 
 interface DataTableActionsProps {
   user: UserWithRole;
-  setUser: Dispatch<SetStateAction<UserWithRole | undefined>>;
+  setUser: Dispatch<SetStateAction<UserWithRole | undefined | null>>;
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
 }
 
