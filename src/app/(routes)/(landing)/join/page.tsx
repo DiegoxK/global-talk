@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -6,17 +5,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { Separator } from "@/components/ui/separator";
 import { CheckIcon } from "lucide-react";
+import JoinForm from "./components/join-form";
 
 const plans = [
   {
@@ -123,51 +115,12 @@ export default function JoinPage() {
         <Card className="h-fit w-[500px]">
           <CardHeader>
             <CardTitle>Información Personal</CardTitle>
-            <CardDescription>
+            <CardDescription className="pb-2">
               Completa el siguiente formulario para hacer parte de la academia!
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="first-name">Nombre</Label>
-                  <Input id="first-name" placeholder="John" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="last-name">Apellido</Label>
-                  <Input id="last-name" placeholder="Doe" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Correo electronico</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="johndoe@example.com"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="phone">Numero de telefono</Label>
-                <Input id="phone" type="tel" placeholder="+1 (555) 000-0000" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="membership-type">Tipo de programa</Label>
-                <Select>
-                  <SelectTrigger id="membership-type">
-                    <SelectValue placeholder="Selecciona un tipo de programa" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="basic">Basic</SelectItem>
-                    <SelectItem value="pro">Pro</SelectItem>
-                    <SelectItem value="enterprise">Enterprise</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button type="submit" className="w-full">
-                Join Now
-              </Button>
-            </form>
+            <JoinForm />
           </CardContent>
         </Card>
       </div>
