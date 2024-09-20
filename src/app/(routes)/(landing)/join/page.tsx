@@ -29,25 +29,26 @@ export default function JoinPage() {
         <div className="grid gap-8 md:grid-cols-2">
           <Card className="w-full">
             <CardHeader>
-              <CardTitle>Personal Information</CardTitle>
+              <CardTitle>Información Personal</CardTitle>
+
               <CardDescription>
-                Please fill out the form below to join.
+                Completa el siguiente formulario para unirte.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="first-name">First name</Label>
+                    <Label htmlFor="first-name">Nombre</Label>
                     <Input id="first-name" placeholder="John" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="last-name">Last name</Label>
+                    <Label htmlFor="last-name">Apellido</Label>
                     <Input id="last-name" placeholder="Doe" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">Correo electronico</Label>
                   <Input
                     id="email"
                     type="email"
@@ -55,7 +56,7 @@ export default function JoinPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone number</Label>
+                  <Label htmlFor="phone">Numero de telefono</Label>
                   <Input
                     id="phone"
                     type="tel"
@@ -63,10 +64,10 @@ export default function JoinPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="membership-type">Membership type</Label>
+                  <Label htmlFor="membership-type">Tipo de programa</Label>
                   <Select>
                     <SelectTrigger id="membership-type">
-                      <SelectValue placeholder="Select a membership type" />
+                      <SelectValue placeholder="Selecciona un tipo de programa" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="basic">Basic</SelectItem>
