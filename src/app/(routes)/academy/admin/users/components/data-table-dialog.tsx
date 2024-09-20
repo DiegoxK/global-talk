@@ -28,6 +28,7 @@ import { Input } from "@/components/ui/input";
 import Required from "@/components/ui/required";
 import Combobox from "@/components/ui/combobox";
 import { api } from "@/trpc/react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z
@@ -62,6 +63,7 @@ const formSchema = z.object({
 
 interface DataTableDialogProps {
   user?: UserWithRole | null;
+  setUser: Dispatch<SetStateAction<UserWithRole | undefined | null>>;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -69,8 +71,12 @@ interface DataTableDialogProps {
 export default function DataTableDialog({
   user,
   open,
+  setUser,
   setOpen,
 }: DataTableDialogProps) {
+  const router = useRouter();
+  const isEditing = Boolean(user);
+
   const { data: courses } = api.course.getCoursesIds.useQuery();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -89,12 +95,28 @@ export default function DataTableDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(open) => {
+        if (!open) {
+          setTimeout(() => {
+            setUser(undefined);
+            form.reset();
+          }, 100);
+        }
+
+        setOpen(open);
+      }}
+    >
       <DialogContent className="max-h-[90vh]">
         <DialogHeader>
-          <DialogTitle>Editar usuario</DialogTitle>
+          <DialogTitle>
+            {isEditing ? "Editar usuario" : "Crear usuario"}
+          </DialogTitle>
           <DialogDescription>
-            Formulario de edicion del usuario.
+            {isEditing
+              ? "Formulario de edicion del usuario."
+              : "Formulario de creacion del usuario."}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -193,8 +215,12 @@ export default function DataTableDialog({
               />
             </div>
             <DialogFooter className="mt-2">
-              <Button className="rounded-sm" type="submit">
-                Actualizar usuario
+              <Button
+                disabled={!form.formState.isDirty}
+                className="rounded-sm"
+                type="submit"
+              >
+                {isEditing ? "Actualizar usuario" : "Crear usuario"}
               </Button>
             </DialogFooter>
           </form>

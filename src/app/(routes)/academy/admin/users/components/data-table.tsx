@@ -59,6 +59,7 @@ export function DataTable<TData extends UserWithRole, TValue>({
       {user !== undefined && (
         <DataTableDialog
           open={isDialogOpen}
+          setUser={setUser}
           user={user}
           setOpen={setIsDialogOpen}
         />
@@ -72,7 +73,13 @@ export function DataTable<TData extends UserWithRole, TValue>({
           }
           className="max-w-sm"
         />
-        <Button className="rounded-sm">
+        <Button
+          onClick={() => {
+            setUser(null);
+            setIsDialogOpen(true);
+          }}
+          className="rounded-sm"
+        >
           <PlusCircle className="mr-2 h-5 w-5" />
           Añadir usuario
         </Button>
