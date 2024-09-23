@@ -8,7 +8,6 @@ import {
 
 import { Separator } from "@/components/ui/separator";
 import { CheckIcon } from "lucide-react";
-import JoinForm from "./components/join-form";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
