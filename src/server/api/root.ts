@@ -4,6 +4,7 @@ import { lectureRouter } from "./routers/lectures";
 import { scheduleRouter } from "./routers/schedule";
 import { levelRouter } from "./routers/levels";
 import { courseRouter } from "./routers/courses";
+import { epaycoRouter } from "./routers/epayco";
 
 /**
  * This is the primary router for your server.
@@ -11,6 +12,7 @@ import { courseRouter } from "./routers/courses";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
+  epayco: epaycoRouter,
   course: courseRouter,
   schedule: scheduleRouter,
   level: levelRouter,
