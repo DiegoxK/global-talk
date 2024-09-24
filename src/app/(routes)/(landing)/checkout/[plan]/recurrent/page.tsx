@@ -97,7 +97,7 @@ const formSchema = z.object({
     .regex(/^\d+$/, {
       message: "El teléfono solo puede contener números",
     }),
-  membershipType: z.string().min(1, {
+  plan: z.string().min(1, {
     message: "Campo requerido",
   }),
   cardNumber: z
@@ -154,17 +154,17 @@ const formSchema = z.object({
   }),
 });
 
-export default function Recurrent() {
+export default function Recurrent({ params }: { params: { plan: string } }) {
   const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      plan: params.plan,
       firstName: "",
       lastName: "",
       email: "",
       phone: "",
-      membershipType: "",
       cardNumber: "",
       cardExpiryMonth: "",
       cardExpiryYear: "",
@@ -230,41 +230,36 @@ export default function Recurrent() {
                     </FormItem>
                   )}
                 />
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="cardExpiryMonth"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>
-                            Mes de expiración <Required /> <FormMessage />
-                          </FormLabel>
-                          <FormControl>
-                            <Input type="number" placeholder="12" {...field} />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="cardExpiryYear"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>
-                            Año de expiración <Required /> <FormMessage />
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              placeholder="2023"
-                              {...field}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                <div className="grid grid-cols-3 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="cardExpiryMonth"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Mes de expiración <Required /> <FormMessage />
+                        </FormLabel>
+                        <FormControl>
+                          <Input type="number" placeholder="12" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="cardExpiryYear"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Año de expiración <Required /> <FormMessage />
+                        </FormLabel>
+                        <FormControl>
+                          <Input type="number" placeholder="2023" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
                   <FormField
                     control={form.control}
                     name="cardCvc"
@@ -317,7 +312,7 @@ export default function Recurrent() {
                     control={form.control}
                     name="idType"
                     render={({ field }) => (
-                      <FormItem className="flex flex-col">
+                      <FormItem className="flex flex-col gap-2">
                         <FormLabel>
                           Tipo de documento <Required /> <FormMessage />
                         </FormLabel>
@@ -328,7 +323,7 @@ export default function Recurrent() {
                                 variant="outline"
                                 role="combobox"
                                 className={cn(
-                                  "justify-between",
+                                  "justify-between py-5",
                                   !field.value && "text-muted-foreground",
                                 )}
                               >
@@ -356,7 +351,7 @@ export default function Recurrent() {
                                       key={document.value}
                                       onSelect={() => {
                                         setOpen(false);
-                                        form.setValue("idType", document.value);
+                                        field.onChange(document.value);
                                       }}
                                     >
                                       <Check
@@ -378,8 +373,84 @@ export default function Recurrent() {
                       </FormItem>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name="idNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Número de documento <Required /> <FormMessage />
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="123456789" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
                 </div>
-                <Button className="w-full" type="submit">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        Correo electronico <Required /> <FormMessage />
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="ejemplo@globtm.com"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        Número de telefono <Required /> <FormMessage />
+                      </FormLabel>
+                      <FormControl>
+                        <Input type="tel" placeholder="3120000000" {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Ciudad <Required /> <FormMessage />
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="Medellín" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Dirección <Required /> <FormMessage />
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="Calle X Nro Y" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <Button type="submit" className="w-full">
                   Confirmar suscripción
                 </Button>
               </form>
