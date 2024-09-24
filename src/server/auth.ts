@@ -80,7 +80,7 @@ export const authOptions: NextAuthOptions = {
             });
             return true; //if the email exists in the User schema, email them a magic code link
           }
-          return "/pricing?email=" + userEmail; //if the email does not exist in the User schema, redirect them to the pricing page with the email pre-filled in the form
+          return "/join"; //if the email does not exist in the User schema, redirect them to the pricing page with the email pre-filled in the form
         }
       }
       return false; // Return false to display a default error message
