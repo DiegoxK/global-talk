@@ -4,6 +4,64 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import {
+  CreditCard,
+  User,
+  MapPin,
+  Phone,
+  ChevronsUpDown,
+  Check,
+} from "lucide-react";
+
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+
+import Required from "@/components/ui/required";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+import { cn } from "@/lib/utils";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { useState } from "react";
+
 export const documentTypes = [
   { value: "NIT", label: "Número de identificación tributaria" },
   { value: "CC", label: "Cedula de ciudadanía" },
@@ -96,42 +154,8 @@ const formSchema = z.object({
   }),
 });
 
-import { CreditCard, User, MapPin, Phone } from "lucide-react";
-
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-import Required from "@/components/ui/required";
-
 export default function Recurrent() {
-  // A form to collect payment information (credit card number, expiry date, and CVC).
-  // Fields for personal information: first name, last name, ID document type and number, email, city, address, and phone number.
+  const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -190,7 +214,7 @@ export default function Recurrent() {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
+                className="space-y-4"
               >
                 <FormField
                   control={form.control}
@@ -206,8 +230,154 @@ export default function Recurrent() {
                     </FormItem>
                   )}
                 />
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="gap- grid grid-cols-2"></div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="cardExpiryMonth"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            Mes de expiración <Required /> <FormMessage />
+                          </FormLabel>
+                          <FormControl>
+                            <Input type="number" placeholder="12" {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="cardExpiryYear"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            Año de expiración <Required /> <FormMessage />
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              placeholder="2023"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="cardCvc"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          CVC <Required /> <FormMessage />
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="123" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <Separator />
+                <h3 className="text-lg font-semibold">Información de Pago</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="firstName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Nombre <Required /> <FormMessage />
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="Jose" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="lastName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Apellido <Required /> <FormMessage />
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="David" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="idType"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>
+                          Tipo de documento <Required /> <FormMessage />
+                        </FormLabel>
+                        <Popover open={open} onOpenChange={setOpen}>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                className={cn(
+                                  "justify-between",
+                                  !field.value && "text-muted-foreground",
+                                )}
+                              >
+                                {field.value
+                                  ? documentTypes.find(
+                                      (document) =>
+                                        document.value === field.value,
+                                    )?.label
+                                  : "Seleccionar documento"}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="p-0">
+                            <Command>
+                              <CommandInput placeholder="Buscar documento..." />
+                              <CommandList>
+                                <CommandEmpty>
+                                  No se encontro ningún documento.
+                                </CommandEmpty>
+                                <CommandGroup>
+                                  {documentTypes.map((document) => (
+                                    <CommandItem
+                                      value={document.label}
+                                      key={document.value}
+                                      onSelect={() => {
+                                        setOpen(false);
+                                        form.setValue("idType", document.value);
+                                      }}
+                                    >
+                                      <Check
+                                        className={cn(
+                                          "mr-2 h-4 w-4",
+                                          document.value === field.value
+                                            ? "opacity-100"
+                                            : "opacity-0",
+                                        )}
+                                      />
+                                      {document.label}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                      </FormItem>
+                    )}
+                  />
                 </div>
                 <Button className="w-full" type="submit">
                   Confirmar suscripción
