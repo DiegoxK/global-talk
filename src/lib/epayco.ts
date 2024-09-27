@@ -411,45 +411,45 @@ export const createSubscription = async (params: CreateSubscriptionParams) => {
   }
 };
 
-export const ChargeSubscription = async (params: ChargeSubscriptionParams) => {
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
+// export const ChargeSubscription = async (params: ChargeSubscriptionParams) => {
+//   const myHeaders = new Headers();
+//   myHeaders.append("Content-Type", "application/json");
 
-  const token = await getAuthToken();
+//   const token = await getAuthToken();
 
-  if (!token) {
-    throw new Error("Failed to get auth token");
-  }
+//   if (!token) {
+//     throw new Error("Failed to get auth token");
+//   }
 
-  myHeaders.append("Authorization", `Bearer ${token}`);
+//   myHeaders.append("Authorization", `Bearer ${token}`);
 
-  const requestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: JSON.stringify(params),
-  };
+//   const requestOptions = {
+//     method: "POST",
+//     headers: myHeaders,
+//     body: JSON.stringify(params),
+//   };
 
-  try {
-    const response = await fetch(
-      `${url_api}/recurring/v1/subscription/create`,
-      requestOptions,
-    );
+//   try {
+//     const response = await fetch(
+//       `${url_api}/recurring/v1/subscription/create`,
+//       requestOptions,
+//     );
 
-    if (!response.ok) {
-      throw new Error(`HTTP Error: ${response.status}`);
-    }
+//     if (!response.ok) {
+//       throw new Error(`HTTP Error: ${response.status}`);
+//     }
 
-    const result = JSON.parse(await response.text());
+//     const result = JSON.parse(await response.text());
 
-    if (result.success === false) {
-      console.error(result);
-    }
+//     if (result.success === false) {
+//       console.error(result);
+//     }
 
-    return result.id;
-  } catch (error) {
-    console.error("Error in the request", error);
-  }
-};
+//     return result.id;
+//   } catch (error) {
+//     console.error("Error in the request", error);
+//   }
+// };
 
 export const generateInvoiceCode = () => {
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
