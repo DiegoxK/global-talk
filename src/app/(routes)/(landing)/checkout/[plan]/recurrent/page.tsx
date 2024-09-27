@@ -9,7 +9,6 @@ import { ChevronsUpDown, Check } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -59,19 +58,13 @@ import {
 import { useState } from "react";
 import { api } from "@/trpc/react";
 
-function getNextMonday(): Date {
-  const today = new Date();
-
-  if (today.getDay() === 1) {
-    return new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7);
-  }
-
-  const daysUntilMonday = 1 - today.getDay();
-  return new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate() + daysUntilMonday,
+function getNextTuesday(today: Date = new Date()): Date {
+  const daysUntilNextTuesday = (9 - today.getDay()) % 7;
+  const nextTuesday = new Date(
+    today.getTime() + daysUntilNextTuesday * 24 * 60 * 60 * 1000,
   );
+  nextTuesday.setHours(0, 0, 0, 0);
+  return nextTuesday;
 }
 
 export const documentTypes = [
@@ -252,7 +245,7 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
                   Ten en cuenta que tu suscripción y el cobro reccurrente daran
                   inicio el: <br /> <br />
                   <span className="text-2xl font-bold text-primary">
-                    {getNextMonday().toLocaleDateString()}
+                    {getNextTuesday().toLocaleDateString()}
                   </span>
                   <br /> <br />
                   <span className="font-semibold">
@@ -299,7 +292,7 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
               </p>
             </div>
             <Separator />
-            <h3 className="text-lg font-semibold">Información de Pago</h3>
+            <h3 className="text-lg font-semibold">Información de pago</h3>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -365,7 +358,9 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
                   />
                 </div>
                 <Separator />
-                <h3 className="text-lg font-semibold">Información de Pago</h3>
+                <h3 className="text-lg font-semibold">
+                  Información de facturacion
+                </h3>
                 <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
