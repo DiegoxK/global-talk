@@ -43,3 +43,20 @@ export function formatTime(timeString: string): string {
 
   return formattedTime;
 }
+
+export async function getUserIP() {
+  try {
+    const response = await fetch("https://api.ipify.org?format=json");
+
+    const data: { ip: string } = (await response.json()) as { ip: string };
+
+    if (response.ok && data.ip) {
+      return data.ip;
+    } else {
+      throw new Error("Failed to retrieve IP address");
+    }
+  } catch (error) {
+    console.error("Error getting user IP:", error);
+    return null;
+  }
+}
