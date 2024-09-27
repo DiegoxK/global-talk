@@ -4,19 +4,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { ChevronsUpDown, Check } from "lucide-react";
+
 import {
-  CreditCard,
-  User,
-  MapPin,
-  Phone,
-  ChevronsUpDown,
-  Check,
-} from "lucide-react";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -33,14 +36,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { Separator } from "@/components/ui/separator";
 
 import Required from "@/components/ui/required";
@@ -51,7 +47,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { cn } from "@/lib/utils";
+import { cn, getUserIP } from "@/lib/utils";
 import {
   Command,
   CommandEmpty,
@@ -61,6 +57,22 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { useState } from "react";
+import { api } from "@/trpc/react";
+
+function getNextMonday(): Date {
+  const today = new Date();
+
+  if (today.getDay() === 1) {
+    return new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7);
+  }
+
+  const daysUntilMonday = 1 - today.getDay();
+  return new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate() + daysUntilMonday,
+  );
+}
 
 export const documentTypes = [
   { value: "NIT", label: "Número de identificación tributaria" },
@@ -156,6 +168,15 @@ const formSchema = z.object({
 
 export default function Recurrent({ params }: { params: { plan: string } }) {
   const [open, setOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { mutate: createSubscription } =
+    api.epayco.createSubscription.useMutation({
+      onSuccess: () => {
+        setIsLoading(false);
+      },
+    });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -176,12 +197,80 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    setModalOpen(true);
+
+    const ip = await getUserIP();
+
+    if (!ip) {
+      throw new Error("Error al obtener valor requerido: ipAddress");
+    }
+
+    createSubscription({
+      id_plan: params.plan,
+      customerIp: ip,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      phone: values.phone,
+      city: values.city,
+      address: values.address,
+      cardNumber: values.cardNumber,
+      cardExpiryMonth: values.cardExpiryMonth,
+      cardExpiryYear: values.cardExpiryYear,
+      cardCvc: values.cardCvc,
+      idType: values.idType,
+      idNumber: values.idNumber,
+    });
   }
 
   return (
     <div className="container mx-auto border-t py-10">
+      <AlertDialog open={modalOpen} onOpenChange={setModalOpen}>
+        <AlertDialogContent>
+          {isLoading ? (
+            <>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Procesando...</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Por favor espera un momento mientras se procesa la
+                  suscripción.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+            </>
+          ) : (
+            <>
+              <AlertDialogHeader>
+                <AlertDialogTitle className="text-center">
+                  ¡Gracias por suscribirte a la mejor academia de inglés!
+                </AlertDialogTitle>
+                <AlertDialogDescription className="text-center">
+                  Tu suscripción ha sido creada correctamente.
+                </AlertDialogDescription>
+                <div className="mt-2 text-center">
+                  Ten en cuenta que tu suscripción y el cobro reccurrente daran
+                  inicio el: <br /> <br />
+                  <span className="text-2xl font-bold text-primary">
+                    {getNextMonday().toLocaleDateString()}
+                  </span>
+                  <br /> <br />
+                  <span className="font-semibold">
+                    {" "}
+                    Te enviaremos un email con las instrucciones para ingresar a
+                    tu cuenta!
+                  </span>
+                </div>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogAction className="w-full">
+                  Continuar
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </>
+          )}
+        </AlertDialogContent>
+      </AlertDialog>
       <Card className="mx-auto max-w-2xl">
         <CardHeader>
           <CardTitle>Checkout - Pago recurrente</CardTitle>
@@ -450,7 +539,14 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
                     )}
                   />
                 </div>
-                <Button type="submit" className="w-full">
+                <Button
+                  onClick={() => {
+                    setModalOpen(true);
+                  }}
+                  disabled={!form.formState.isDirty}
+                  type="submit"
+                  className="w-full"
+                >
                   Confirmar suscripción
                 </Button>
               </form>

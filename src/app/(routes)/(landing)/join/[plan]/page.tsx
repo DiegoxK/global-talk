@@ -115,7 +115,7 @@ export default function Page({ params }: { params: { plan: string } }) {
   ];
 
   return (
-    <div className="container mx-auto flex flex-col items-center gap-12 py-16">
+    <div className="container mx-auto flex flex-col items-center gap-12 border-t py-16">
       <h1 className="text-4xl font-bold text-primary">
         Beginners A0 - Matrícula individual
       </h1>

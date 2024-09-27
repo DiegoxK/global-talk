@@ -13,7 +13,7 @@ import Link from "next/link";
 
 const plans = [
   {
-    href: "/join/a0",
+    href: "/join/beginners_a0",
     name: "Beginners A0",
     description: "Perfecto para iniciar!",
     features: [
