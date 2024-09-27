@@ -17,10 +17,10 @@ export default function Page({ params }: { params: { plan: string } }) {
   const individual = [
     {
       href: `/checkout/${params.plan}/recurrent`,
-      title: "Pago recurrente",
+      title: "Pago 2 cuotas / nivel",
       description: "Matrícula individual",
       price: "300 mil COP / mes",
-      duration: "1 mes",
+      duration: "2 mes",
       features: [
         "16 clases de una hora (4 por semana)",
         "Acceso a la plataforma de aprendizaje",
