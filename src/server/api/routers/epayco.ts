@@ -9,6 +9,7 @@ import {
   getCustomerById,
   getSubscriptionById,
 } from "@/lib/epayco";
+
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { users } from "@/server/db/schema";
@@ -18,33 +19,49 @@ export const epaycoRouter = createTRPCRouter({
   createSession: publicProcedure
     .input(
       z.object({
-        id_plan: z.string(),
-        doc_type: z.string(),
-        doc_number: z.string(),
-        cardNumber: z.string(),
-        cardExpiryMonth: z.string(),
-        cardExpiryYear: z.string(),
-        idType: z.string(),
-        idNumber: z.string(),
-        city: z.string(),
-        address: z.string(),
-        firstName: z.string(),
-        lastName: z.string(),
-        email: z.string(),
-        phone: z.string(),
+        nameBilling: z.string(),
+        emailBilling: z.string(),
+        addressBilling: z.string(),
+        mobilephoneBilling: z.string(),
+        numberDocBilling: z.string(),
+        typeDocBilling: z.string(),
+        name: z.string(),
+        description: z.string(),
+        amount: z.string(),
+        currency: z.string(),
+        test: z.string(),
+        ip: z.string(),
+        lang: z.string(),
+        country: z.string(),
+        confirmation: z.string(),
+        response: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
       const paymentDetails: PaymentDetails = {
-        name: "New Checkout",
-        description: "Ingreso a la academia",
-        currency: "cop",
-        amount: "5000",
-        country: "CO",
-        test: "true",
-        ip: "186.97.212.162",
-        invoice: generateInvoiceCode(),
+        nameBilling: input.nameBilling,
+        emailBilling: input.emailBilling,
+        addressBilling: input.addressBilling,
+        mobilephoneBilling: input.mobilephoneBilling,
+        numberDocBilling: input.numberDocBilling,
+        typeDocBilling: input.typeDocBilling,
+        name: input.name,
+        description: input.description,
+        amount: input.amount,
+        currency: input.currency,
+        test: input.test,
+        ip: input.ip,
+        lang: input.lang,
+        country: input.country,
+        confirmation: input.confirmation,
+        response: input.response,
       };
+
+      const sessionId = await createSession(paymentDetails);
+
+      if (sessionId) {
+        return sessionId;
+      }
     }),
 
   createSubscription: publicProcedure
@@ -81,7 +98,7 @@ export const epaycoRouter = createTRPCRouter({
         throw new Error("Error al crear el token de tarjeta");
       }
 
-      // Artificial delay
+      // Artificial delay to prevent epayco api rate limit
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       console.log("Creating customer...");
