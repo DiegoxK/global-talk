@@ -67,7 +67,7 @@ function getNextTuesday(today: Date = new Date()): Date {
   return nextTuesday;
 }
 
-export const documentTypes = [
+const documentTypes = [
   { value: "NIT", label: "Número de identificación tributaria" },
   { value: "CC", label: "Cedula de ciudadanía" },
   { value: "CE", label: "Cedula de extranjería" },
