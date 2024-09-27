@@ -23,7 +23,13 @@ const TEACHER = env.TEACHER_ROLE;
 const ADMIN = env.ADMIN_ROLE;
 
 export const UserRole = pgEnum("userRole", [STUDENT, TEACHER, ADMIN]);
-export const Status = pgEnum("status", ["PENDING", "CANCELED", "ACCEOPTED"]);
+export const Status = pgEnum("status", ["PENDING", "CANCELED", "ACCEPTED"]);
+export const UserType = pgEnum("userType", [
+  "RECURRENT",
+  "LEVEL",
+  "COMPLETE",
+  "MANAGEMENT",
+]);
 export const Proficiency = pgEnum("proficiency", [
   "A0",
   "A1",
@@ -45,11 +51,16 @@ export const users = createTable(
       .primaryKey()
       .$defaultFn(() => sql`gen_random_uuid()`),
     role: UserRole("role").default(STUDENT).notNull(),
+    ip: varchar("ip", { length: 25 }),
+    subscriptionId: varchar("subscription_id", { length: 255 }),
+    userType: UserType("user_type").notNull(),
+    customerId: varchar("customer_id", { length: 255 }),
+    active: boolean("active").default(false).notNull(),
     image: varchar("image", { length: 255 }),
     name: varchar("name", { length: 25 }).notNull(),
     lastName: varchar("last_name", { length: 25 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
-    courseId: uuid("course_id")
+    courseId: varchar("course_id", { length: 255 })
       .references(() => courses.id)
       .notNull(),
     emailVerified: timestamp("email_verified", {
@@ -84,11 +95,11 @@ export const prompts = createTable("prompt", {
 // ============================ Transactions ============================
 export const transactions = createTable("transaction", {
   id: uuid("id").primaryKey().defaultRandom(),
-  courseId: uuid("course_id")
+  courseId: varchar("course_id", { length: 255 })
     .notNull()
     .references(() => courses.id),
   description: text("description").notNull(),
-  receipt: varchar("receipt", { length: 6 }).notNull(),
+  receipt: varchar("receipt", { length: 255 }).notNull(),
   name: varchar("name", { length: 255 }).notNull(),
   last_name: varchar("last_name", { length: 255 }).notNull(),
   phone: varchar("phone", { length: 10 }).notNull(),
@@ -100,7 +111,7 @@ export const transactions = createTable("transaction", {
 // ============================== LEVELS ================================
 export const levels = createTable("level", {
   id: uuid("id").primaryKey().defaultRandom(),
-  courseId: uuid("course_id")
+  courseId: varchar("course_id", { length: 255 })
     .references(() => courses.id)
     .notNull(),
   name: varchar("name", { length: 20 }).notNull(),
@@ -143,7 +154,7 @@ export const lecturesRelations = relations(lectures, ({ one, many }) => ({
 
 // ============================== COURSES ==============================
 export const courses = createTable("course", {
-  id: uuid("id").primaryKey().defaultRandom(),
+  id: varchar("id", { length: 255 }).notNull().primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   proficiency: Proficiency("proficiency").notNull(),
   price: decimal("price").notNull(),
