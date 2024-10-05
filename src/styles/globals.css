@@ -110,3 +110,15 @@
     rgba(252, 252, 253, 0.15) 106.98%
   );
 }
+
+.loader-the-progress {
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(var(--primary) 0 0) left/40px 20px no-repeat #ddd;
+  animation: l1 3s infinite linear;
+}
+@keyframes l1 {
+  50% {
+    background-position: right;
+  }
+}
