@@ -12,8 +12,37 @@ import {
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { z } from "zod";
-import { users } from "@/server/db/schema";
+import { courses, groups, users } from "@/server/db/schema";
 import { sendConfirmation } from "@/lib/email-config";
+import { asc, desc, eq, is } from "drizzle-orm";
+
+function getNextWeekTuesday(today: Date = new Date()): Date {
+  const daysUntilNextTuesday = (9 - today.getDay()) % 7;
+  const daysToAdd =
+    daysUntilNextTuesday === 0 || daysUntilNextTuesday === 1
+      ? daysUntilNextTuesday + 7
+      : daysUntilNextTuesday;
+  const nextTuesday = new Date(
+    today.getTime() + daysToAdd * 24 * 60 * 60 * 1000,
+  );
+  nextTuesday.setHours(0, 0, 0, 0);
+  return nextTuesday;
+}
+
+function areDatesInSameWeek(date1: Date, date2: Date): boolean {
+  const startOfWeek = (date: Date): Date => {
+    const clone = new Date(date);
+    const dayOfWeek = clone.getUTCDay();
+    const diff = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // ISO week starts on Monday
+    clone.setUTCDate(clone.getUTCDate() - diff);
+    return new Date(clone.setUTCHours(0, 0, 0, 0));
+  };
+
+  const weekStart1 = startOfWeek(date1);
+  const weekStart2 = startOfWeek(date2);
+
+  return weekStart1.getTime() === weekStart2.getTime();
+}
 
 export const epaycoRouter = createTRPCRouter({
   createSession: publicProcedure
@@ -68,6 +97,7 @@ export const epaycoRouter = createTRPCRouter({
     .input(
       z.object({
         id_plan: z.string(),
+        plan_value: z.string(),
         customerIp: z.string(),
         firstName: z.string(),
         lastName: z.string(),
@@ -157,29 +187,136 @@ export const epaycoRouter = createTRPCRouter({
       // Artificial delay
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
-      console.log("Creating user...");
-      await ctx.db.insert(users).values({
-        name: input.firstName,
-        lastName: input.lastName,
-        email: input.email,
-        courseId: input.id_plan,
-        ip: input.customerIp,
-        subscriptionId: subscriptionId,
-        customerId: customerId,
-        userType: "RECURRENT",
+      console.log("Checking if a group already exists...");
+
+      const lastAddedGroup = await ctx.db.query.groups.findFirst({
+        orderBy: desc(groups.id),
       });
+
+      if (!lastAddedGroup) {
+        console.log("No group found, creating one ...");
+
+        await ctx.db.insert(groups).values({
+          name: "Grupo semana #1",
+          courseId: input.id_plan,
+          creationDate: new Date().toISOString(),
+          startingDate: getNextWeekTuesday().toISOString(),
+          currentLevel: 0,
+        });
+
+        const currentLastAddedGroup = await ctx.db.query.groups.findFirst({
+          orderBy: desc(groups.id),
+        });
+
+        if (currentLastAddedGroup) {
+          console.log("Creating user...");
+
+          await ctx.db.insert(users).values({
+            name: input.firstName,
+            lastName: input.lastName,
+            email: input.email,
+            groupId: currentLastAddedGroup.id,
+            ip: input.customerIp,
+            subscriptionId: subscriptionId,
+            customerId: customerId,
+            userType: "RECURRENT",
+            current_level: 0,
+          });
+        }
+      } else {
+        console.log("Group found!, checking if it is in the same week ...");
+
+        const today = new Date();
+
+        const isInSameWeek = areDatesInSameWeek(
+          new Date(lastAddedGroup.creationDate),
+          today,
+        );
+
+        if (!isInSameWeek) {
+          console.log("Group is not in the same week, creating a new one ...");
+
+          const groupNumber = lastAddedGroup.name.split("#")[1];
+
+          await ctx.db.insert(groups).values({
+            name: `Grupo semana #${Number(groupNumber) + 1}`,
+            courseId: input.id_plan,
+            creationDate: new Date().toISOString(),
+            startingDate: getNextWeekTuesday().toISOString(),
+            currentLevel: 0,
+          });
+
+          const currentLastAddedGroup = await ctx.db.query.groups.findFirst({
+            orderBy: desc(groups.id),
+          });
+
+          if (currentLastAddedGroup) {
+            console.log("Creating user...");
+
+            await ctx.db.insert(users).values({
+              name: input.firstName,
+              lastName: input.lastName,
+              email: input.email,
+              groupId: currentLastAddedGroup.id,
+              ip: input.customerIp,
+              subscriptionId: subscriptionId,
+              customerId: customerId,
+              userType: "RECURRENT",
+              current_level: 0,
+            });
+          }
+        } else {
+          console.log("Group is in the same week, creating user ...");
+
+          await ctx.db.insert(users).values({
+            name: input.firstName,
+            lastName: input.lastName,
+            email: input.email,
+            groupId: lastAddedGroup.id,
+            ip: input.customerIp,
+            subscriptionId: subscriptionId,
+            customerId: customerId,
+            userType: "RECURRENT",
+            current_level: 0,
+          });
+        }
+      }
 
       console.log("Sending confirmation email...");
 
       // Artificial delay
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
+      const courseName = await ctx.db.query.courses.findFirst({
+        where: eq(courses.id, input.id_plan),
+        columns: {
+          name: true,
+        },
+      });
+
+      if (!courseName) throw new Error("Course not found");
+
       await sendConfirmation({
-        courseName: "De A2 a B1",
-        courseValue: "400000",
+        courseName: courseName.name,
+        courseValue: input.plan_value,
         sendTo: input.email,
       });
 
       console.log("Done!");
     }),
+
+  test: publicProcedure.mutation(async ({ ctx }) => {
+    // const lastAddedGroup = await ctx.db.query.groups.findFirst({
+    //   orderBy: desc(groups.id),
+    // });
+    // const groupNumber = lastAddedGroup.name.split("#")[1];
+    // await ctx.db.insert(groups).values({
+    //   name: `Grupo semana #${Number(groupNumber) + 1}`,
+    //   courseId: "beginners_a0",
+    //   creationDate: new Date().toISOString(),
+    //   startingDate: getNextWeekTuesday().toISOString(),
+    //   currentLevel: 0,
+    // });
+    // console.log(lastAddedGroup);
+  }),
 });
