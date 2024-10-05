@@ -8,6 +8,7 @@ import {
   pgEnum,
   pgTableCreator,
   primaryKey,
+  serial,
   smallint,
   text,
   time,
@@ -61,7 +62,7 @@ export const users = createTable(
     name: varchar("name", { length: 25 }).notNull(),
     lastName: varchar("last_name", { length: 25 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
-    groupId: uuid("group_id")
+    groupId: serial("group_id")
       .references(() => groups.id)
       .notNull(),
     emailVerified: timestamp("email_verified", {
@@ -96,7 +97,7 @@ export const prompts = createTable("prompt", {
 // ============================ Transactions ============================
 export const transactions = createTable("transaction", {
   id: uuid("id").primaryKey().defaultRandom(),
-  groupId: uuid("group_id")
+  groupId: serial("group_id")
     .references(() => groups.id)
     .notNull(),
   description: text("description").notNull(),
@@ -217,12 +218,14 @@ export const schedulesRelations = relations(schedules, ({ one }) => ({
 
 // ============================== GROUP ===============================
 export const groups = createTable("group", {
-  id: uuid("id").primaryKey().defaultRandom(),
+  id: serial("id").primaryKey(),
   courseId: varchar("course_id", { length: 255 })
     .references(() => courses.id)
     .notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
   creationDate: date("date").notNull(),
-  current_level: smallint("current_level").notNull(),
+  startingDate: date("starting_date").notNull(),
+  currentLevel: smallint("current_level").notNull(),
 });
 
 export const groupsRelations = relations(groups, ({ one, many }) => ({
