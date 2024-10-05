@@ -8,7 +8,6 @@ import { ChevronsUpDown, Check } from "lucide-react";
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -46,7 +45,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { cn, getUserIP } from "@/lib/utils";
+import { cn, formatDate, getUserIP } from "@/lib/utils";
 import {
   Command,
   CommandEmpty,
@@ -57,11 +56,16 @@ import {
 } from "@/components/ui/command";
 import { useState } from "react";
 import { api } from "@/trpc/react";
+import Link from "next/link";
 
-function getNextTuesday(today: Date = new Date()): Date {
+function getNextWeekTuesday(today: Date = new Date()): Date {
   const daysUntilNextTuesday = (9 - today.getDay()) % 7;
+  const daysToAdd =
+    daysUntilNextTuesday === 0 || daysUntilNextTuesday === 1
+      ? daysUntilNextTuesday + 7
+      : daysUntilNextTuesday;
   const nextTuesday = new Date(
-    today.getTime() + daysUntilNextTuesday * 24 * 60 * 60 * 1000,
+    today.getTime() + daysToAdd * 24 * 60 * 60 * 1000,
   );
   nextTuesday.setHours(0, 0, 0, 0);
   return nextTuesday;
@@ -171,6 +175,8 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
       },
     });
 
+  const { mutate: test } = api.epayco.test.useMutation();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -202,6 +208,7 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
 
     createSubscription({
       id_plan: params.plan,
+      plan_value: "100000",
       customerIp: ip,
       firstName: values.firstName,
       lastName: values.lastName,
@@ -220,8 +227,15 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
 
   return (
     <div className="container mx-auto border-t py-10">
+      <Button onClick={() => test()}>Test</Button>
+
+      {getNextWeekTuesday(new Date(2024, 8, 29)).toLocaleDateString()}
       <AlertDialog open={modalOpen} onOpenChange={setModalOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent
+          onEscapeKeyDown={(e) => {
+            e.preventDefault();
+          }}
+        >
           {isLoading ? (
             <>
               <AlertDialogHeader>
@@ -230,6 +244,7 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
                   Por favor espera un momento mientras se procesa la
                   suscripción.
                 </AlertDialogDescription>
+                <div className="loader-the-progress"></div>
               </AlertDialogHeader>
             </>
           ) : (
@@ -239,26 +254,29 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
                   ¡Gracias por suscribirte a la mejor academia de inglés!
                 </AlertDialogTitle>
                 <AlertDialogDescription className="text-center">
-                  Tu suscripción ha sido creada correctamente.
+                  Tu cuenta de global talk ha sido creada correctamente.
                 </AlertDialogDescription>
                 <div className="mt-2 text-center">
-                  Ten en cuenta que tu suscripción y el cobro reccurrente daran
-                  inicio el: <br /> <br />
+                  Ten en cuenta que las clases y el primer cobro daran inicio
+                  el: <br /> <br />
                   <span className="text-2xl font-bold text-primary">
-                    {getNextTuesday().toLocaleDateString()}
+                    🎉{" "}
+                    {formatDate(
+                      getNextWeekTuesday().toISOString().slice(0, 10),
+                    )}{" "}
+                    🎉
                   </span>
                   <br /> <br />
                   <span className="font-semibold">
-                    {" "}
-                    Te enviaremos un email con las instrucciones para ingresar a
-                    tu cuenta!
+                    Te enviaremos un correo con las instrucciones para ingresar
+                    a tu cuenta!
                   </span>
                 </div>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogAction className="w-full">
-                  Continuar
-                </AlertDialogAction>
+                <Link className="w-full" href="/academy">
+                  <Button className="w-full">Continuar</Button>
+                </Link>
               </AlertDialogFooter>
             </>
           )}
@@ -535,9 +553,6 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
                   />
                 </div>
                 <Button
-                  onClick={() => {
-                    setModalOpen(true);
-                  }}
                   disabled={!form.formState.isDirty}
                   type="submit"
                   className="w-full"
