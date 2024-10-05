@@ -3,12 +3,12 @@ import { relations, sql } from "drizzle-orm";
 import {
   boolean,
   date,
-  decimal,
   index,
   integer,
   pgEnum,
   pgTableCreator,
   primaryKey,
+  smallint,
   text,
   time,
   timestamp,
@@ -28,7 +28,7 @@ export const UserType = pgEnum("userType", [
   "RECURRENT",
   "LEVEL",
   "COMPLETE",
-  "MANAGEMENT",
+  "STAFF",
 ]);
 export const Proficiency = pgEnum("proficiency", [
   "A0",
@@ -54,14 +54,15 @@ export const users = createTable(
     ip: varchar("ip", { length: 25 }),
     subscriptionId: varchar("subscription_id", { length: 255 }),
     userType: UserType("user_type").notNull(),
+    current_level: smallint("current_level").notNull(),
     customerId: varchar("customer_id", { length: 255 }),
     active: boolean("active").default(false).notNull(),
     image: varchar("image", { length: 255 }),
     name: varchar("name", { length: 25 }).notNull(),
     lastName: varchar("last_name", { length: 25 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
-    courseId: varchar("course_id", { length: 255 })
-      .references(() => courses.id)
+    groupId: uuid("group_id")
+      .references(() => groups.id)
       .notNull(),
     emailVerified: timestamp("email_verified", {
       mode: "date",
@@ -76,12 +77,12 @@ export const users = createTable(
 );
 
 export const usersRelations = relations(users, ({ one, many }) => ({
-  courses: one(courses, {
-    fields: [users.courseId],
-    references: [courses.id],
+  groups: one(groups, {
+    fields: [users.groupId],
+    references: [groups.id],
   }),
   schedules: many(schedules),
-  lectures: many(lectures),
+  lectureSessions: one(lectureSessions),
   accounts: many(accounts),
 }));
 
@@ -95,9 +96,9 @@ export const prompts = createTable("prompt", {
 // ============================ Transactions ============================
 export const transactions = createTable("transaction", {
   id: uuid("id").primaryKey().defaultRandom(),
-  courseId: varchar("course_id", { length: 255 })
-    .notNull()
-    .references(() => courses.id),
+  groupId: uuid("group_id")
+    .references(() => groups.id)
+    .notNull(),
   description: text("description").notNull(),
   receipt: varchar("receipt", { length: 255 }).notNull(),
   name: varchar("name", { length: 255 }).notNull(),
@@ -108,6 +109,13 @@ export const transactions = createTable("transaction", {
   status: Status("status").default("PENDING").notNull(),
 });
 
+export const transactionsRelations = relations(transactions, ({ one }) => ({
+  group: one(groups, {
+    fields: [transactions.groupId],
+    references: [groups.id],
+  }),
+}));
+
 // ============================== LEVELS ================================
 export const levels = createTable("level", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -115,13 +123,15 @@ export const levels = createTable("level", {
     .references(() => courses.id)
     .notNull(),
   name: varchar("name", { length: 20 }).notNull(),
+  level: smallint("level").notNull(),
 });
 
-export const levelsRelations = relations(levels, ({ one }) => ({
+export const levelsRelations = relations(levels, ({ one, many }) => ({
   course: one(courses, {
     fields: [levels.courseId],
     references: [courses.id],
   }),
+  lecture: many(lectures),
 }));
 
 // ============================== LECTURES ==============================
@@ -130,11 +140,24 @@ export const lectures = createTable("lecture", {
   levelId: uuid("level_id")
     .references(() => levels.id)
     .notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: varchar("description", { length: 255 }).notNull(),
+});
+
+export const lecturesRelations = relations(lectures, ({ one, many }) => ({
+  level: one(levels, { fields: [lectures.levelId], references: [levels.id] }),
+  lectureSessions: many(lectureSessions),
+}));
+
+// ============================== LECTURESESSIONS ==============================
+export const lectureSessions = createTable("lecture_session", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  lectureId: uuid("lecture_id")
+    .references(() => lectures.id)
+    .notNull(),
   teacherId: varchar("teacher_id", { length: 255 })
     .notNull()
     .references(() => users.id),
-  name: varchar("name", { length: 25 }).notNull(),
-  description: varchar("description", { length: 255 }).notNull(),
   meet_url: varchar("meet_url", { length: 255 }).notNull(),
   off2class_url: varchar("off2class_url", { length: 255 }).notNull(),
   date: date("date").notNull(),
@@ -143,26 +166,31 @@ export const lectures = createTable("lecture", {
   finished: boolean("finished").default(false).notNull(),
 });
 
-export const lecturesRelations = relations(lectures, ({ one, many }) => ({
-  level: one(levels, { fields: [lectures.levelId], references: [levels.id] }),
-  teacher: one(users, {
-    fields: [lectures.teacherId],
-    references: [users.id],
+export const lectureSessionsRelations = relations(
+  lectureSessions,
+  ({ one, many }) => ({
+    lecture: one(lectures, {
+      fields: [lectureSessions.lectureId],
+      references: [lectures.id],
+    }),
+    teacher: one(users, {
+      fields: [lectureSessions.teacherId],
+      references: [users.id],
+    }),
+    schedules: many(schedules),
   }),
-  schedules: many(schedules),
-}));
+);
 
 // ============================== COURSES ==============================
 export const courses = createTable("course", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   proficiency: Proficiency("proficiency").notNull(),
-  price: decimal("price").notNull(),
 });
 
 export const coursesRelations = relations(courses, ({ many }) => ({
-  students: many(users),
   levels: many(levels),
+  groups: many(groups),
 }));
 
 // ============================== SCHEDULES ==============================
@@ -171,8 +199,8 @@ export const schedules = createTable("schedule", {
   studentId: varchar("student_id", { length: 255 })
     .notNull()
     .references(() => users.id),
-  lectureId: uuid("lecture_id")
-    .references(() => lectures.id, { onDelete: "cascade" })
+  lectureSessionId: uuid("lectureSession_id")
+    .references(() => lectureSessions.id, { onDelete: "cascade" })
     .notNull(),
 });
 
@@ -181,10 +209,29 @@ export const schedulesRelations = relations(schedules, ({ one }) => ({
     fields: [schedules.studentId],
     references: [users.id],
   }),
-  lecture: one(lectures, {
-    fields: [schedules.lectureId],
-    references: [lectures.id],
+  lectureSession: one(lectureSessions, {
+    fields: [schedules.lectureSessionId],
+    references: [lectureSessions.id],
   }),
+}));
+
+// ============================== GROUP ===============================
+export const groups = createTable("group", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  courseId: varchar("course_id", { length: 255 })
+    .references(() => courses.id)
+    .notNull(),
+  creationDate: date("date").notNull(),
+  current_level: smallint("current_level").notNull(),
+});
+
+export const groupsRelations = relations(groups, ({ one, many }) => ({
+  course: one(courses, {
+    fields: [groups.courseId],
+    references: [courses.id],
+  }),
+  users: many(users),
+  transactions: many(transactions),
 }));
 
 // ============================== AUTH ===============================
