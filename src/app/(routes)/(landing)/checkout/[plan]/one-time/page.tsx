@@ -169,6 +169,7 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
       }
 
       const paymentDetails = {
+        plan,
         nameBilling: values.firstName + " " + values.lastName,
         emailBilling: values.email,
         addressBilling: values.address,
@@ -179,13 +180,14 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
         description: siteConfig.pricing[plan].description,
         amount: siteConfig.pricing[plan].price,
         currency: "cop",
-        test: "true",
         ip,
         lang: "es",
         country: "co",
-        confirmation: `${getBaseUrl()}/api/trpc/epayco/confirmation`,
+        transactionType: "COMPLETE",
         // TODO: Change in production to the base url
+        confirmation: `https://globtm.vercel.app/api/checkout/confirmation`,
         response: "https://globtm.vercel.app/response",
+        test: "true",
       };
 
       createSession(paymentDetails);
