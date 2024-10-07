@@ -227,9 +227,6 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
 
   return (
     <div className="container mx-auto border-t py-10">
-      <Button onClick={() => test()}>Test</Button>
-
-      {getNextWeekTuesday(new Date(2024, 8, 29)).toLocaleDateString()}
       <AlertDialog open={modalOpen} onOpenChange={setModalOpen}>
         <AlertDialogContent
           onEscapeKeyDown={(e) => {
