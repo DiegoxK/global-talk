@@ -1,11 +1,12 @@
+import { env } from "@/env";
 import type { PaymentDetails } from "types/epayco";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-const url_api = process.env.EPAYCO_API_URL;
-const url_apify = process.env.EPAYCO_APIFY_URL;
+const url_api = env.EPAYCO_API_URL;
+const url_apify = env.EPAYCO_APIFY_URL;
 
-const public_key = process.env.EPAYCO_API_KEY;
-const private_key = process.env.EPAYCO_PRIVATE_KEY;
+const public_key = env.EPAYCO_API_KEY;
+const private_key = env.EPAYCO_PRIVATE_KEY;
 
 interface SessionResponse {
   success: boolean;
@@ -220,8 +221,8 @@ export const getAuthToken = async (apify?: "apify") => {
       apify
         ? {}
         : {
-            public_key: process.env.EPAYCO_API_KEY,
-            private_key: process.env.EPAYCO_PRIVATE_KEY,
+            public_key: env.EPAYCO_API_KEY,
+            private_key: env.EPAYCO_PRIVATE_KEY,
           },
     ),
     redirect: "follow" as RequestRedirect,
@@ -482,7 +483,7 @@ export const getSubscriptionById = async (id: string) => {
 
   try {
     const response = await fetch(
-      `${url_api}/recurring/v1/subscription/${id}/${process.env.EPAYCO_API_KEY}`,
+      `${url_api}/recurring/v1/subscription/${id}/${env.EPAYCO_API_KEY}`,
       requestOptions,
     );
 
