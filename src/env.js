@@ -32,6 +32,12 @@ export const env = createEnv({
     STUDENT_ROLE: z.string(),
     TEACHER_ROLE: z.string(),
     ADMIN_ROLE: z.string(),
+    P_CUST_ID_CLIENTE: z.string(),
+    P_KEY: z.string(),
+    EPAYCO_APIFY_URL: z.string(),
+    EPAYCO_API_URL: z.string(),
+    EPAYCO_API_KEY: z.string(),
+    EPAYCO_PRIVATE_KEY: z.string(),
   },
 
   /**
@@ -62,6 +68,12 @@ export const env = createEnv({
     STUDENT_ROLE: process.env.STUDENT_ROLE,
     TEACHER_ROLE: process.env.TEACHER_ROLE,
     ADMIN_ROLE: process.env.ADMIN_ROLE,
+    P_CUST_ID_CLIENTE: process.env.P_CUST_ID_CLIENTE,
+    P_KEY: process.env.P_KEY,
+    EPAYCO_APIFY_URL: process.env.EPAYCO_APIFY_URL,
+    EPAYCO_API_URL: process.env.EPAYCO_API_URL,
+    EPAYCO_API_KEY: process.env.EPAYCO_API_KEY,
+    EPAYCO_PRIVATE_KEY: process.env.EPAYCO_PRIVATE_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
