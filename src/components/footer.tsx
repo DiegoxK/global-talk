@@ -47,14 +47,18 @@ export default function Footer() {
         </div>
         <nav className="hidden md:block">
           <div className="grid grid-cols-4">
-            {siteConfig.navigation.map((link) => (
-              <FooterLinks
-                key={link.url}
-                label={link.label}
-                url={link.url}
-                subLinks={link.subLinks}
-              />
-            ))}
+            {siteConfig.navigation.map((link) => {
+              if (link.subLinks) {
+                return (
+                  <FooterLinks
+                    key={link.url}
+                    label={link.label}
+                    url={link.url}
+                    subLinks={link.subLinks}
+                  />
+                );
+              }
+            })}
           </div>
         </nav>
       </div>
