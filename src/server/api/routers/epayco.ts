@@ -12,9 +12,11 @@ import {
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { z } from "zod";
-import { courses, groups, users } from "@/server/db/schema";
+import { courses, groups, transactions, users } from "@/server/db/schema";
 import { sendConfirmation } from "@/lib/email-config";
-import { asc, desc, eq, is } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
+
+type TransactionType = "RECURRENT" | "LEVEL" | "COMPLETE" | "STAFF";
 
 function getNextWeekTuesday(today: Date = new Date()): Date {
   const daysUntilNextTuesday = (9 - today.getDay()) % 7;
@@ -44,10 +46,15 @@ function areDatesInSameWeek(date1: Date, date2: Date): boolean {
   return weekStart1.getTime() === weekStart2.getTime();
 }
 
+// function validateTransaction(refPayco: string) {
+
+// }
+
 export const epaycoRouter = createTRPCRouter({
   createSession: publicProcedure
     .input(
       z.object({
+        plan: z.string(),
         nameBilling: z.string(),
         emailBilling: z.string(),
         addressBilling: z.string(),
@@ -64,6 +71,7 @@ export const epaycoRouter = createTRPCRouter({
         country: z.string(),
         confirmation: z.string(),
         response: z.string(),
+        transactionType: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -86,7 +94,39 @@ export const epaycoRouter = createTRPCRouter({
         response: input.response,
       };
 
-      const sessionId = await createSession(paymentDetails);
+      const invoice = generateInvoiceCode();
+
+      const transaction = await ctx.db
+        .insert(transactions)
+        .values({
+          program: input.plan,
+          date: new Date().toISOString(),
+          type: input.transactionType as TransactionType,
+          description: input.description,
+          receipt: invoice,
+          ammount: input.amount,
+          name: input.nameBilling,
+          phone: input.mobilephoneBilling,
+          email: input.emailBilling,
+          city: input.addressBilling,
+          status: "PENDING",
+        })
+        .returning();
+
+      const transactionId = transaction[0]?.id;
+
+      if (!transactionId) {
+        throw new Error("Error al crear la transacción");
+      }
+
+      const sessionId = await createSession({
+        ...paymentDetails,
+        extra1: input.nameBilling,
+        extra2: input.addressBilling,
+        extra3: input.mobilephoneBilling,
+        extra4: transactionId,
+        invoice,
+      });
 
       if (sessionId) {
         return sessionId;
@@ -159,11 +199,11 @@ export const epaycoRouter = createTRPCRouter({
         doc_type: input.idType,
         doc_number: input.idNumber,
         extras_epayco: { extra1: "" },
+        // TODO: Change in production
+        test: "TRUE",
         url_confirmation: "https://ejemplo.com/confirmacion",
         method_confirmation: "POST",
         ip: input.customerIp,
-        // TODO: Change in production
-        test: "TRUE",
       });
 
       if (!subscriptionId) {
