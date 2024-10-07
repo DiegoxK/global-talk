@@ -58,16 +58,7 @@ import {
 import { useState } from "react";
 import { api, getBaseUrl } from "@/trpc/react";
 import Script from "next/script";
-import type { PaymentDetails } from "types/epayco";
-
-function getNextTuesday(today: Date = new Date()): Date {
-  const daysUntilNextTuesday = (9 - today.getDay()) % 7;
-  const nextTuesday = new Date(
-    today.getTime() + daysUntilNextTuesday * 24 * 60 * 60 * 1000,
-  );
-  nextTuesday.setHours(0, 0, 0, 0);
-  return nextTuesday;
-}
+import { type Pricing, siteConfig } from "@/config";
 
 const documentTypes = [
   { value: "NIT", label: "Número de identificación tributaria" },
@@ -169,6 +160,8 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
     setIsLoading(true);
 
     if (typeof window !== "undefined" && window.ePayco) {
+      const plan = params.plan as keyof Pricing;
+
       const ip = await getUserIP();
 
       if (!ip) {
@@ -182,9 +175,9 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
         mobilephoneBilling: values.phone,
         numberDocBilling: values.idNumber,
         typeDocBilling: values.idType,
-        name: "Programa Beginners A0",
-        description: "Programa Beginners A0 2 niveles 4 meses",
-        amount: "100000",
+        name: siteConfig.pricing[plan].name,
+        description: siteConfig.pricing[plan].description,
+        amount: siteConfig.pricing[plan].price,
         currency: "cop",
         test: "true",
         ip,
