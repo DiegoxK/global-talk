@@ -1,12 +1,43 @@
 import { env } from "@/env";
+import { db } from "@/server/db";
+import { transactions } from "@/server/db/schema";
 import { createHash } from "crypto";
+import { eq } from "drizzle-orm";
 import { type NextRequest, NextResponse } from "next/server";
 import type { ConfirmationParams } from "types/epayco";
+
+type TransactionStatus =
+  | "PAID"
+  | "REJECTED"
+  | "PENDING"
+  | "FAILED"
+  | "UNKNOWN"
+  | "INVALID"
+  | "MISMATCH";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+const updateTransaction = async (
+  id: string,
+  status: TransactionStatus,
+  phone?: string,
+) => {
+  const transaccion = await db
+    .update(transactions)
+    .set({
+      status,
+      phone,
+    })
+    .where(eq(transactions.id, id))
+    .returning();
+
+  if (!transaccion) {
+    throw new Error("No se encontro la transacción");
+  }
 };
 
 export async function OPTIONS() {
@@ -36,39 +67,35 @@ export async function POST(req: NextRequest) {
   const p_cust_id_cliente = env.P_CUST_ID_CLIENTE;
   const p_key = env.P_KEY;
 
-  // Crear transaccion en la base de datos
+  // Validar que exista la id de la transacción
+  if (!x_extra4) {
+    return NextResponse.json(
+      { message: "No se encontro la id de la transacción" },
+      { status: 404 },
+    );
+  }
 
-  // const order = await prismadb.order.findFirst({
-  //   where: {
-  //     id: x_extra4!,
-  //   },
-  //   include: {
-  //     orderItems: {
-  //       include: {
-  //         product: true,
-  //       },
-  //     },
-  //   },
-  // });
+  // Obtener transaccion
+  const transaction = await db.query.transactions.findFirst({
+    where: eq(transactions.id, x_extra4),
+  });
 
-  // if (!order) {
-  //   return NextResponse.json(
-  //     { message: "Orden no encontrada" },
-  //     { status: 404 },
-  //   );
-  // }
+  if (!transaction) {
+    return NextResponse.json(
+      { message: "No se encontro la transacción" },
+      { status: 404 },
+    );
+  }
 
-  // // Obtener invoice y valor en el sistema del comercio
-  // const numOrder = order.invoiceCode;
+  // Obtener invoice y valor en el sistema del comercio
+  const numOrder = transaction.receipt;
+  const valueOrder = transaction.ammount;
 
-  // const valueOrder = order.orderItems.reduce((total, item) => {
-  //   return total + Number(item.product.price);
-  // }, 0);
-
+  // Validar que el valor de la transacción coincida con el del sistema
   if (
     x_id_invoice === numOrder &&
-    Number(x_amount) === valueOrder &&
-    order.ammount
+    Number(x_amount) === Number(valueOrder) &&
+    transaction.ammount
   ) {
     // Calcular la firma
     const signature = createHash("sha256")
@@ -92,73 +119,35 @@ export async function POST(req: NextRequest) {
       // La firma es válida, puedes verificar el estado de la transacción
       switch (Number(x_cod_response)) {
         case 1:
-          await prismadb.order.update({
-            where: {
-              id: x_extra4!,
-            },
-            data: {
-              isPaid: true,
-              address: x_extra2,
-              phone: x_extra3,
-              status: "PAID",
-            },
-          });
+          await updateTransaction(x_extra4, "PAID", x_extra3);
 
           return NextResponse.json(
             { message: "Transacción aceptada" },
             { status: 200 },
           );
         case 2:
-          await prismadb.order.update({
-            where: {
-              id: x_extra4!,
-            },
-            data: {
-              status: "REJECTED",
-            },
-          });
+          await updateTransaction(x_extra4, "REJECTED");
 
           return NextResponse.json(
             { message: "Transacción rechazada" },
             { status: 403 },
           );
         case 3:
-          await prismadb.order.update({
-            where: {
-              id: x_extra4!,
-            },
-            data: {
-              status: "PENDING",
-            },
-          });
+          await updateTransaction(x_extra4, "PENDING");
 
           return NextResponse.json(
             { message: "Transacción pendiente" },
             { status: 202 },
           );
         case 4:
-          await prismadb.order.update({
-            where: {
-              id: x_extra4!,
-            },
-            data: {
-              status: "FAILED",
-            },
-          });
+          await updateTransaction(x_extra4, "FAILED");
 
           return NextResponse.json(
             { message: "Transacción fallida" },
             { status: 500 },
           );
         default:
-          await prismadb.order.update({
-            where: {
-              id: x_extra4!,
-            },
-            data: {
-              status: "UNKNOWN",
-            },
-          });
+          await updateTransaction(x_extra4, "UNKNOWN");
 
           return NextResponse.json(
             { message: "Estado de transacción desconocido" },
@@ -166,26 +155,12 @@ export async function POST(req: NextRequest) {
           );
       }
     } else {
-      await prismadb.order.update({
-        where: {
-          id: x_extra4!,
-        },
-        data: {
-          status: "INVALID",
-        },
-      });
+      await updateTransaction(x_extra4, "INVALID");
 
       return NextResponse.json({ message: "Firma no válida" }, { status: 400 });
     }
   } else {
-    await prismadb.order.update({
-      where: {
-        id: x_extra4!,
-      },
-      data: {
-        status: "MISMATCH",
-      },
-    });
+    await updateTransaction(x_extra4, "MISMATCH");
 
     return NextResponse.json(
       { message: "Algunos datos no coinciden" },
