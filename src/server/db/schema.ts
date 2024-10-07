@@ -3,6 +3,7 @@ import { relations, sql } from "drizzle-orm";
 import {
   boolean,
   date,
+  decimal,
   index,
   integer,
   pgEnum,
@@ -24,7 +25,15 @@ const TEACHER = env.TEACHER_ROLE;
 const ADMIN = env.ADMIN_ROLE;
 
 export const UserRole = pgEnum("userRole", [STUDENT, TEACHER, ADMIN]);
-export const Status = pgEnum("status", ["PENDING", "CANCELED", "ACCEPTED"]);
+export const Status = pgEnum("status", [
+  "PAID",
+  "REJECTED",
+  "PENDING",
+  "FAILED",
+  "UNKNOWN",
+  "INVALID",
+  "MISMATCH",
+]);
 export const UserType = pgEnum("userType", [
   "RECURRENT",
   "LEVEL",
@@ -62,6 +71,7 @@ export const users = createTable(
     name: varchar("name", { length: 25 }).notNull(),
     lastName: varchar("last_name", { length: 25 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
+    city: varchar("city", { length: 255 }),
     groupId: serial("group_id")
       .references(() => groups.id)
       .notNull(),
@@ -97,15 +107,16 @@ export const prompts = createTable("prompt", {
 // ============================ Transactions ============================
 export const transactions = createTable("transaction", {
   id: uuid("id").primaryKey().defaultRandom(),
-  groupId: serial("group_id")
-    .references(() => groups.id)
-    .notNull(),
+  groupId: serial("group_id").references(() => groups.id),
+  type: UserType("user_type").notNull(),
   description: text("description").notNull(),
+  ammount: varchar("phone", { length: 25 }).notNull(),
+  program: varchar("program", { length: 255 }).notNull(),
   receipt: varchar("receipt", { length: 255 }).notNull(),
   name: varchar("name", { length: 255 }).notNull(),
-  last_name: varchar("last_name", { length: 255 }).notNull(),
-  phone: varchar("phone", { length: 10 }).notNull(),
+  phone: varchar("phone", { length: 25 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
+  city: varchar("city", { length: 255 }).notNull(),
   date: date("date").notNull(),
   status: Status("status").default("PENDING").notNull(),
 });
