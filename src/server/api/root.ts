@@ -3,7 +3,7 @@ import { userRouter } from "./routers/user";
 import { lectureRouter } from "./routers/lectures";
 import { scheduleRouter } from "./routers/schedule";
 import { levelRouter } from "./routers/levels";
-import { courseRouter } from "./routers/courses";
+import { programRouter } from "./routers/program";
 import { epaycoRouter } from "./routers/epayco";
 
 /**
@@ -13,7 +13,7 @@ import { epaycoRouter } from "./routers/epayco";
  */
 export const appRouter = createTRPCRouter({
   epayco: epaycoRouter,
-  course: courseRouter,
+  program: programRouter,
   schedule: scheduleRouter,
   level: levelRouter,
   user: userRouter,
