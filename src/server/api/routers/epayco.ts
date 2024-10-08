@@ -12,7 +12,7 @@ import {
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { z } from "zod";
-import { courses, groups, transactions, users } from "@/server/db/schema";
+import { programs, groups, transactions, users } from "@/server/db/schema";
 import { sendConfirmation } from "@/lib/email-config";
 import { desc, eq } from "drizzle-orm";
 
@@ -137,6 +137,7 @@ export const epaycoRouter = createTRPCRouter({
     .input(
       z.object({
         id_plan: z.string(),
+        description: z.string(),
         plan_value: z.string(),
         customerIp: z.string(),
         firstName: z.string(),
@@ -154,117 +155,147 @@ export const epaycoRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const credit_info = {
-        cardNumber: input.cardNumber,
-        cardExpYear: input.cardExpiryYear,
-        cardExpMonth: input.cardExpiryMonth,
-        cardCvc: input.cardCvc,
+      const createUser = async (groupId: number) => {
+        const invoice = generateInvoiceCode();
+
+        console.log("Creando card token...");
+
+        const credit_info = {
+          cardNumber: input.cardNumber,
+          cardExpYear: input.cardExpiryYear,
+          cardExpMonth: input.cardExpiryMonth,
+          cardCvc: input.cardCvc,
+        };
+
+        const tokenCardId = await createCardToken(credit_info);
+
+        if (!tokenCardId) {
+          throw new Error("Error al crear el token de tarjeta");
+        }
+
+        // Artificial delay to prevent epayco api rate limit
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+
+        console.log("Creando ePayco customer...");
+        const customerId = await createCustomer({
+          docType: input.idType,
+          docNumber: input.idNumber,
+          name: input.firstName,
+          lastName: input.lastName,
+          email: input.email,
+          address: input.address,
+          cellPhone: input.phone,
+          phone: input.phone,
+          requireCardToken: true,
+          cardTokenId: tokenCardId,
+        });
+
+        if (!customerId) {
+          throw new Error("Error al crear el cliente");
+        }
+        // Artificial delay
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+
+        console.log("Creating subscription...");
+        const subscriptionId = await createSubscription({
+          id_plan: input.id_plan,
+          customer: customerId,
+          token_card: tokenCardId,
+          doc_type: input.idType,
+          doc_number: input.idNumber,
+          extras_epayco: { extra1: invoice },
+          // TODO: Change in production
+          test: "TRUE",
+          url_confirmation:
+            "https://globtm.vercel.app/api/checkout/confirmacion",
+          method_confirmation: "POST",
+          ip: input.customerIp,
+        });
+
+        if (!subscriptionId) {
+          throw new Error("Error al crear el subscription");
+        }
+
+        console.log("Creando usuario ...");
+
+        const user = await ctx.db
+          .insert(users)
+          .values({
+            ip: input.customerIp,
+            subscriptionId: subscriptionId,
+            planType: "RECURRENT",
+            groupId,
+            customerId: customerId,
+            name: input.firstName,
+            lastName: input.lastName,
+            phone: input.phone,
+            programId: input.id_plan,
+            email: input.email,
+            city: input.city,
+          })
+          .returning();
+
+        if (!user?.[0]?.id) throw new Error("Error al obtener el usuario");
+
+        console.log("Creando transaccion ...");
+
+        const transaction = await ctx.db
+          .insert(transactions)
+          .values({
+            userId: user[0].id,
+            description: input.description,
+            ammount: input.plan_value,
+            receipt: invoice,
+            date: new Date().toISOString(),
+            status: "PENDING",
+          })
+          .returning();
+
+        const transactionId = transaction[0]?.id;
+
+        if (!transactionId) {
+          throw new Error("Error al crear la transacción");
+        }
       };
 
-      console.log("Creating card token...");
-      const tokenCardId = await createCardToken(credit_info);
+      // =============================================================
 
-      if (!tokenCardId) {
-        throw new Error("Error al crear el token de tarjeta");
-      }
+      console.log("Verificando si el usuario ya existe...");
 
-      // Artificial delay to prevent epayco api rate limit
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      console.log("Creating customer...");
-      const customerId = await createCustomer({
-        docType: input.idType,
-        docNumber: input.idNumber,
-        name: input.firstName,
-        lastName: input.lastName,
-        email: input.email,
-        address: input.address,
-        cellPhone: input.phone,
-        phone: input.phone,
-        requireCardToken: true,
-        cardTokenId: tokenCardId,
-      });
-
-      if (!customerId) {
-        throw new Error("Error al crear el cliente");
-      }
-      // Artificial delay
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-
-      console.log("Creating subscription...");
-      const subscriptionId = await createSubscription({
-        id_plan: input.id_plan,
-        customer: customerId,
-        token_card: tokenCardId,
-        doc_type: input.idType,
-        doc_number: input.idNumber,
-        extras_epayco: { extra1: "" },
-        // TODO: Change in production
-        test: "TRUE",
-        url_confirmation: "https://ejemplo.com/confirmacion",
-        method_confirmation: "POST",
-        ip: input.customerIp,
-      });
-
-      if (!subscriptionId) {
-        throw new Error("Error al crear el subscription");
-      }
-
-      console.log(subscriptionId);
-
-      // Artificial delay
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-
-      console.log("Checking if user exists...");
       const userExist = await ctx.db.query.users.findFirst({
         where: (table, funcs) => funcs.eq(table.email, input.email),
       });
 
       if (userExist) {
-        throw new Error("User already exists");
+        throw new Error("El usuario ya existe");
       }
 
-      // Artificial delay
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-
-      console.log("Checking if a group already exists...");
+      console.log("Verificando si el grupo existe...");
 
       const lastAddedGroup = await ctx.db.query.groups.findFirst({
         orderBy: desc(groups.id),
       });
 
       if (!lastAddedGroup) {
-        console.log("No group found, creating one ...");
+        console.log("No se encontro el grupo, creando uno nuevo ...");
 
-        await ctx.db.insert(groups).values({
-          name: "Grupo semana #1",
-          courseId: input.id_plan,
-          creationDate: new Date().toISOString(),
-          startingDate: getNextWeekTuesday().toISOString(),
-          currentLevel: 0,
-        });
+        const currentLastAddedGroup = await ctx.db
+          .insert(groups)
+          .values({
+            name: "Grupo semana #1",
+            creationDate: new Date().toISOString(),
+            startingDate: getNextWeekTuesday().toISOString(),
+            currentLevel: 0,
+          })
+          .returning();
 
-        const currentLastAddedGroup = await ctx.db.query.groups.findFirst({
-          orderBy: desc(groups.id),
-        });
-
-        if (currentLastAddedGroup) {
-          console.log("Creating user...");
-
-          await ctx.db.insert(users).values({
-            name: input.firstName,
-            lastName: input.lastName,
-            email: input.email,
-            groupId: currentLastAddedGroup.id,
-            ip: input.customerIp,
-            subscriptionId: subscriptionId,
-            customerId: customerId,
-            userType: "RECURRENT",
-            current_level: 0,
-          });
+        if (currentLastAddedGroup?.[0]?.id) {
+          await createUser(currentLastAddedGroup[0].id);
         }
       } else {
-        console.log("Group found!, checking if it is in the same week ...");
+        console.log(
+          "Grupo encontrado, verificando si está en la misma semana ...",
+        );
 
         const today = new Date();
 
@@ -274,71 +305,51 @@ export const epaycoRouter = createTRPCRouter({
         );
 
         if (!isInSameWeek) {
-          console.log("Group is not in the same week, creating a new one ...");
+          console.log(
+            "Grupo no está en la misma semana, creando uno nuevo ...",
+          );
 
           const groupNumber = lastAddedGroup.name.split("#")[1];
 
-          await ctx.db.insert(groups).values({
-            name: `Grupo semana #${Number(groupNumber) + 1}`,
-            courseId: input.id_plan,
-            creationDate: new Date().toISOString(),
-            startingDate: getNextWeekTuesday().toISOString(),
-            currentLevel: 0,
-          });
+          const currentLastAddedGroup = await ctx.db
+            .insert(groups)
+            .values({
+              name: `Grupo semana #${Number(groupNumber) + 1}`,
+              creationDate: new Date().toISOString(),
+              startingDate: getNextWeekTuesday().toISOString(),
+              currentLevel: 0,
+            })
+            .returning();
 
-          const currentLastAddedGroup = await ctx.db.query.groups.findFirst({
-            orderBy: desc(groups.id),
-          });
-
-          if (currentLastAddedGroup) {
-            console.log("Creating user...");
-
-            await ctx.db.insert(users).values({
-              name: input.firstName,
-              lastName: input.lastName,
-              email: input.email,
-              groupId: currentLastAddedGroup.id,
-              ip: input.customerIp,
-              subscriptionId: subscriptionId,
-              customerId: customerId,
-              userType: "RECURRENT",
-              current_level: 0,
-            });
+          if (currentLastAddedGroup?.[0]?.id) {
+            await createUser(currentLastAddedGroup[0].id);
           }
         } else {
-          console.log("Group is in the same week, creating user ...");
+          console.log(
+            "El grupo ya está en la misma semana, creando usuario ...",
+          );
 
-          await ctx.db.insert(users).values({
-            name: input.firstName,
-            lastName: input.lastName,
-            email: input.email,
-            groupId: lastAddedGroup.id,
-            ip: input.customerIp,
-            subscriptionId: subscriptionId,
-            customerId: customerId,
-            userType: "RECURRENT",
-            current_level: 0,
-          });
+          await createUser(lastAddedGroup.id);
         }
       }
 
-      console.log("Sending confirmation email...");
+      console.log("Enviando email de confirmación...");
 
       // Artificial delay
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      const courseName = await ctx.db.query.courses.findFirst({
-        where: eq(courses.id, input.id_plan),
+      const programName = await ctx.db.query.programs.findFirst({
+        where: eq(programs.id, input.id_plan),
         columns: {
           name: true,
         },
       });
 
-      if (!courseName) throw new Error("Course not found");
+      if (!programName) throw new Error("Program not found");
 
       await sendConfirmation({
-        courseName: courseName.name,
-        courseValue: input.plan_value,
+        programName: programName.name,
+        programValue: input.plan_value,
         sendTo: input.email,
       });
 
@@ -352,7 +363,7 @@ export const epaycoRouter = createTRPCRouter({
     // const groupNumber = lastAddedGroup.name.split("#")[1];
     // await ctx.db.insert(groups).values({
     //   name: `Grupo semana #${Number(groupNumber) + 1}`,
-    //   courseId: "beginners_a0",
+    //   programId: "beginners_a0",
     //   creationDate: new Date().toISOString(),
     //   startingDate: getNextWeekTuesday().toISOString(),
     //   currentLevel: 0,
