@@ -120,7 +120,7 @@ export const transactions = createTable("transaction", {
     .references(() => users.id)
     .notNull(),
   description: text("description").notNull(),
-  ammount: varchar("ammount", { length: 255 }).notNull(),
+  amount: varchar("ammount", { length: 255 }).notNull(),
   receipt: varchar("receipt", { length: 6 }).notNull(),
   date: date("date").notNull(),
   status: Status("status").notNull(),
