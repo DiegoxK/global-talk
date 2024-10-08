@@ -175,8 +175,6 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
       },
     });
 
-  const { mutate: test } = api.epayco.test.useMutation();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -209,6 +207,7 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
     createSubscription({
       id_plan: params.plan,
       plan_value: "100000",
+      description: "Programa Beginners A0 – 2 niveles (4 meses)",
       customerIp: ip,
       firstName: values.firstName,
       lastName: values.lastName,
@@ -229,9 +228,9 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
     <div className="container mx-auto border-t py-10">
       <AlertDialog open={modalOpen} onOpenChange={setModalOpen}>
         <AlertDialogContent
-          onEscapeKeyDown={(e) => {
-            e.preventDefault();
-          }}
+        // onEscapeKeyDown={(e) => {
+        //   e.preventDefault();
+        // }}
         >
           {isLoading ? (
             <>
