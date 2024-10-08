@@ -6,9 +6,9 @@ import { z } from "zod";
 export const levelRouter = createTRPCRouter({
   getFirstLevel: protectedProcedure.query(({ ctx }) => {
     const user = ctx.session.user;
-    const courseId = user.courseId;
+    const programId = user.programId;
 
-    if (!courseId) {
+    if (!programId) {
       return ctx.db.query.levels.findFirst({
         columns: {
           id: true,
@@ -17,7 +17,7 @@ export const levelRouter = createTRPCRouter({
     }
 
     return ctx.db.query.levels.findFirst({
-      where: eq(levels.courseId, courseId),
+      where: eq(levels.programId, programId),
       columns: {
         id: true,
       },
@@ -26,21 +26,21 @@ export const levelRouter = createTRPCRouter({
 
   getUserLevels: protectedProcedure.query(({ ctx }) => {
     const user = ctx.session.user;
-    const courseId = user.courseId;
+    const programId = user.programId;
 
-    if (!courseId) {
+    if (!programId) {
       return ctx.db.query.levels.findMany();
     }
 
     return ctx.db.query.levels.findMany({
-      where: eq(levels.courseId, courseId),
+      where: eq(levels.programId, programId),
     });
   }),
 
-  getCourseLevelsIds: protectedProcedure
+  getProgramLevelsIds: protectedProcedure
     .input(
       z.object({
-        courseId: z.string().uuid(),
+        programId: z.string().uuid(),
       }),
     )
     .query(({ input, ctx }) => {
@@ -50,6 +50,6 @@ export const levelRouter = createTRPCRouter({
           label: levels.name,
         })
         .from(levels)
-        .where(eq(levels.courseId, input.courseId));
+        .where(eq(levels.programId, input.programId));
     }),
 });
