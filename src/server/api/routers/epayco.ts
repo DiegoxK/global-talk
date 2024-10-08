@@ -17,6 +17,7 @@ import { sendConfirmation } from "@/lib/email-config";
 import { desc, eq } from "drizzle-orm";
 
 type TransactionType = "RECURRENT" | "LEVEL" | "COMPLETE" | "STAFF";
+type PlanType = "RECURRENT" | "LEVEL" | "COMPLETE" | "STAFF" | "EXTERNAL";
 
 function getNextWeekTuesday(today: Date = new Date()): Date {
   const daysUntilNextTuesday = (9 - today.getDay()) % 7;
@@ -55,11 +56,15 @@ export const epaycoRouter = createTRPCRouter({
     .input(
       z.object({
         plan: z.string(),
+        planType: z.string(),
+        first_name: z.string(),
+        last_name: z.string(),
         nameBilling: z.string(),
         emailBilling: z.string(),
         addressBilling: z.string(),
         mobilephoneBilling: z.string(),
         numberDocBilling: z.string(),
+        city: z.string(),
         typeDocBilling: z.string(),
         name: z.string(),
         description: z.string(),
@@ -94,42 +99,134 @@ export const epaycoRouter = createTRPCRouter({
         response: input.response,
       };
 
-      const invoice = generateInvoiceCode();
+      const createUser = async (groupId: number) => {
+        const invoice = generateInvoiceCode();
+        console.log("Creando usuario ...");
 
-      const transaction = await ctx.db
-        .insert(transactions)
-        .values({
-          program: input.plan,
-          date: new Date().toISOString(),
-          type: input.transactionType as TransactionType,
-          description: input.description,
-          receipt: invoice,
-          ammount: input.amount,
-          name: input.nameBilling,
-          phone: input.mobilephoneBilling,
-          email: input.emailBilling,
-          city: input.addressBilling,
-          status: "PENDING",
-        })
-        .returning();
+        const user = await ctx.db
+          .insert(users)
+          .values({
+            planType: input.planType as PlanType,
+            groupId,
+            name: input.first_name,
+            lastName: input.last_name,
+            phone: input.mobilephoneBilling,
+            programId: input.plan,
+            email: input.emailBilling,
+            city: input.city,
+          })
+          .returning();
 
-      const transactionId = transaction[0]?.id;
+        if (!user?.[0]?.id) throw new Error("Error al obtener el usuario");
 
-      if (!transactionId) {
-        throw new Error("Error al crear la transacción");
-      }
+        console.log("Creando transaccion ...");
 
-      const sessionId = await createSession({
-        ...paymentDetails,
-        extra1: input.nameBilling,
-        extra2: input.addressBilling,
-        extra3: input.mobilephoneBilling,
-        extra4: transactionId,
-        invoice,
+        const transaction = await ctx.db
+          .insert(transactions)
+          .values({
+            userId: user[0].id,
+            description: input.description,
+            amount: input.amount,
+            receipt: invoice,
+            date: new Date().toISOString(),
+            status: "PENDING",
+          })
+          .returning();
+
+        const transactionId = transaction[0]?.id;
+
+        if (!transactionId) {
+          throw new Error("Error al crear la transacción");
+        }
+
+        console.log("Creando ePayco session...");
+        const sessionId = await createSession({
+          ...paymentDetails,
+          extra1: input.nameBilling,
+          extra2: input.addressBilling,
+          extra3: input.mobilephoneBilling,
+          extra4: transactionId,
+          invoice,
+        });
+
+        if (sessionId) {
+          return sessionId;
+        }
+      };
+
+      // ========================================================
+
+      console.log("Verificando si el usuario ya existe...");
+
+      const userExist = await ctx.db.query.users.findFirst({
+        where: (table, funcs) => funcs.eq(table.email, input.emailBilling),
       });
 
-      if (sessionId) {
-        return sessionId;
+      if (userExist) {
+        throw new Error("El usuario ya existe");
+      }
+
+      console.log("Verificando si el grupo existe...");
+
+      const lastAddedGroup = await ctx.db.query.groups.findFirst({
+        orderBy: desc(groups.id),
+      });
+
+      if (!lastAddedGroup) {
+        console.log("No se encontro el grupo, creando uno nuevo ...");
+
+        const currentLastAddedGroup = await ctx.db
+          .insert(groups)
+          .values({
+            name: "Grupo semana #1",
+            creationDate: new Date().toISOString(),
+            startingDate: getNextWeekTuesday().toISOString(),
+            currentLevel: 0,
+          })
+          .returning();
+
+        if (currentLastAddedGroup?.[0]?.id) {
+          return await createUser(currentLastAddedGroup[0].id);
+        }
+      } else {
+        console.log(
+          "Grupo encontrado, verificando si está en la misma semana ...",
+        );
+
+        const today = new Date();
+
+        const isInSameWeek = areDatesInSameWeek(
+          new Date(lastAddedGroup.creationDate),
+          today,
+        );
+
+        if (!isInSameWeek) {
+          console.log(
+            "Grupo no está en la misma semana, creando uno nuevo ...",
+          );
+
+          const groupNumber = lastAddedGroup.name.split("#")[1];
+
+          const currentLastAddedGroup = await ctx.db
+            .insert(groups)
+            .values({
+              name: `Grupo semana #${Number(groupNumber) + 1}`,
+              creationDate: new Date().toISOString(),
+              startingDate: getNextWeekTuesday().toISOString(),
+              currentLevel: 0,
+            })
+            .returning();
+
+          if (currentLastAddedGroup?.[0]?.id) {
+            return await createUser(currentLastAddedGroup[0].id);
+          }
+        } else {
+          console.log(
+            "El grupo ya está en la misma semana, creando usuario ...",
+          );
+
+          return await createUser(lastAddedGroup.id);
+        }
       }
     }),
 
@@ -244,7 +341,7 @@ export const epaycoRouter = createTRPCRouter({
           .values({
             userId: user[0].id,
             description: input.description,
-            ammount: input.plan_value,
+            amount: input.plan_value,
             receipt: invoice,
             date: new Date().toISOString(),
             status: "PENDING",
