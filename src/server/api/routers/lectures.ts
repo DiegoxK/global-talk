@@ -1,6 +1,6 @@
 import { z } from "zod";
 import {
-  courses,
+  programs,
   lectures,
   levels,
   schedules,
@@ -12,9 +12,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { env } from "@/env";
 import { db } from "@/server/db";
 
-const createLectureSchema = createInsertSchema(lectures, {
-  teacherId: z.undefined(),
-});
+const createLectureSchema = createInsertSchema(lectures, {});
 
 // Obtain a table that gets the schedulesCount to each lecture
 const sq = db
@@ -37,7 +35,7 @@ const lectureCardSchema = {
   startTime: lectures.start_time,
   endTime: lectures.end_time,
   isFinished: lectures.finished,
-  proficiency: courses.proficiency,
+  proficiency: programs.proficiency,
   teacherName: sql<string>`concat(${users.name}, ' ', ${users.lastName})`.as(
     "teacher_name",
   ),
@@ -63,7 +61,7 @@ export const lectureRouter = createTRPCRouter({
         .leftJoin(users, eq(lectures.teacherId, users.id))
         .leftJoin(levels, eq(lectures.levelId, levels.id))
         .leftJoin(schedules, eq(lectures.id, schedules.lectureId))
-        .leftJoin(courses, eq(levels.courseId, courses.id))
+        .leftJoin(programs, eq(levels.programId, programs.id))
         .where(
           and(
             eq(lectures.levelId, input.levelId),
@@ -88,7 +86,7 @@ export const lectureRouter = createTRPCRouter({
         .leftJoin(users, eq(lectures.teacherId, users.id))
         .leftJoin(levels, eq(lectures.levelId, levels.id))
         .leftJoin(schedules, eq(lectures.id, schedules.lectureId))
-        .leftJoin(courses, eq(levels.courseId, courses.id))
+        .leftJoin(programs, eq(levels.programId, programs.id))
         .where(
           and(
             eq(lectures.levelId, input.levelId),
@@ -106,14 +104,14 @@ export const lectureRouter = createTRPCRouter({
     return ctx.db
       .select({
         ...lectureCardSchema,
-        courseId: courses.id,
+        programId: programs.id,
         levelId: levels.id,
       })
       .from(lectures)
       .leftJoin(sq, eq(lectures.id, sq.lectureId))
       .leftJoin(users, eq(lectures.teacherId, users.id))
       .leftJoin(levels, eq(lectures.levelId, levels.id))
-      .leftJoin(courses, eq(levels.courseId, courses.id))
+      .leftJoin(programs, eq(levels.programId, programs.id))
       .where(eq(lectures.teacherId, user.id));
   }),
 
