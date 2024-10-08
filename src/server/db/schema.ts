@@ -3,7 +3,6 @@ import { relations, sql } from "drizzle-orm";
 import {
   boolean,
   date,
-  decimal,
   index,
   integer,
   pgEnum,
@@ -26,19 +25,20 @@ const ADMIN = env.ADMIN_ROLE;
 
 export const UserRole = pgEnum("userRole", [STUDENT, TEACHER, ADMIN]);
 export const Status = pgEnum("status", [
+  "PENDING",
   "PAID",
   "REJECTED",
-  "PENDING",
   "FAILED",
   "UNKNOWN",
   "INVALID",
   "MISMATCH",
 ]);
-export const UserType = pgEnum("userType", [
+export const PlanType = pgEnum("planType", [
   "RECURRENT",
   "LEVEL",
   "COMPLETE",
   "STAFF",
+  "EXTERNAL",
 ]);
 export const Proficiency = pgEnum("proficiency", [
   "A0",
@@ -63,18 +63,22 @@ export const users = createTable(
     role: UserRole("role").default(STUDENT).notNull(),
     ip: varchar("ip", { length: 25 }),
     subscriptionId: varchar("subscription_id", { length: 255 }),
-    userType: UserType("user_type").notNull(),
-    current_level: smallint("current_level").notNull(),
+    planType: PlanType("plan_type").notNull(),
+    groupId: serial("group_id")
+      .references(() => groups.id)
+      .notNull(),
+    current_level: smallint("current_level").default(0).notNull(),
     customerId: varchar("customer_id", { length: 255 }),
     active: boolean("active").default(false).notNull(),
     image: varchar("image", { length: 255 }),
     name: varchar("name", { length: 25 }).notNull(),
     lastName: varchar("last_name", { length: 25 }).notNull(),
-    email: varchar("email", { length: 255 }).notNull(),
-    city: varchar("city", { length: 255 }),
-    groupId: serial("group_id")
-      .references(() => groups.id)
+    phone: varchar("phone", { length: 25 }).notNull(),
+    programId: varchar("program_id", { length: 255 })
+      .references(() => programs.id)
       .notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
+    city: varchar("city", { length: 255 }).notNull(),
     emailVerified: timestamp("email_verified", {
       mode: "date",
       withTimezone: true,
@@ -88,13 +92,18 @@ export const users = createTable(
 );
 
 export const usersRelations = relations(users, ({ one, many }) => ({
-  groups: one(groups, {
+  group: one(groups, {
     fields: [users.groupId],
     references: [groups.id],
   }),
   schedules: many(schedules),
-  lectureSessions: one(lectureSessions),
+  lectureSessions: many(lectureSessions),
   accounts: many(accounts),
+  transactions: many(transactions),
+  program: one(programs, {
+    fields: [users.programId],
+    references: [programs.id],
+  }),
 }));
 
 // ============================ Prompts ================================
@@ -107,43 +116,39 @@ export const prompts = createTable("prompt", {
 // ============================ Transactions ============================
 export const transactions = createTable("transaction", {
   id: uuid("id").primaryKey().defaultRandom(),
-  groupId: serial("group_id").references(() => groups.id),
-  type: UserType("user_type").notNull(),
+  userId: varchar("user_id", { length: 255 })
+    .references(() => users.id)
+    .notNull(),
   description: text("description").notNull(),
-  ammount: varchar("phone", { length: 25 }).notNull(),
-  program: varchar("program", { length: 255 }).notNull(),
-  receipt: varchar("receipt", { length: 255 }).notNull(),
-  name: varchar("name", { length: 255 }).notNull(),
-  phone: varchar("phone", { length: 25 }).notNull(),
-  email: varchar("email", { length: 255 }).notNull(),
-  city: varchar("city", { length: 255 }).notNull(),
+  ammount: varchar("ammount", { length: 255 }).notNull(),
+  receipt: varchar("receipt", { length: 6 }).notNull(),
   date: date("date").notNull(),
-  status: Status("status").default("PENDING").notNull(),
+  status: Status("status").notNull(),
 });
 
 export const transactionsRelations = relations(transactions, ({ one }) => ({
-  group: one(groups, {
-    fields: [transactions.groupId],
-    references: [groups.id],
+  user: one(users, {
+    fields: [transactions.userId],
+    references: [users.id],
   }),
 }));
 
 // ============================== LEVELS ================================
 export const levels = createTable("level", {
   id: uuid("id").primaryKey().defaultRandom(),
-  courseId: varchar("course_id", { length: 255 })
-    .references(() => courses.id)
+  programId: varchar("program_id", { length: 255 })
+    .references(() => programs.id)
     .notNull(),
   name: varchar("name", { length: 20 }).notNull(),
   level: smallint("level").notNull(),
 });
 
 export const levelsRelations = relations(levels, ({ one, many }) => ({
-  course: one(courses, {
-    fields: [levels.courseId],
-    references: [courses.id],
+  program: one(programs, {
+    fields: [levels.programId],
+    references: [programs.id],
   }),
-  lecture: many(lectures),
+  lectures: many(lectures),
 }));
 
 // ============================== LECTURES ==============================
@@ -158,18 +163,20 @@ export const lectures = createTable("lecture", {
 
 export const lecturesRelations = relations(lectures, ({ one, many }) => ({
   level: one(levels, { fields: [lectures.levelId], references: [levels.id] }),
-  lectureSessions: many(lectureSessions),
 }));
 
 // ============================== LECTURESESSIONS ==============================
 export const lectureSessions = createTable("lecture_session", {
   id: uuid("id").primaryKey().defaultRandom(),
-  lectureId: uuid("lecture_id")
-    .references(() => lectures.id)
-    .notNull(),
   teacherId: varchar("teacher_id", { length: 255 })
     .notNull()
     .references(() => users.id),
+  programId: varchar("program_id", { length: 255 })
+    .references(() => programs.id)
+    .notNull(),
+  groupId: serial("group_id")
+    .references(() => groups.id)
+    .notNull(),
   meet_url: varchar("meet_url", { length: 255 }).notNull(),
   off2class_url: varchar("off2class_url", { length: 255 }).notNull(),
   date: date("date").notNull(),
@@ -181,28 +188,33 @@ export const lectureSessions = createTable("lecture_session", {
 export const lectureSessionsRelations = relations(
   lectureSessions,
   ({ one, many }) => ({
-    lecture: one(lectures, {
-      fields: [lectureSessions.lectureId],
-      references: [lectures.id],
+    program: one(programs, {
+      fields: [lectureSessions.programId],
+      references: [programs.id],
     }),
     teacher: one(users, {
       fields: [lectureSessions.teacherId],
       references: [users.id],
     }),
+    group: one(groups, {
+      fields: [lectureSessions.groupId],
+      references: [groups.id],
+    }),
     schedules: many(schedules),
   }),
 );
 
-// ============================== COURSES ==============================
-export const courses = createTable("course", {
+// ============================== PROGRAMS ==============================
+export const programs = createTable("program", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   proficiency: Proficiency("proficiency").notNull(),
 });
 
-export const coursesRelations = relations(courses, ({ many }) => ({
+export const programsRelations = relations(programs, ({ many }) => ({
+  lectureSessions: many(lectureSessions),
   levels: many(levels),
-  groups: many(groups),
+  users: many(users),
 }));
 
 // ============================== SCHEDULES ==============================
@@ -230,22 +242,15 @@ export const schedulesRelations = relations(schedules, ({ one }) => ({
 // ============================== GROUP ===============================
 export const groups = createTable("group", {
   id: serial("id").primaryKey(),
-  courseId: varchar("course_id", { length: 255 })
-    .references(() => courses.id)
-    .notNull(),
   name: varchar("name", { length: 255 }).notNull(),
   creationDate: date("date").notNull(),
   startingDate: date("starting_date").notNull(),
   currentLevel: smallint("current_level").notNull(),
 });
 
-export const groupsRelations = relations(groups, ({ one, many }) => ({
-  course: one(courses, {
-    fields: [groups.courseId],
-    references: [courses.id],
-  }),
+export const groupsRelations = relations(groups, ({ many }) => ({
   users: many(users),
-  transactions: many(transactions),
+  lectureSessions: many(lectureSessions),
 }));
 
 // ============================== AUTH ===============================
