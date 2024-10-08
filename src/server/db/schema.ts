@@ -121,7 +121,7 @@ export const transactions = createTable("transaction", {
     .notNull(),
   description: text("description").notNull(),
   amount: varchar("ammount", { length: 255 }).notNull(),
-  receipt: varchar("receipt", { length: 6 }).notNull(),
+  receipt: varchar("receipt", { length: 25 }).notNull(),
   date: date("date").notNull(),
   status: Status("status").notNull(),
 });
