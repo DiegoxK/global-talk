@@ -170,11 +170,15 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
 
       const paymentDetails = {
         plan,
+        planType: "COMPLETE",
+        first_name: values.firstName,
+        last_name: values.lastName,
         nameBilling: values.firstName + " " + values.lastName,
         emailBilling: values.email,
         addressBilling: values.address,
         mobilephoneBilling: values.phone,
         numberDocBilling: values.idNumber,
+        city: values.city,
         typeDocBilling: values.idType,
         name: siteConfig.pricing[plan].name,
         description: siteConfig.pricing[plan].description,
