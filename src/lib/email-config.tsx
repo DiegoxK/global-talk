@@ -8,8 +8,8 @@ import { Confirmation } from "@/components/email/confirmation";
 import { env } from "@/env";
 
 interface SendConfirmationParams {
-  courseName: string;
-  courseValue: string;
+  programName: string;
+  programValue: string;
   sendTo: string;
 }
 
@@ -47,16 +47,16 @@ export const sendVerificationRequest = async (
 };
 
 export const sendConfirmation = async (params: SendConfirmationParams) => {
-  const { courseName, courseValue, sendTo } = params;
+  const { programName, programValue, sendTo } = params;
   const emailHtml = await renderAsync(
-    <Confirmation courseName={courseName} courseValue={courseValue} />,
+    <Confirmation programName={programName} programValue={programValue} />,
     {
       pretty: true,
     },
   );
 
   const emailText = await renderAsync(
-    <Confirmation courseName={courseName} courseValue={courseValue} />,
+    <Confirmation programName={programName} programValue={programValue} />,
     {
       plainText: true,
     },
