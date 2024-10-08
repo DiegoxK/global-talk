@@ -12,11 +12,11 @@ import {
 } from "@react-email/components";
 
 export function Confirmation({
-  courseName,
-  courseValue,
+  programName,
+  programValue,
 }: {
-  courseName: string;
-  courseValue: string;
+  programName: string;
+  programValue: string;
 }) {
   return (
     <Html lang="en">
@@ -157,7 +157,7 @@ export function Confirmation({
                 color: "white",
               }}
             >
-              {courseName}
+              {programName}
             </Text>
             <Text
               style={{
@@ -168,7 +168,7 @@ export function Confirmation({
                 color: "white",
               }}
             >
-              COP {courseValue}
+              COP {programValue}
             </Text>
           </Container>
           <Text
