@@ -9,8 +9,9 @@ export type User = z.infer<typeof userSchema>;
 
 // Api calls return output types
 export type UserWithRole = RouterOutput["user"]["getAllUsers"][number];
-export type Lecture = RouterOutput["lecture"]["getAvailableLectures"][number];
+export type LectureSession =
+  RouterOutput["lectureSession"]["getAvailableLectureSessions"][number];
 export type TeacherLecture =
-  RouterOutput["lecture"]["getMyTeacherLectures"][number];
+  RouterOutput["lectureSession"]["getMyTeacherLectureSessions"][number];
 export type Level = RouterOutput["level"]["getUserLevels"][number];
-export type CoruseInfo = RouterOutput["course"]["getCourseName"];
+export type ProgramInfo = RouterOutput["program"]["getProgramName"];
