@@ -28,7 +28,7 @@ export const userRouter = createTRPCRouter({
         role: true,
       },
       with: {
-        programs: {
+        program: {
           columns: {
             id: true,
             name: true,

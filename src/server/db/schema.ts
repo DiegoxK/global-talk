@@ -163,6 +163,7 @@ export const lectures = createTable("lecture", {
 
 export const lecturesRelations = relations(lectures, ({ one, many }) => ({
   level: one(levels, { fields: [lectures.levelId], references: [levels.id] }),
+  lectureSessions: many(lectureSessions),
 }));
 
 // ============================== LECTURESESSIONS ==============================
@@ -171,8 +172,8 @@ export const lectureSessions = createTable("lecture_session", {
   teacherId: varchar("teacher_id", { length: 255 })
     .notNull()
     .references(() => users.id),
-  programId: varchar("program_id", { length: 255 })
-    .references(() => programs.id)
+  lectureId: uuid("lecture_id")
+    .references(() => lectures.id)
     .notNull(),
   groupId: serial("group_id")
     .references(() => groups.id)
@@ -188,9 +189,9 @@ export const lectureSessions = createTable("lecture_session", {
 export const lectureSessionsRelations = relations(
   lectureSessions,
   ({ one, many }) => ({
-    program: one(programs, {
-      fields: [lectureSessions.programId],
-      references: [programs.id],
+    lecture: one(lectures, {
+      fields: [lectureSessions.lectureId],
+      references: [lectures.id],
     }),
     teacher: one(users, {
       fields: [lectureSessions.teacherId],
@@ -212,7 +213,6 @@ export const programs = createTable("program", {
 });
 
 export const programsRelations = relations(programs, ({ many }) => ({
-  lectureSessions: many(lectureSessions),
   levels: many(levels),
   users: many(users),
 }));

@@ -16,7 +16,7 @@ export const scheduleRouter = createTRPCRouter({
       // TODO: Prevent submition if the lecture already has 5 scheduled students
 
       await ctx.db.insert(schedules).values({
-        lectureId: input.lectureId,
+        lectureSessionId: input.lectureId,
         studentId: user.id,
       });
     }),
@@ -34,7 +34,7 @@ export const scheduleRouter = createTRPCRouter({
         .delete(schedules)
         .where(
           and(
-            eq(schedules.lectureId, input.lectureId),
+            eq(schedules.lectureSessionId, input.lectureId),
             eq(schedules.studentId, user.id),
           ),
         );
