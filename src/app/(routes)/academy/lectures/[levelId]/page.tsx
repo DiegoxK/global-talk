@@ -7,8 +7,8 @@ interface LecturesProps {
 
 export default async function Lectures({ params: { levelId } }: LecturesProps) {
   const [availableLectures, scheduledLectures] = await Promise.all([
-    api.lecture.getAvailableLectures({ levelId }),
-    api.lecture.getScheduledLectures({ levelId }),
+    api.lectureSession.getAvailableLectureSessions({ levelId }),
+    api.lectureSession.getScheduledLectureSessions({ levelId }),
   ]);
 
   return (

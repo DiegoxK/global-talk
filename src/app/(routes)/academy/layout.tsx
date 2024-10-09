@@ -15,14 +15,14 @@ export default async function RootLayout({
     redirect("/auth/login");
   }
 
-  const [course, firstLevel] = await Promise.all([
-    api.course.getCourseName(),
+  const [program, firstLevel] = await Promise.all([
+    api.program.getProgramName(),
     api.level.getFirstLevel(),
   ]);
 
   return (
     <div className="flex">
-      <Sidebar user={session.user} course={course} firstLevel={firstLevel} />
+      <Sidebar user={session.user} program={program} firstLevel={firstLevel} />
       <div className="mx-4 mt-4 flex w-full flex-col">
         {/* TODO: Imagen? */}
         <div className="flex w-full items-center justify-center gap-1 rounded-lg bg-primary-700 py-10 text-3xl font-extrabold text-white">

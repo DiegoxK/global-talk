@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { env } from "@/env";
-import type { CoruseInfo, Level, User } from "@/lib/definitions";
+import type { ProgramInfo, Level, User } from "@/lib/definitions";
 import { Logo } from "@/vectors/logo";
 import { UserRound } from "lucide-react";
 import Navigation from "../navigation/navigation";
@@ -13,10 +13,10 @@ interface SidebarProps {
   firstLevel?: {
     id: Level["id"];
   };
-  course: CoruseInfo;
+  program: ProgramInfo;
 }
 
-export default function Sidebar({ user, course, firstLevel }: SidebarProps) {
+export default function Sidebar({ user, program, firstLevel }: SidebarProps) {
   return (
     <div className="sticky top-0 flex h-screen max-h-screen w-80 min-w-80 flex-col space-y-2 bg-primary-50 p-2">
       <div className="flex flex-col items-center justify-center text-nowrap rounded-md bg-white py-8">
@@ -38,9 +38,9 @@ export default function Sidebar({ user, course, firstLevel }: SidebarProps) {
               ? "Profesor"
               : "Administrador"}
         </p>
-        {course && (
+        {program && (
           <p className="font-light text-primary-400">
-            {course.proficiency}: {course.name}
+            {program.proficiency}: {program.name}
           </p>
         )}
       </div>
