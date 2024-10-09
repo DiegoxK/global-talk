@@ -8,7 +8,7 @@ import {
   lectures,
 } from "@/server/db/schema";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { and, count, eq, isNull, ne, not, or, sql } from "drizzle-orm";
+import { and, count, eq, sql } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { env } from "@/env";
 import { db } from "@/server/db";
@@ -43,11 +43,11 @@ const lectureSessionCardSchema = {
   schedulesCount: sq.schedulesCount,
 };
 
-export const lecturesSessionRouter = createTRPCRouter({
-  getScheduledLectures: protectedProcedure
+export const lectureSessionRouter = createTRPCRouter({
+  getScheduledLectureSessions: protectedProcedure
     .input(
       z.object({
-        lectureId: z.string().uuid(),
+        levelId: z.string().uuid(),
       }),
     )
     .query(({ input, ctx }) => {
@@ -59,11 +59,14 @@ export const lecturesSessionRouter = createTRPCRouter({
         .leftJoin(sq, eq(lectureSessions.id, sq.lectureSessionId))
         .leftJoin(users, eq(lectureSessions.teacherId, users.id))
         .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
-        .leftJoin(schedules, eq(lectureSessions.id, schedules.lectureSessionId))
+        .leftJoin(levels, eq(lectures.levelId, levels.id))
         .leftJoin(programs, eq(levels.programId, programs.id))
+        .leftJoin(schedules, eq(users.id, schedules.studentId))
         .where(
           and(
-            eq(lectureSessions.lectureId, input.lectureId),
+            eq(levels.id, input.levelId),
+            eq(lectureSessions.groupId, user.groupId),
+            eq(programs.id, user.programId),
             eq(schedules.studentId, user.id),
           ),
         );
@@ -72,29 +75,33 @@ export const lecturesSessionRouter = createTRPCRouter({
   getAvailableLectureSessions: protectedProcedure
     .input(
       z.object({
-        lectureId: z.string().uuid(),
+        levelId: z.string().uuid(),
       }),
     )
-    .query(({ input, ctx }) => {
+    .query(async ({ input, ctx }) => {
       const user = ctx.session.user;
 
-      return ctx.db
+      const availableLectures = await ctx.db
         .select(lectureSessionCardSchema)
         .from(lectureSessions)
         .leftJoin(sq, eq(lectureSessions.id, sq.lectureSessionId))
         .leftJoin(users, eq(lectureSessions.teacherId, users.id))
         .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
-        .leftJoin(schedules, eq(lectureSessions.id, schedules.lectureSessionId))
+        .leftJoin(levels, eq(lectures.levelId, levels.id))
         .leftJoin(programs, eq(levels.programId, programs.id))
+        .leftJoin(schedules, eq(lectureSessions.id, schedules.lectureSessionId))
         .where(
           and(
-            eq(lectureSessions.lectureId, input.lectureId),
-            or(
-              isNull(schedules.studentId),
-              not(eq(schedules.studentId, user.id)),
-            ),
+            eq(levels.id, input.levelId),
+            eq(lectureSessions.groupId, user.groupId),
+            eq(programs.id, user.programId),
+            sql<string>`"global-talk_schedule".student_id IS DISTINCT FROM ${user.id}`,
           ),
         );
+
+      console.log("availableLectures", availableLectures);
+
+      return availableLectures;
     }),
 
   getMyTeacherLectureSessions: protectedProcedure.query(async ({ ctx }) => {
