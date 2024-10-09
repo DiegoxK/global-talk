@@ -223,7 +223,7 @@ export const schedules = createTable("schedule", {
   studentId: varchar("student_id", { length: 255 })
     .notNull()
     .references(() => users.id),
-  lectureSessionId: uuid("lectureSession_id")
+  lectureSessionId: uuid("lecture_session_id")
     .references(() => lectureSessions.id, { onDelete: "cascade" })
     .notNull(),
 });
