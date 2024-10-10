@@ -24,7 +24,7 @@ import { useState } from "react";
 import type { ControllerRenderProps, FieldValues } from "react-hook-form";
 
 interface ComboboxProps<TFieldValues extends FieldValues> {
-  values?: { label: string; value: string }[];
+  values?: { label: string; value: string | number }[];
   field: ControllerRenderProps<TFieldValues>;
   fieldName: string;
 }
