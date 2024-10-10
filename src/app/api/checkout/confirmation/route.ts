@@ -30,7 +30,6 @@ const updateTransaction = async (
     .update(transactions)
     .set({
       status,
-      phone,
     })
     .where(eq(transactions.id, id))
     .returning();
@@ -89,13 +88,13 @@ export async function POST(req: NextRequest) {
 
   // Obtener invoice y valor en el sistema del comercio
   const numOrder = transaction.receipt;
-  const valueOrder = transaction.ammount;
+  const valueOrder = transaction.amount;
 
   // Validar que el valor de la transacción coincida con el del sistema
   if (
     x_id_invoice === numOrder &&
     Number(x_amount) === Number(valueOrder) &&
-    transaction.ammount
+    transaction.amount
   ) {
     // Calcular la firma
     const signature = createHash("sha256")
