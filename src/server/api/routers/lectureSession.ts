@@ -28,6 +28,8 @@ const sq = db
 
 const lectureSessionCardSchema = {
   id: lectureSessions.id,
+  name: lectures.title,
+  description: lectures.description,
   meetUrl: lectureSessions.meet_url,
   off2classUrl: lectureSessions.off2class_url,
   date: lectureSessions.date,

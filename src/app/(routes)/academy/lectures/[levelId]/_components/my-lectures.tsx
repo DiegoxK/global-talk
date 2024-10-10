@@ -1,15 +1,15 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import type { Lecture } from "@/lib/definitions";
+import type { LectureSession } from "@/lib/definitions";
 
 import LectureInformation from "./lecture-information";
 import { useState } from "react";
 import LectureCard from "../../../_components/ui/lecture-card";
 
 interface ScheduledProps {
-  scheduledLectures: Lecture[];
-  availableLectures: Lecture[];
+  scheduledLectures: LectureSession[];
+  availableLectures: LectureSession[];
 }
 
 export default function MyLectures({
@@ -19,7 +19,7 @@ export default function MyLectures({
   // TODO: optimize re renders
   const [open, setOpen] = useState(true);
   const [state, setState] = useState<"view" | "schedule">("view");
-  const [lecture, setLecture] = useState<Lecture>();
+  const [lecture, setLecture] = useState<LectureSession>();
 
   return (
     <>

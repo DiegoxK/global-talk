@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import type { Lecture } from "@/lib/definitions";
+import type { LectureSession } from "@/lib/definitions";
 import { formatDate, formatTime } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { FileSymlink, LogOut, SquareArrowOutUpRight } from "lucide-react";
@@ -21,7 +21,7 @@ import type { Dispatch, SetStateAction } from "react";
 interface LectureInformationProps {
   state: "view" | "schedule";
   open: boolean;
-  lecture?: Lecture;
+  lecture?: LectureSession;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -50,7 +50,7 @@ export default function LectureInformation({
 }
 
 interface ScheduleLectureProps {
-  lecture: Lecture;
+  lecture: LectureSession;
   onSubmit: () => void;
 }
 
@@ -83,7 +83,7 @@ const ScheduleLecture = ({ lecture, onSubmit }: ScheduleLectureProps) => {
 };
 
 interface ScheduleInformationProps {
-  lecture: Lecture;
+  lecture: LectureSession;
   onSubmit: () => void;
 }
 
