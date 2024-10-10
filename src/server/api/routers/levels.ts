@@ -37,10 +37,10 @@ export const levelRouter = createTRPCRouter({
     });
   }),
 
-  getProgramLevelsIds: protectedProcedure
+  getProgramLevelIds: protectedProcedure
     .input(
       z.object({
-        programId: z.string().uuid(),
+        programId: z.string(),
       }),
     )
     .query(({ input, ctx }) => {
