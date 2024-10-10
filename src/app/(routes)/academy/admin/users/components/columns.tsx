@@ -34,11 +34,19 @@ export const columns: ColumnDef<UserWithRole>[] = [
     header: "Email",
   },
   {
-    accessorKey: "courses.name",
-    header: "Curso",
+    accessorKey: "phone",
+    header: "Teléfono",
   },
   {
-    accessorKey: "courses.proficiency",
+    accessorKey: "planType",
+    header: "Plan",
+  },
+  {
+    accessorKey: "program.name",
+    header: "Programa",
+  },
+  {
+    accessorKey: "program.proficiency",
     header: "Nivel",
   },
   {

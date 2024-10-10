@@ -56,7 +56,7 @@ const formSchema = z.object({
     .max(10, {
       message: "No puede ser mayor a 10 caracteres",
     }),
-  courseId: z.string().uuid({
+  programId: z.string().uuid({
     message: "Campo requerido",
   }),
 });
@@ -77,7 +77,7 @@ export default function DataTableDialog({
   const router = useRouter();
   const isEditing = Boolean(user);
 
-  const { data: courses } = api.course.getCoursesIds.useQuery();
+  const { data: programs } = api.program.getProgramsIds.useQuery();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -85,7 +85,7 @@ export default function DataTableDialog({
       name: user?.name ?? "",
       lastName: user?.lastName ?? "",
       email: user?.email ?? "",
-      courseId: user?.courses.id ?? "",
+      programId: user?.program.id ?? "",
       role: user?.role ?? "student",
     },
   });
@@ -170,7 +170,7 @@ export default function DataTableDialog({
               />
               <FormField
                 control={form.control}
-                name="courseId"
+                name="programId"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel>
@@ -178,7 +178,7 @@ export default function DataTableDialog({
                     </FormLabel>
                     <Combobox
                       fieldName="curso"
-                      values={courses}
+                      values={programs}
                       field={field}
                     />
                   </FormItem>

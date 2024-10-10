@@ -1,6 +1,6 @@
 "use client";
 
-import type { Lecture } from "@/lib/definitions";
+import type { LectureSession } from "@/lib/definitions";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -17,7 +17,7 @@ import { cn, formatDate, formatTime } from "@/lib/utils";
 interface LectureCardProps {
   state: "available" | "scheduled" | "finished" | "teacher";
   action?: () => void;
-  lecture: Lecture;
+  lecture: LectureSession;
   scheduleCount: number;
 }
 
