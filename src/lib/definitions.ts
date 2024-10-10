@@ -11,7 +11,7 @@ export type User = z.infer<typeof userSchema>;
 export type UserWithRole = RouterOutput["user"]["getAllUsers"][number];
 export type LectureSession =
   RouterOutput["lectureSession"]["getAvailableLectureSessions"][number];
-export type TeacherLecture =
+export type TeacherLectureSession =
   RouterOutput["lectureSession"]["getMyTeacherLectureSessions"][number];
 export type Level = RouterOutput["level"]["getUserLevels"][number];
 export type ProgramInfo = RouterOutput["program"]["getProgramName"];
