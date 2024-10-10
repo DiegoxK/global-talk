@@ -1,5 +1,5 @@
 "use client";
-import type { TeacherLecture } from "@/lib/definitions";
+import type { TeacherLectureSession } from "@/lib/definitions";
 import { useState } from "react";
 import LectureForm from "./lecture-form";
 import LectureCard from "../../../_components/ui/lecture-card";
@@ -8,20 +8,20 @@ import { Plus } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 interface MyLecturesProps {
-  lectures: TeacherLecture[];
+  lectures: TeacherLectureSession[];
 }
 
 export default function MyLectures({ lectures }: MyLecturesProps) {
   const [open, setOpen] = useState(false);
-  const [lecture, setLecture] = useState<TeacherLecture | undefined | null>(
-    undefined,
-  );
+  const [lecture, setLecture] = useState<
+    TeacherLectureSession | undefined | null
+  >(undefined);
 
   return (
     <>
       {lecture !== undefined && (
         <LectureForm
-          lecture={lecture}
+          lectureSession={lecture}
           setLecture={setLecture}
           open={open}
           setOpen={setOpen}
