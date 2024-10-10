@@ -1,7 +1,7 @@
 "use client";
 
 import { type Dispatch, type SetStateAction } from "react";
-import type { TeacherLecture } from "@/lib/definitions";
+import type { TeacherLectureSession } from "@/lib/definitions";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -50,28 +50,37 @@ import { useRouter } from "next/navigation";
 export type FormSchema = z.infer<typeof formSchema>;
 
 const formSchema = z.object({
-  courseId: z.string().uuid({
+  lectureSessionId: z.string().uuid({
+    message: "Campo requerido",
+  }),
+  groupId: z.number({
+    message: "Campo requerido",
+  }),
+  programId: z.string({
     message: "Campo requerido",
   }),
   levelId: z.string().uuid({
     message: "Campo requerido",
   }),
-  name: z
-    .string()
-    .min(1, {
-      message: "Campo requerido",
-    })
-    .max(25, {
-      message: "No puede ser mayor a 25 caracteres",
-    }),
-  description: z
-    .string()
-    .min(1, {
-      message: "Campo requerido",
-    })
-    .max(255, {
-      message: "No puede ser mayor a 255 caracteres",
-    }),
+  lectureId: z.string().uuid({
+    message: "Campo requerido",
+  }),
+  // name: z
+  //   .string()
+  //   .min(1, {
+  //     message: "Campo requerido",
+  //   })
+  //   .max(25, {
+  //     message: "No puede ser mayor a 25 caracteres",
+  //   }),
+  // description: z
+  //   .string()
+  //   .min(1, {
+  //     message: "Campo requerido",
+  //   })
+  //   .max(255, {
+  //     message: "No puede ser mayor a 255 caracteres",
+  //   }),
   meet_url: z
     .string()
     .url({
@@ -89,7 +98,6 @@ const formSchema = z.object({
       message: "No puede ser mayor a 255 caracteres",
     }),
   date: z.string().date(),
-
   start_time: z.string().regex(/^(?:[01]\d|2[0-3]):[0-5]\d$/, {
     message: "Campo requerido",
   }),
@@ -101,31 +109,33 @@ const formSchema = z.object({
 interface LectureFormProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  lecture: TeacherLecture | null;
-  setLecture: Dispatch<SetStateAction<TeacherLecture | undefined | null>>;
+  lectureSession: TeacherLectureSession | null;
+  setLecture: Dispatch<
+    SetStateAction<TeacherLectureSession | undefined | null>
+  >;
 }
 
 export default function LectureForm({
   open,
   setOpen,
-  lecture,
+  lectureSession,
   setLecture,
 }: LectureFormProps) {
   const router = useRouter();
-  const isEditing = Boolean(lecture);
+  const isEditing = Boolean(lectureSession);
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      courseId: lecture?.courseId ?? "",
-      levelId: lecture?.levelId ?? "",
-      name: lecture?.name ?? "",
-      description: lecture?.description ?? "",
-      meet_url: lecture?.meetUrl ?? "",
-      off2class_url: lecture?.off2classUrl ?? "",
-      date: lecture?.date ?? "",
-      start_time: lecture?.startTime.substring(0, 5) ?? "",
-      end_time: lecture?.endTime.substring(0, 5) ?? "",
+      programId: lectureSession?.programId ?? "",
+      levelId: lectureSession?.levelId ?? "",
+      lectureId: lectureSession?.lectureId ?? "",
+      groupId: lectureSession?.groupId ?? -1,
+      meet_url: lectureSession?.meetUrl ?? "",
+      off2class_url: lectureSession?.off2classUrl ?? "",
+      date: lectureSession?.date ?? "",
+      start_time: lectureSession?.startTime.substring(0, 5) ?? "",
+      end_time: lectureSession?.endTime.substring(0, 5) ?? "",
     },
   });
 
@@ -137,43 +147,61 @@ export default function LectureForm({
   };
 
   // TODO: Error and loading handling for api calls
-  const { data: courses } = api.course.getCoursesIds.useQuery();
-  const { mutate: editLecture } = api.lecture.editLecture.useMutation({
-    onSuccess: onSuccessfulSubmit,
-  });
-  const { mutate: createLecture } = api.lecture.createLecture.useMutation({
-    onSuccess: onSuccessfulSubmit,
-  });
-  const { mutate: deleteLecture } = api.lecture.deleteLecture.useMutation({
-    onSuccess: onSuccessfulSubmit,
-  });
+  const { data: programs } = api.program.getProgramsIds.useQuery();
+  const { data: groups } = api.groups.getgroups.useQuery();
 
-  const courseId = form.watch("courseId");
+  const { mutate: editLectureSession } =
+    api.lectureSession.editLectureSession.useMutation({
+      onSuccess: onSuccessfulSubmit,
+    });
 
-  const { data: levels } = api.level.getCourseLevelsIds.useQuery(
+  const { mutate: createLectureSession } =
+    api.lectureSession.createLectureSession.useMutation({
+      onSuccess: onSuccessfulSubmit,
+    });
+
+  const { mutate: deleteLectureSession } =
+    api.lectureSession.deleteLectureSession.useMutation({
+      onSuccess: onSuccessfulSubmit,
+    });
+
+  const programId = form.watch("programId");
+
+  const { data: levels } = api.level.getProgramLevelIds.useQuery(
     {
-      courseId,
+      programId,
     },
     {
-      enabled: Boolean(courseId),
+      enabled: Boolean(programId),
+    },
+  );
+
+  const levelId = form.watch("levelId");
+
+  const { data: lectures } = api.lectures.getLevelLectureIds.useQuery(
+    {
+      levelId,
+    },
+    {
+      enabled: Boolean(levelId),
     },
   );
 
   function onSubmit(values: FormSchema) {
     if (isEditing) {
-      editLecture({
-        id: lecture?.id,
+      editLectureSession({
+        id: lectureSession?.id,
         ...values,
       });
     } else {
-      createLecture(values);
+      createLectureSession(values);
     }
   }
 
   function onDelete() {
-    if (isEditing && lecture) {
-      deleteLecture({
-        lectureId: lecture.id,
+    if (isEditing && lectureSession) {
+      deleteLectureSession({
+        lectureSessionId: lectureSession.id,
       });
     }
   }
@@ -207,15 +235,31 @@ export default function LectureForm({
               <div className="mt-4 max-h-[60vh] space-y-2 overflow-y-auto rounded-sm px-2 pb-2">
                 <FormField
                   control={form.control}
-                  name="courseId"
+                  name="groupId"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>
-                        Curso <Required /> <FormMessage />
+                        Grupo <Required /> <FormMessage />
                       </FormLabel>
                       <Combobox
-                        fieldName="curso"
-                        values={courses}
+                        fieldName="grupo"
+                        values={groups}
+                        field={field}
+                      />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="programId"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>
+                        Programa <Required /> <FormMessage />
+                      </FormLabel>
+                      <Combobox
+                        fieldName="programa"
+                        values={programs}
                         field={field}
                       />
                     </FormItem>
@@ -239,6 +283,23 @@ export default function LectureForm({
                   )}
                 />
                 <FormField
+                  control={form.control}
+                  name="lectureId"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>
+                        Clase <Required />
+                        <FormMessage />
+                      </FormLabel>
+                      <Combobox
+                        fieldName="clase"
+                        values={lectures}
+                        field={field}
+                      />
+                    </FormItem>
+                  )}
+                />
+                {/* <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
@@ -269,7 +330,7 @@ export default function LectureForm({
                       </FormControl>
                     </FormItem>
                   )}
-                />
+                /> */}
                 <FormField
                   control={form.control}
                   name="meet_url"
