@@ -26,6 +26,8 @@ export const userRouter = createTRPCRouter({
         lastName: true,
         email: true,
         role: true,
+        planType: true,
+        phone: true,
       },
       with: {
         program: {
@@ -33,6 +35,12 @@ export const userRouter = createTRPCRouter({
             id: true,
             name: true,
             proficiency: true,
+          },
+        },
+        group: {
+          columns: {
+            id: true,
+            name: true,
           },
         },
       },
