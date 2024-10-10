@@ -6,6 +6,7 @@ import {
   schedules,
   users,
   lectures,
+  groups,
 } from "@/server/db/schema";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { and, count, eq, sql } from "drizzle-orm";
@@ -13,7 +14,9 @@ import { createInsertSchema } from "drizzle-zod";
 import { env } from "@/env";
 import { db } from "@/server/db";
 
-const createLectureSessionSchema = createInsertSchema(lectureSessions, {});
+const createLectureSessionSchema = createInsertSchema(lectureSessions, {
+  teacherId: z.undefined(),
+});
 
 // Obtain a table that gets the schedulesCount to each session
 const sq = db
@@ -112,14 +115,18 @@ export const lectureSessionRouter = createTRPCRouter({
     return ctx.db
       .select({
         ...lectureSessionCardSchema,
-        programId: programs.id,
+        lectureId: lectures.id,
         levelId: levels.id,
+        programId: programs.id,
+        groupId: groups.id,
       })
       .from(lectureSessions)
       .leftJoin(sq, eq(lectureSessions.id, sq.lectureSessionId))
       .leftJoin(users, eq(lectureSessions.teacherId, users.id))
       .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
+      .leftJoin(levels, eq(lectures.levelId, levels.id))
       .leftJoin(programs, eq(levels.programId, programs.id))
+      .leftJoin(groups, eq(lectureSessions.groupId, groups.id))
       .where(eq(lectureSessions.teacherId, user.id));
   }),
 
