@@ -5,6 +5,8 @@ import { scheduleRouter } from "./routers/schedule";
 import { levelRouter } from "./routers/levels";
 import { programRouter } from "./routers/program";
 import { epaycoRouter } from "./routers/epayco";
+import { lectureRouter } from "./routers/lecture";
+import { groupRouter } from "./routers/group";
 
 /**
  * This is the primary router for your server.
@@ -16,6 +18,8 @@ export const appRouter = createTRPCRouter({
   program: programRouter,
   schedule: scheduleRouter,
   level: levelRouter,
+  lectures: lectureRouter,
+  groups: groupRouter,
   user: userRouter,
   lectureSession: lectureSessionRouter,
 });
