@@ -143,7 +143,10 @@ const ScheduleInformation = ({
           </div>
           <div className="m-0">
             <p className="text-primary-700">Material</p>
-            <Link href={lecture.off2classUrl} target="_blank">
+            <Link
+              href={`https://app.off2class.com/student/sessions/${lecture.off2classUrl}`}
+              target="_blank"
+            >
               <Button className="mt-2" size="icon">
                 <FileSymlink className="h-5 w-5" />
               </Button>
