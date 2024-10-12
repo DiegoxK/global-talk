@@ -50,9 +50,6 @@ import { useRouter } from "next/navigation";
 export type FormSchema = z.infer<typeof formSchema>;
 
 const formSchema = z.object({
-  lectureSessionId: z.string().uuid({
-    message: "Campo requerido",
-  }),
   groupId: z.number({
     message: "Campo requerido",
   }),
@@ -81,7 +78,7 @@ const formSchema = z.object({
   //   .max(255, {
   //     message: "No puede ser mayor a 255 caracteres",
   //   }),
-  meet_url: z
+  meetUrl: z
     .string()
     .url({
       message: "Campo requerido",
@@ -89,19 +86,18 @@ const formSchema = z.object({
     .max(255, {
       message: "No puede ser mayor a 255 caracteres",
     }),
-  off2class_url: z
-    .string()
-    .url({
+  off2classId: z
+    .string({
       message: "Campo requerido",
     })
     .max(255, {
-      message: "No puede ser mayor a 255 caracteres",
+      message: "No puede ser mayor a 25 caracteres",
     }),
   date: z.string().date(),
-  start_time: z.string().regex(/^(?:[01]\d|2[0-3]):[0-5]\d$/, {
+  startTime: z.string().regex(/^(?:[01]\d|2[0-3]):[0-5]\d$/, {
     message: "Campo requerido",
   }),
-  end_time: z.string().regex(/^(?:[01]\d|2[0-3]):[0-5]\d$/, {
+  endTime: z.string().regex(/^(?:[01]\d|2[0-3]):[0-5]\d$/, {
     message: "Campo requerido",
   }),
 });
@@ -131,11 +127,11 @@ export default function LectureForm({
       levelId: lectureSession?.levelId ?? "",
       lectureId: lectureSession?.lectureId ?? "",
       groupId: lectureSession?.groupId ?? -1,
-      meet_url: lectureSession?.meetUrl ?? "",
-      off2class_url: lectureSession?.off2classUrl ?? "",
+      meetUrl: lectureSession?.meetUrl ?? "",
+      off2classId: lectureSession?.off2classUrl ?? "",
       date: lectureSession?.date ?? "",
-      start_time: lectureSession?.startTime.substring(0, 5) ?? "",
-      end_time: lectureSession?.endTime.substring(0, 5) ?? "",
+      startTime: lectureSession?.startTime.substring(0, 5) ?? "",
+      endTime: lectureSession?.endTime.substring(0, 5) ?? "",
     },
   });
 
@@ -205,6 +201,8 @@ export default function LectureForm({
       });
     }
   }
+
+  console.log(form.formState.errors);
 
   return (
     <Dialog
@@ -333,7 +331,7 @@ export default function LectureForm({
                 /> */}
                 <FormField
                   control={form.control}
-                  name="meet_url"
+                  name="meetUrl"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
@@ -351,15 +349,15 @@ export default function LectureForm({
                 />
                 <FormField
                   control={form.control}
-                  name="off2class_url"
+                  name="off2classId"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        URL de Off2Class <Required /> <FormMessage />
+                        Id de la clase de Off2Class <Required /> <FormMessage />
                       </FormLabel>
                       <FormControl>
                         <Input
-                          type="url"
+                          type="text"
                           placeholder="https://off2class.com/..."
                           {...field}
                         />
@@ -384,7 +382,7 @@ export default function LectureForm({
                 <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
-                    name="start_time"
+                    name="startTime"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
@@ -398,7 +396,7 @@ export default function LectureForm({
                   />
                   <FormField
                     control={form.control}
-                    name="end_time"
+                    name="endTime"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
