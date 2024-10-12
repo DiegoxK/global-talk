@@ -178,11 +178,11 @@ export const lectureSessions = createTable("lecture_session", {
   groupId: serial("group_id")
     .references(() => groups.id)
     .notNull(),
-  meet_url: varchar("meet_url", { length: 255 }).notNull(),
-  off2class_url: varchar("off2class_url", { length: 255 }).notNull(),
+  meetUrl: varchar("meet_url", { length: 255 }).notNull(),
+  off2classId: varchar("off2class_id", { length: 255 }).notNull(),
   date: date("date").notNull(),
-  start_time: time("start_time").notNull(),
-  end_time: time("end_time").notNull(),
+  startTime: time("start_time").notNull(),
+  endTime: time("end_time").notNull(),
   finished: boolean("finished").default(false).notNull(),
 });
 
