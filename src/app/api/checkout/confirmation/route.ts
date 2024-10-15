@@ -37,9 +37,6 @@ const updateTransaction = async (id: string, status: TransactionStatus) => {
 
 const activateUser = async (email?: string) => {
   console.log("Activando usuario ...");
-
-  console.log(email);
-
   if (email) {
     const user = await db
       .update(users)
