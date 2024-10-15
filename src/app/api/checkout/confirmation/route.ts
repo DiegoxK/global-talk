@@ -1,6 +1,6 @@
 import { env } from "@/env";
 import { db } from "@/server/db";
-import { transactions } from "@/server/db/schema";
+import { transactions, users } from "@/server/db/schema";
 import { createHash } from "crypto";
 import { eq } from "drizzle-orm";
 import { type NextRequest, NextResponse } from "next/server";
@@ -39,6 +39,16 @@ const updateTransaction = async (
   }
 };
 
+const activateUser = async (email?: string) => {
+  if (email) {
+    await db.update(users).set({ active: true }).where(eq(users.email, email));
+  } else {
+    throw new Error(
+      "Error al obtener el correo electrónico del usuario desde epayco: 'x_customer_email'",
+    );
+  }
+};
+
 export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });
 }
@@ -51,6 +61,7 @@ export async function POST(req: NextRequest) {
   // Variables de respuesta de ePayco
   const {
     x_id_invoice,
+    x_customer_email,
     x_ref_payco,
     x_transaction_id,
     x_amount,
@@ -119,6 +130,7 @@ export async function POST(req: NextRequest) {
       switch (Number(x_cod_response)) {
         case 1:
           await updateTransaction(x_extra4, "PAID", x_extra3);
+          await activateUser(x_customer_email);
 
           return NextResponse.json(
             { message: "Transacción aceptada" },
