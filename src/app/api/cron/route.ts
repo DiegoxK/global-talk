@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
-import type { NextApiResponse } from "next";
 import { prompts } from "@/server/db/schema";
 import { db } from "@/server/db";
 import { env } from "@/env";
 
-export async function GET(res: NextApiResponse, req: Request) {
+export async function GET(res: Response, req: Request) {
   if (req.headers.get("Authorization") !== `Bearer ${env.CRON_SECRET}`) {
-    return res.status(401).end("Unauthorized");
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   await db.insert(prompts).values({
