@@ -148,9 +148,12 @@ export const epaycoRouter = createTRPCRouter({
           invoice,
         });
 
-        if (sessionId) {
-          return sessionId;
+        if (!sessionId) {
+          throw new Error(
+            "Error al crear la session de pago, Intenta de nuevo",
+          );
         }
+        return sessionId;
       };
 
       // ========================================================
@@ -205,9 +208,12 @@ export const epaycoRouter = createTRPCRouter({
           invoice,
         });
 
-        if (sessionId) {
-          return sessionId;
+        if (!sessionId) {
+          throw new Error(
+            "Error al crear la session de pago, Intenta de nuevo",
+          );
         }
+        return sessionId;
       };
 
       // ========================================================
