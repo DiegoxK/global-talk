@@ -154,6 +154,63 @@ export const epaycoRouter = createTRPCRouter({
       };
 
       // ========================================================
+      const editUser = async (groupId: number, email: string) => {
+        const invoice = generateInvoiceCode();
+        console.log("Editanto usuario existente ...");
+
+        const user = await ctx.db
+          .update(users)
+          .set({
+            planType: input.planType as PlanType,
+            groupId,
+            name: input.first_name,
+            lastName: input.last_name,
+            phone: input.mobilephoneBilling,
+            programId: input.plan,
+            email: input.emailBilling,
+            city: input.city,
+          })
+          .where(eq(users.email, email))
+          .returning();
+
+        console.log("Creando transaccion ...");
+
+        if (!user?.[0]?.id) throw new Error("Error al obtener el usuario");
+
+        const transaction = await ctx.db
+          .insert(transactions)
+          .values({
+            userId: user[0].id,
+            description: input.description,
+            amount: input.amount,
+            receipt: invoice,
+            date: new Date().toISOString(),
+            status: "PENDING",
+          })
+          .returning();
+
+        const transactionId = transaction[0]?.id;
+
+        if (!transactionId) {
+          throw new Error("Error al crear la transacción");
+        }
+
+        console.log("Creando ePayco session...");
+        const sessionId = await createSession({
+          ...paymentDetails,
+          extra1: input.nameBilling,
+          extra2: input.planType,
+          extra3: input.mobilephoneBilling,
+          extra4: transactionId,
+          invoice,
+        });
+
+        if (sessionId) {
+          return sessionId;
+        }
+      };
+
+      // ========================================================
 
       console.log("Verificando si el usuario ya existe...");
 
@@ -161,11 +218,13 @@ export const epaycoRouter = createTRPCRouter({
         where: (table, funcs) => funcs.eq(table.email, input.emailBilling),
       });
 
-      if (userExist) {
-        throw new Error("El usuario ya existe");
+      if (userExist?.email === input.emailBilling) {
+        console.log(
+          "Usuario existente, Se reemplazara con la nueva informacion de facturacion",
+        );
       }
 
-      console.log("Verificando si el grupo existe...");
+      console.log("Verificando grupos...");
 
       const lastAddedGroup = await ctx.db.query.groups.findFirst({
         orderBy: desc(groups.id),
@@ -185,6 +244,13 @@ export const epaycoRouter = createTRPCRouter({
           .returning();
 
         if (currentLastAddedGroup?.[0]?.id) {
+          if (userExist) {
+            return await editUser(
+              currentLastAddedGroup[0].id,
+              input.emailBilling,
+            );
+          }
+
           return await createUser(currentLastAddedGroup[0].id);
         }
       } else {
@@ -217,13 +283,24 @@ export const epaycoRouter = createTRPCRouter({
             .returning();
 
           if (currentLastAddedGroup?.[0]?.id) {
+            if (userExist) {
+              return await editUser(
+                currentLastAddedGroup[0].id,
+                input.emailBilling,
+              );
+            }
             return await createUser(currentLastAddedGroup[0].id);
           }
         } else {
+          if (userExist) {
+            console.log(
+              "El grupo ya está en la misma semana, actualizando el grupo del usuario ...",
+            );
+            return await editUser(lastAddedGroup.id, input.emailBilling);
+          }
           console.log(
             "El grupo ya está en la misma semana, creando usuario ...",
           );
-
           return await createUser(lastAddedGroup.id);
         }
       }
