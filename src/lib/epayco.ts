@@ -61,6 +61,174 @@ interface ChargeSubscriptionParams {
   ip: string;
 }
 
+// {
+//   success: true,
+//   title_response: 'Transacción realizada',
+//   text_response: 'Transaccion realizada con tarjeta de pruebas',
+//   last_action: 'Validar tarjeta de pruebas',
+//   data: {
+//     ref_payco: 242018180,
+//     factura: '70ec903db151e8f0b0bbd72-1729022302',
+//     descripcion: 'Plan begginers A0',
+//     valor: 30000,
+//     iva: 0,
+//     ico: 0,
+//     baseiva: 30000,
+//     valorneto: 30000,
+//     moneda: 'COP',
+//     banco: 'BANCO DE PRUEBAS',
+//     estado: 'Aceptada',
+//     respuesta: 'Aprobada',
+//     autorizacion: '000000',
+//     recibo: '242018180',
+//     fecha: '2024-10-15 14:58:24',
+//     franquicia: 'VS',
+//     cod_respuesta: 1,
+//     cod_error: '00',
+//     ip: '186.28.88.142',
+//     enpruebas: 1,
+//     tipo_doc: 'CC',
+//     documento: '21054065198',
+//     nombres: 'Antonio',
+//     apellidos: 'Melandro',
+//     email: 'antoniomelandronaslkdjal@yopmail.com',
+//     ciudad: 'Sin Ciudad',
+//     direccion: 'Calle 5 N 3',
+//     ind_pais: 'PE',
+//     country_card: 'PE',
+//     extras: {
+//       extra1: '70ec903db151e8f0b0bbd72',
+//       extra2: '70ec8ff3811826b0f022072',
+//       extra3: '70ec8a9747b4d853101703e',
+//       extra9: '1190182',
+//       extra4: '',
+//       extra5: '',
+//       extra6: '',
+//       extra7: '',
+//       extra8: '',
+//       extra10: ''
+//     },
+//     cc_network_response: { code: '00', message: 'Aprobada' },
+//     extras_epayco: { extra5: 'P10' }
+//   },
+//   subscription: {
+//     idPlan: 'beginners_a0',
+//     data: {
+//       idClient: 'beginners_a0',
+//       name: 'Beginners A0',
+//       description: 'Plan begginers A0',
+//       amount: 30000,
+//       currency: 'COP',
+//       interval: 'month',
+//       interval_count: 1,
+//       trialDays: 0
+//     },
+//     periodStart: '2024-10-15T14:56:51.000000Z',
+//     periodEnd: '15-11-2024',
+//     nextVerificationDate: '15-11-2024',
+//     status: 'active',
+//     first: true,
+//     idCustomer: '70ec8ff3811826b0f022072',
+//     tokenCard: '70ec8fac2f1f5356a0e7017',
+//     ip: '',
+//     paymentAttempts: [],
+//     url_confirmation: 'https://globtm.vercel.app/api/checkout/confirmacion',
+//     method_confirmation: 'POST'
+//   }
+// }
+
+interface ChargeSubscriptionResponse {
+  success: boolean;
+  title_response: string;
+  text_response: string;
+  last_action: string;
+  data: {
+    ref_payco: string;
+    factura: string;
+    descripcion: string;
+    valor: number;
+    iva: number;
+    ico: number;
+    baseiva: number;
+    valorneto: number;
+    moneda: string;
+    banco: string;
+    estado: string;
+    respuesta: string;
+    autorizacion: string;
+    recibo: string;
+    fecha: string;
+    franquicia: string;
+    cod_respuesta: number;
+    cod_error: string;
+    ip: string;
+    enpruebas: number;
+    tipo_doc: string;
+    documento: string;
+    nombres: string;
+    apellidos: string;
+    email: string;
+    ciudad: string;
+    direccion: string;
+    ind_pais: string;
+    country_card: string;
+    extras: {
+      extra1: string;
+      extra2: string;
+      extra3: string;
+      extra9: string;
+      extra4: string;
+      extra5: string;
+      extra6: string;
+      extra7: string;
+      extra8: string;
+      extra10: string;
+    };
+    cc_network_response: {
+      code: string;
+      message: string;
+    };
+    extras_epayco: {
+      extra5: string;
+    };
+  };
+  subscription: {
+    idPlan: string;
+    data: {
+      idClient: string;
+      name: string;
+      description: string;
+      amount: number;
+      currency: string;
+      interval: string;
+      interval_count: number;
+      trialDays: number;
+    };
+    periodStart: string;
+    periodEnd: string;
+    nextVerificationDate: string;
+    status: string;
+    first: boolean;
+    idCustomer: string;
+    tokenCard: string;
+    ip: string;
+    paymentAttempts: unknown[];
+    url_confirmation: string;
+    method_confirmation: string;
+  };
+}
+
+interface cancelSubscriptionResponse {
+  status: boolean;
+  message: string;
+  success: boolean;
+  type: string;
+  data: {
+    description: string;
+  };
+  object: string;
+}
+
 interface CreateCustomerResponse {
   success: boolean;
   titleResponse: string;
@@ -277,7 +445,7 @@ export const createSession = async (params: PaymentDetails) => {
 
     const result: SessionResponse = JSON.parse(await response.text());
 
-    if (result.success === false) {
+    if (result.success !== true) {
       console.log(result.textResponse);
       throw new Error(result.textResponse);
     }
@@ -317,7 +485,7 @@ export const createCardToken = async (params: CreateCardTokenParams) => {
 
     const result: CardTokenResponse = JSON.parse(await response.text());
 
-    if (result.success === false) {
+    if (result.success !== true) {
       console.log(result.textResponse);
       throw new Error(result.textResponse);
     }
@@ -360,7 +528,7 @@ export const createCustomer = async (params: CreateCustomerParams) => {
 
     const result: CreateCustomerResponse = JSON.parse(await response.text());
 
-    if (result.success === false) {
+    if (result.success !== true) {
       console.error(result.textResponse);
       throw new Error(result.textResponse);
     }
@@ -402,8 +570,9 @@ export const createSubscription = async (params: CreateSubscriptionParams) => {
 
     const result: SubscriptionResponse = JSON.parse(await response.text());
 
-    if (result.success === false) {
+    if (result.success !== true) {
       console.error(result);
+      throw new Error("Error creating subscription");
     }
 
     return result.id;
@@ -412,45 +581,93 @@ export const createSubscription = async (params: CreateSubscriptionParams) => {
   }
 };
 
-// export const ChargeSubscription = async (params: ChargeSubscriptionParams) => {
-//   const myHeaders = new Headers();
-//   myHeaders.append("Content-Type", "application/json");
+export const chargeSubscription = async (params: ChargeSubscriptionParams) => {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
 
-//   const token = await getAuthToken();
+  const token = await getAuthToken();
 
-//   if (!token) {
-//     throw new Error("Failed to get auth token");
-//   }
+  if (!token) {
+    throw new Error("Failed to get auth token");
+  }
 
-//   myHeaders.append("Authorization", `Bearer ${token}`);
+  myHeaders.append("Authorization", `Bearer ${token}`);
 
-//   const requestOptions = {
-//     method: "POST",
-//     headers: myHeaders,
-//     body: JSON.stringify(params),
-//   };
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify(params),
+  };
 
-//   try {
-//     const response = await fetch(
-//       `${url_api}/recurring/v1/subscription/create`,
-//       requestOptions,
-//     );
+  try {
+    const response = await fetch(
+      `${url_api}/payment/v1/charge/subscription/create`,
+      requestOptions,
+    );
 
-//     if (!response.ok) {
-//       throw new Error(`HTTP Error: ${response.status}`);
-//     }
+    if (!response.ok) {
+      throw new Error(`HTTP Error: ${response.status}`);
+    }
 
-//     const result = JSON.parse(await response.text());
+    const result: ChargeSubscriptionResponse = JSON.parse(
+      await response.text(),
+    );
 
-//     if (result.success === false) {
-//       console.error(result);
-//     }
+    if (result.success !== true) {
+      console.error(result);
+      throw new Error(result.text_response);
+    }
+    return result;
+  } catch (error) {
+    console.error("Error in the request", error);
+  }
+};
 
-//     return result.id;
-//   } catch (error) {
-//     console.error("Error in the request", error);
-//   }
-// };
+export const cancelSubscription = async (subscriptionId: string) => {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  const token = await getAuthToken();
+
+  if (!token) {
+    throw new Error("Failed to get auth token");
+  }
+
+  myHeaders.append("Authorization", `Bearer ${token}`);
+
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify({
+      id: subscriptionId,
+      public_key: private_key,
+    }),
+  };
+
+  try {
+    const response = await fetch(
+      `${url_api}/recurring/v1/subscription/cancel`,
+      requestOptions,
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP Error: ${response.status}`);
+    }
+
+    const result: cancelSubscriptionResponse = JSON.parse(
+      await response.text(),
+    );
+
+    console.log(result);
+
+    if (result.success !== true) {
+      console.error(result);
+      throw new Error(result.message);
+    }
+  } catch (error) {
+    console.error("Error in the request", error);
+  }
+};
 
 export const generateInvoiceCode = () => {
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -493,11 +710,11 @@ export const getSubscriptionById = async (id: string) => {
 
     const result: GetSubscriptionResponse = JSON.parse(await response.text());
 
-    if (result.sucess === false) {
+    if (result.sucess !== true) {
       console.error(result);
+      throw new Error("Error getting subscription");
     }
 
-    console.log(result);
     return result;
   } catch (error) {
     console.error("Error in the request", error);
@@ -536,7 +753,7 @@ export const getCustomerById = async (id: string) => {
 
     const result: GetCustomerResponse = JSON.parse(await response.text());
 
-    if (result.success === false) {
+    if (result.success !== true) {
       console.error(result);
     }
 
