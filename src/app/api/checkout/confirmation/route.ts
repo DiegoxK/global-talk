@@ -21,11 +21,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-const updateTransaction = async (
-  id: string,
-  status: TransactionStatus,
-  phone?: string,
-) => {
+const updateTransaction = async (id: string, status: TransactionStatus) => {
   const transaccion = await db
     .update(transactions)
     .set({
@@ -40,6 +36,8 @@ const updateTransaction = async (
 };
 
 const activateUser = async (email?: string) => {
+  console.log("Activando usuario ...");
+
   if (email) {
     await db.update(users).set({ active: true }).where(eq(users.email, email));
   } else {
@@ -129,7 +127,10 @@ export async function POST(req: NextRequest) {
       // La firma es válida, puedes verificar el estado de la transacción
       switch (Number(x_cod_response)) {
         case 1:
-          await updateTransaction(x_extra4, "PAID", x_extra3);
+          console.log(
+            "Confirmacion exitosa, actualizando transaccion y usuario ...",
+          );
+          await updateTransaction(x_extra4, "PAID");
           await activateUser(x_customer_email);
 
           return NextResponse.json(
@@ -137,6 +138,7 @@ export async function POST(req: NextRequest) {
             { status: 200 },
           );
         case 2:
+          console.log("Confirmacion rechazada, actualizando transaccion ...");
           await updateTransaction(x_extra4, "REJECTED");
 
           return NextResponse.json(
@@ -144,6 +146,7 @@ export async function POST(req: NextRequest) {
             { status: 403 },
           );
         case 3:
+          console.log("Confirmacion pendiente, actualizando transaccion ...");
           await updateTransaction(x_extra4, "PENDING");
 
           return NextResponse.json(
@@ -151,6 +154,7 @@ export async function POST(req: NextRequest) {
             { status: 202 },
           );
         case 4:
+          console.log("Confirmacion fallida, actualizando transaccion ...");
           await updateTransaction(x_extra4, "FAILED");
 
           return NextResponse.json(
@@ -158,6 +162,7 @@ export async function POST(req: NextRequest) {
             { status: 500 },
           );
         default:
+          console.log("Confirmacion desconocida, actualizando transaccion ...");
           await updateTransaction(x_extra4, "UNKNOWN");
 
           return NextResponse.json(
@@ -166,11 +171,13 @@ export async function POST(req: NextRequest) {
           );
       }
     } else {
+      console.log("La firma no es válida, actualizando transaccion ...");
       await updateTransaction(x_extra4, "INVALID");
 
       return NextResponse.json({ message: "Firma no válida" }, { status: 400 });
     }
   } else {
+    console.log("La firma no coincide, actualizando transaccion ...");
     await updateTransaction(x_extra4, "MISMATCH");
 
     return NextResponse.json(
