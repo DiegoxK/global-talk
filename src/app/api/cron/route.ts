@@ -3,7 +3,7 @@ import { prompts } from "@/server/db/schema";
 import { db } from "@/server/db";
 import { env } from "@/env";
 
-export async function GET(res: Response, req: Request) {
+export async function GET(req: Request, res: Response) {
   if (req.headers.get("Authorization") !== `Bearer ${env.CRON_SECRET}`) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
