@@ -38,8 +38,16 @@ const updateTransaction = async (id: string, status: TransactionStatus) => {
 const activateUser = async (email?: string) => {
   console.log("Activando usuario ...");
 
+  console.log(email);
+
   if (email) {
-    await db.update(users).set({ active: true }).where(eq(users.email, email));
+    const user = await db
+      .update(users)
+      .set({ active: true })
+      .where(eq(users.email, email))
+      .returning();
+
+    if (!user?.[0]?.id) throw new Error("Error al obtener el usuario");
   } else {
     throw new Error(
       "Error al obtener el correo electrónico del usuario desde epayco: 'x_customer_email'",
