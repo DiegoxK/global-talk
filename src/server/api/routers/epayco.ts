@@ -16,7 +16,6 @@ import { programs, groups, transactions, users } from "@/server/db/schema";
 import { sendConfirmation } from "@/lib/email-config";
 import { desc, eq } from "drizzle-orm";
 
-type TransactionType = "RECURRENT" | "LEVEL" | "COMPLETE" | "STAFF";
 type PlanType = "RECURRENT" | "LEVEL" | "COMPLETE" | "STAFF" | "EXTERNAL";
 
 function getNextWeekTuesday(today: Date = new Date()): Date {
@@ -143,7 +142,7 @@ export const epaycoRouter = createTRPCRouter({
         const sessionId = await createSession({
           ...paymentDetails,
           extra1: input.nameBilling,
-          extra2: input.addressBilling,
+          extra2: input.planType,
           extra3: input.mobilephoneBilling,
           extra4: transactionId,
           invoice,
