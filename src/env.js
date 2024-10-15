@@ -38,6 +38,7 @@ export const env = createEnv({
     EPAYCO_API_URL: z.string(),
     EPAYCO_API_KEY: z.string(),
     EPAYCO_PRIVATE_KEY: z.string(),
+    CRON_SECRET: z.string(),
   },
 
   /**
@@ -74,6 +75,7 @@ export const env = createEnv({
     EPAYCO_API_URL: process.env.EPAYCO_API_URL,
     EPAYCO_API_KEY: process.env.EPAYCO_API_KEY,
     EPAYCO_PRIVATE_KEY: process.env.EPAYCO_PRIVATE_KEY,
+    CRON_SECRET: process.env.CRON_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
