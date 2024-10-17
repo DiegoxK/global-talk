@@ -33,13 +33,7 @@ export const Status = pgEnum("status", [
   "INVALID",
   "MISMATCH",
 ]);
-export const PlanType = pgEnum("planType", [
-  "RECURRENT",
-  "LEVEL",
-  "COMPLETE",
-  "STAFF",
-  "EXTERNAL",
-]);
+export const PlanType = pgEnum("planType", ["LEVEL", "COMPLETE", "EXTERNAL"]);
 export const Proficiency = pgEnum("proficiency", [
   "A0",
   "A1",
@@ -61,15 +55,12 @@ export const users = createTable(
       .primaryKey()
       .$defaultFn(() => sql`gen_random_uuid()`),
     role: UserRole("role").default(STUDENT).notNull(),
-    ip: varchar("ip", { length: 25 }),
-    subscriptionId: varchar("subscription_id", { length: 255 }),
-    planType: PlanType("plan_type").notNull(),
+    planType: PlanType("plan_type"),
+    current_level: smallint("current_level").default(0).notNull(),
+    active: boolean("active").default(false).notNull(),
     groupId: serial("group_id")
       .references(() => groups.id)
       .notNull(),
-    current_level: smallint("current_level").default(0).notNull(),
-    customerId: varchar("customer_id", { length: 255 }),
-    active: boolean("active").default(false).notNull(),
     image: varchar("image", { length: 255 }),
     name: varchar("name", { length: 25 }).notNull(),
     lastName: varchar("last_name", { length: 25 }).notNull(),
@@ -246,6 +237,7 @@ export const groups = createTable("group", {
   creationDate: date("date").notNull(),
   startingDate: date("starting_date").notNull(),
   currentLevel: smallint("current_level").notNull(),
+  archived: boolean("archived").default(false).notNull(),
 });
 
 export const groupsRelations = relations(groups, ({ many }) => ({
