@@ -70,11 +70,9 @@ export async function POST(req: NextRequest) {
     x_transaction_id,
     x_amount,
     x_currency_code,
-    x_customer_movil,
     x_cod_response,
     x_signature,
     x_extra1,
-    x_extra4,
     x_extra5,
   } = queryParams;
 

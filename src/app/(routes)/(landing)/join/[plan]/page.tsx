@@ -35,7 +35,6 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
         "Evaluación al final del nivel",
         "1 cupo en un grupo de máximo 5 personas",
       ],
-      savings: "Ahorras 70 mil pesos por nivel",
     },
 
     {
@@ -57,11 +56,11 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
   ];
 
   return (
-    <div className="container mx-auto flex flex-col items-center gap-12 border-t py-16">
+    <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
       <h1 className="text-4xl font-bold text-primary">
         Beginners A0 - Matrícula individual
       </h1>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="flex flex-wrap last:gap-6">
         {plans.map((plan, index) => (
           <Card key={index} className="flex flex-col">
             <CardHeader>

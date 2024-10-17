@@ -52,11 +52,13 @@ export default function SuccessfulTransaction({
             <span className="font-semibold">{`${x_amount} ${x_currency_code}`}</span>
           </div>
           <Separator />
-          <div className="flex items-center space-x-2">
-            <Building className="h-4 w-4" />
-            <span>{x_bank_name}</span>
-          </div>
-          {x_cardnumber && (
+          {x_bank_name !== "N/A" && (
+            <div className="flex items-center space-x-2">
+              <Building className="h-4 w-4" />
+              <span>{x_bank_name}</span>
+            </div>
+          )}
+          {x_cardnumber !== "*******" && (
             <div className="flex items-center space-x-2">
               <CreditCard className="h-4 w-4" />
               <span>{x_cardnumber}</span>
@@ -72,7 +74,7 @@ export default function SuccessfulTransaction({
         </CardContent>
         <CardFooter>
           <Link className="w-full" href="/auth/login">
-            <Button className="w-full">Acceder a la academia</Button>
+            <Button className="w-full">Entrar a la academia</Button>
           </Link>
         </CardFooter>
       </Card>
