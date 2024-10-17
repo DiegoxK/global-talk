@@ -36,17 +36,13 @@ const updateTransaction = async (id: string, status: TransactionStatus) => {
   }
 };
 
-const activateUser = async (
-  accountEmail?: string,
-  correctedEmail?: string,
-  correctedPhone?: string,
-) => {
+const activateUser = async (email?: string) => {
   console.log("Activando usuario ...");
-  if (accountEmail) {
+  if (email) {
     const user = await db
       .update(users)
-      .set({ email: correctedEmail, phone: correctedPhone, active: true })
-      .where(eq(users.email, accountEmail))
+      .set({ active: true })
+      .where(eq(users.email, email))
       .returning();
 
     if (!user?.[0]?.id) throw new Error("Error al obtener el usuario");
@@ -142,7 +138,7 @@ export async function POST(req: NextRequest) {
             "Confirmacion exitosa, actualizando transaccion y usuario ...",
           );
           await updateTransaction(x_extra5, "PAID");
-          await activateUser(x_extra4, x_customer_email, x_customer_movil);
+          await activateUser(x_customer_email);
 
           if (!x_customer_email || !x_extra1 || !x_amount)
             throw new Error(
