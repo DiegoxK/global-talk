@@ -96,11 +96,8 @@ export async function GET(req: Request, _res: Response) {
       columns: {
         id: true,
         name: true,
-        subscriptionId: true,
         planType: true,
         programId: true,
-        customerId: true,
-        ip: true,
       },
       with: {
         group: {
@@ -112,38 +109,17 @@ export async function GET(req: Request, _res: Response) {
     });
 
     await sequentialForEach(students, async (student) => {
-      if (student.planType === "RECURRENT") {
-        const subscriptionResponse = await chargeStudentSubscription(student);
-        if (subscriptionResponse) {
-          console.log(subscriptionResponse);
-          if (subscriptionResponse?.success === true) {
-            console.log(`activating user ${student.name} ...`);
-            try {
-              await db
-                .update(users)
-                .set({
-                  active: true,
-                  current_level: 1,
-                })
-                .where(eq(users.id, student.id));
-            } catch (error) {
-              console.error(`Error activating user: ${student.name}`, error);
-            }
-          }
-        }
-      } else {
-        db.update(users)
-          .set({
-            current_level: 1,
-          })
-          .where(eq(users.id, student.id))
-          .then(() => {
-            console.log("user activated");
-          })
-          .catch((err) => {
-            console.error(`Error activating user: ${student.id}`, err);
-          });
-      }
+      db.update(users)
+        .set({
+          current_level: 1,
+        })
+        .where(eq(users.id, student.id))
+        .then(() => {
+          console.log("user activated");
+        })
+        .catch((err) => {
+          console.error(`Error activating user: ${student.id}`, err);
+        });
     });
 
     try {
@@ -165,38 +141,38 @@ export async function GET(req: Request, _res: Response) {
     where: gt(groups.currentLevel, 0),
   });
 
-  runningGroups.forEach((group) => {
-    const finishLevelDate = getFinishLevelDate(
-      new Date(group.startingDate),
-      group.currentLevel,
-    );
+  // runningGroups.forEach((group) => {
+  //   const finishLevelDate = getFinishLevelDate(
+  //     new Date(group.startingDate),
+  //     group.currentLevel,
+  //   );
 
-    const today = new Date().toISOString().slice(0, 10);
-    const isTodayEndOfLevel =
-      finishLevelDate.toISOString().slice(0, 10) === today;
+  //   const today = new Date().toISOString().slice(0, 10);
+  //   const isTodayEndOfLevel =
+  //     finishLevelDate.toISOString().slice(0, 10) === today;
 
-    if (isTodayEndOfLevel) {
-      const students = db.query.users.findMany({
-        where: and(
-          eq(users.role, env.STUDENT_ROLE),
-          eq(users.planType, "RECURRENT"),
-          eq(users.planType, "LEVEL"),
-          eq(users.groupId, group.id),
-        ),
-        columns: {
-          id: true,
-          planType: true,
-        },
-        with: {
-          group: {
-            columns: {
-              startingDate: true,
-            },
-          },
-        },
-      });
-    }
-  });
+  //   if (isTodayEndOfLevel) {
+  //     const students = db.query.users.findMany({
+  //       where: and(
+  //         eq(users.role, env.STUDENT_ROLE),
+  //         eq(users.planType, "RECURRENT"),
+  //         eq(users.planType, "LEVEL"),
+  //         eq(users.groupId, group.id),
+  //       ),
+  //       columns: {
+  //         id: true,
+  //         planType: true,
+  //       },
+  //       with: {
+  //         group: {
+  //           columns: {
+  //             startingDate: true,
+  //           },
+  //         },
+  //       },
+  //     });
+  //   }
+  // });
 
   // const students = await db.query.users.findMany({
   //   where: and(
