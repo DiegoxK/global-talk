@@ -22,22 +22,6 @@ export default function Page({ params }: { params: { plan: string } }) {
 const BeginnersA0 = ({ planId }: { planId: string }) => {
   const plans = [
     {
-      href: `/checkout/${planId}/recurrent`,
-      title: "Pago 2 cuotas / nivel",
-      description: "Matrícula individual",
-      price: "300 mil COP / mes",
-      duration: "1 mes",
-      features: [
-        "16 clases de una hora (4 por semana)",
-        "Acceso a la plataforma de aprendizaje",
-        "Grabaciones de las clases",
-        "Todos los materiales",
-        "Evaluación al final del nivel",
-        "1 cupo en un grupo de máximo 5 personas",
-      ],
-      savings: "",
-    },
-    {
       href: `/checkout/${planId}/one-time-level`,
       title: "Pago único por nivel",
       description: "Matrícula individual",
