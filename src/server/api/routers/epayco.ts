@@ -130,13 +130,23 @@ export const epaycoRouter = createTRPCRouter({
           throw new Error("Error al crear la transacción");
         }
 
+        const programName = await ctx.db.query.programs.findFirst({
+          where: eq(programs.id, input.plan),
+          columns: {
+            name: true,
+          },
+        });
+
+        if (!programName?.name) throw new Error("Program not found");
+
         console.log("Creando ePayco session...");
         const sessionId = await createSession({
           ...paymentDetails,
-          extra1: input.nameBilling,
+          extra1: programName.name,
           extra2: input.planType,
           extra3: input.mobilephoneBilling,
-          extra4: transactionId,
+          extra4: input.emailBilling,
+          extra5: transactionId,
           invoice,
         });
 
