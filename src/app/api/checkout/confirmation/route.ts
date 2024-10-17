@@ -5,6 +5,7 @@ import { createHash } from "crypto";
 import { eq } from "drizzle-orm";
 import { type NextRequest, NextResponse } from "next/server";
 import type { ConfirmationParams } from "types/epayco";
+import { sendConfirmation } from "@/lib/email-config";
 
 type TransactionStatus =
   | "PAID"
@@ -35,13 +36,17 @@ const updateTransaction = async (id: string, status: TransactionStatus) => {
   }
 };
 
-const activateUser = async (email?: string) => {
+const activateUser = async (
+  accountEmail?: string,
+  correctedEmail?: string,
+  correctedPhone?: string,
+) => {
   console.log("Activando usuario ...");
-  if (email) {
+  if (accountEmail) {
     const user = await db
       .update(users)
-      .set({ active: true })
-      .where(eq(users.email, email))
+      .set({ email: correctedEmail, phone: correctedPhone, active: true })
+      .where(eq(users.email, accountEmail))
       .returning();
 
     if (!user?.[0]?.id) throw new Error("Error al obtener el usuario");
@@ -69,11 +74,12 @@ export async function POST(req: NextRequest) {
     x_transaction_id,
     x_amount,
     x_currency_code,
+    x_customer_movil,
     x_cod_response,
     x_signature,
-    x_extra2,
-    x_extra3,
+    x_extra1,
     x_extra4,
+    x_extra5,
   } = queryParams;
 
   // Valores de configuración de ePayco
@@ -81,7 +87,7 @@ export async function POST(req: NextRequest) {
   const p_key = env.P_KEY;
 
   // Validar que exista la id de la transacción
-  if (!x_extra4) {
+  if (!x_extra5) {
     return NextResponse.json(
       { message: "No se encontro la id de la transacción" },
       { status: 404 },
@@ -90,7 +96,7 @@ export async function POST(req: NextRequest) {
 
   // Obtener transaccion
   const transaction = await db.query.transactions.findFirst({
-    where: eq(transactions.id, x_extra4),
+    where: eq(transactions.id, x_extra5),
   });
 
   if (!transaction) {
@@ -135,8 +141,19 @@ export async function POST(req: NextRequest) {
           console.log(
             "Confirmacion exitosa, actualizando transaccion y usuario ...",
           );
-          await updateTransaction(x_extra4, "PAID");
-          await activateUser(x_customer_email);
+          await updateTransaction(x_extra5, "PAID");
+          await activateUser(x_extra4, x_customer_email, x_customer_movil);
+
+          if (!x_customer_email || !x_extra1 || !x_amount)
+            throw new Error(
+              "Error al enviar email de confirmación: datos faltantes",
+            );
+
+          await sendConfirmation({
+            programName: x_extra1,
+            programValue: x_amount.toString(),
+            sendTo: x_customer_email,
+          });
 
           return NextResponse.json(
             { message: "Transacción aceptada" },
@@ -144,7 +161,7 @@ export async function POST(req: NextRequest) {
           );
         case 2:
           console.log("Confirmacion rechazada, actualizando transaccion ...");
-          await updateTransaction(x_extra4, "REJECTED");
+          await updateTransaction(x_extra5, "REJECTED");
 
           return NextResponse.json(
             { message: "Transacción rechazada" },
@@ -152,7 +169,7 @@ export async function POST(req: NextRequest) {
           );
         case 3:
           console.log("Confirmacion pendiente, actualizando transaccion ...");
-          await updateTransaction(x_extra4, "PENDING");
+          await updateTransaction(x_extra5, "PENDING");
 
           return NextResponse.json(
             { message: "Transacción pendiente" },
@@ -160,7 +177,7 @@ export async function POST(req: NextRequest) {
           );
         case 4:
           console.log("Confirmacion fallida, actualizando transaccion ...");
-          await updateTransaction(x_extra4, "FAILED");
+          await updateTransaction(x_extra5, "FAILED");
 
           return NextResponse.json(
             { message: "Transacción fallida" },
@@ -168,7 +185,7 @@ export async function POST(req: NextRequest) {
           );
         default:
           console.log("Confirmacion desconocida, actualizando transaccion ...");
-          await updateTransaction(x_extra4, "UNKNOWN");
+          await updateTransaction(x_extra5, "UNKNOWN");
 
           return NextResponse.json(
             { message: "Estado de transacción desconocido" },
@@ -177,13 +194,13 @@ export async function POST(req: NextRequest) {
       }
     } else {
       console.log("La firma no es válida, actualizando transaccion ...");
-      await updateTransaction(x_extra4, "INVALID");
+      await updateTransaction(x_extra5, "INVALID");
 
       return NextResponse.json({ message: "Firma no válida" }, { status: 400 });
     }
   } else {
     console.log("La firma no coincide, actualizando transaccion ...");
-    await updateTransaction(x_extra4, "MISMATCH");
+    await updateTransaction(x_extra5, "MISMATCH");
 
     return NextResponse.json(
       { message: "Algunos datos no coinciden" },

@@ -61,82 +61,6 @@ interface ChargeSubscriptionParams {
   ip: string;
 }
 
-// {
-//   success: true,
-//   title_response: 'Transacción realizada',
-//   text_response: 'Transaccion realizada con tarjeta de pruebas',
-//   last_action: 'Validar tarjeta de pruebas',
-//   data: {
-//     ref_payco: 242018180,
-//     factura: '70ec903db151e8f0b0bbd72-1729022302',
-//     descripcion: 'Plan begginers A0',
-//     valor: 30000,
-//     iva: 0,
-//     ico: 0,
-//     baseiva: 30000,
-//     valorneto: 30000,
-//     moneda: 'COP',
-//     banco: 'BANCO DE PRUEBAS',
-//     estado: 'Aceptada',
-//     respuesta: 'Aprobada',
-//     autorizacion: '000000',
-//     recibo: '242018180',
-//     fecha: '2024-10-15 14:58:24',
-//     franquicia: 'VS',
-//     cod_respuesta: 1,
-//     cod_error: '00',
-//     ip: '186.28.88.142',
-//     enpruebas: 1,
-//     tipo_doc: 'CC',
-//     documento: '21054065198',
-//     nombres: 'Antonio',
-//     apellidos: 'Melandro',
-//     email: 'antoniomelandronaslkdjal@yopmail.com',
-//     ciudad: 'Sin Ciudad',
-//     direccion: 'Calle 5 N 3',
-//     ind_pais: 'PE',
-//     country_card: 'PE',
-//     extras: {
-//       extra1: '70ec903db151e8f0b0bbd72',
-//       extra2: '70ec8ff3811826b0f022072',
-//       extra3: '70ec8a9747b4d853101703e',
-//       extra9: '1190182',
-//       extra4: '',
-//       extra5: '',
-//       extra6: '',
-//       extra7: '',
-//       extra8: '',
-//       extra10: ''
-//     },
-//     cc_network_response: { code: '00', message: 'Aprobada' },
-//     extras_epayco: { extra5: 'P10' }
-//   },
-//   subscription: {
-//     idPlan: 'beginners_a0',
-//     data: {
-//       idClient: 'beginners_a0',
-//       name: 'Beginners A0',
-//       description: 'Plan begginers A0',
-//       amount: 30000,
-//       currency: 'COP',
-//       interval: 'month',
-//       interval_count: 1,
-//       trialDays: 0
-//     },
-//     periodStart: '2024-10-15T14:56:51.000000Z',
-//     periodEnd: '15-11-2024',
-//     nextVerificationDate: '15-11-2024',
-//     status: 'active',
-//     first: true,
-//     idCustomer: '70ec8ff3811826b0f022072',
-//     tokenCard: '70ec8fac2f1f5356a0e7017',
-//     ip: '',
-//     paymentAttempts: [],
-//     url_confirmation: 'https://globtm.vercel.app/api/checkout/confirmacion',
-//     method_confirmation: 'POST'
-//   }
-// }
-
 interface ChargeSubscriptionResponse {
   success: boolean;
   title_response: string;
@@ -617,6 +541,7 @@ export const chargeSubscription = async (params: ChargeSubscriptionParams) => {
       console.error(result);
       throw new Error(result.text_response);
     }
+
     return result;
   } catch (error) {
     console.error("Error in the request", error);
@@ -757,7 +682,6 @@ export const getCustomerById = async (id: string) => {
       console.error(result);
     }
 
-    console.log(result);
     return result;
   } catch (error) {
     console.error("Error in the request", error);
