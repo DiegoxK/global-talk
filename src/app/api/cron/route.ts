@@ -92,7 +92,7 @@ export async function GET(req: Request, _res: Response) {
     }
   }
 
-  // Check if the already started groups are ending a level
+  // ================Disable Level Plan Students=========================
   const runningGroups = await db.query.groups.findMany({
     where: gt(groups.currentLevel, 0),
   });
@@ -152,6 +152,8 @@ export async function GET(req: Request, _res: Response) {
         });
     }
   });
+
+  // ======Change group if student didn't pay for level==============
 
   return NextResponse.json({ message: "Request procesada" });
 }
