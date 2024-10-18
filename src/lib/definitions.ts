@@ -15,3 +15,4 @@ export type TeacherLectureSession =
   RouterOutput["lectureSession"]["getMyTeacherLectureSessions"][number];
 export type Level = RouterOutput["level"]["getUserLevels"][number];
 export type ProgramInfo = RouterOutput["program"]["getProgramName"];
+export type UserHomeInfo = NonNullable<RouterOutput["user"]["getUserHomeInfo"]>;
