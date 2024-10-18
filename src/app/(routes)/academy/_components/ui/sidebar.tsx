@@ -20,7 +20,7 @@ export default function Sidebar({ user, program, firstLevel }: SidebarProps) {
   return (
     <div className="sticky top-0 flex h-screen max-h-screen w-80 min-w-80 flex-col space-y-2 bg-primary-50 p-2">
       <div className="flex flex-col items-center justify-center text-nowrap rounded-md bg-white py-8">
-        <Avatar className="h-24 w-24 bg-primary-700">
+        <Avatar className="h-24 w-24 bg-primary">
           <AvatarImage src={user.image ?? undefined} />
           <AvatarFallback className="bg-transparent">
             <Logo className="fill-white" height={40} width={38} />
