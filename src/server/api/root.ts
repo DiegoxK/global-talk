@@ -7,6 +7,7 @@ import { programRouter } from "./routers/program";
 import { epaycoRouter } from "./routers/epayco";
 import { lectureRouter } from "./routers/lecture";
 import { groupRouter } from "./routers/group";
+import { promptRouter } from "./routers/prompt";
 
 /**
  * This is the primary router for your server.
@@ -22,6 +23,7 @@ export const appRouter = createTRPCRouter({
   groups: groupRouter,
   user: userRouter,
   lectureSession: lectureSessionRouter,
+  prompt: promptRouter,
 });
 
 // export type definition of API
