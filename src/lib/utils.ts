@@ -60,3 +60,38 @@ export async function getUserIP() {
     return null;
   }
 }
+
+export function formatDateToSpanish(fechaString: string): string {
+  const [yearStr, monthStr, dayStr] = fechaString.split("-");
+
+  if (!yearStr || !monthStr || !dayStr) {
+    throw new Error("Fecha inválida");
+  }
+
+  const year = parseInt(yearStr, 10);
+  const month = parseInt(monthStr, 10) - 1; // Los meses en JavaScript son 0-indexados
+  const day = parseInt(dayStr, 10);
+
+  if (isNaN(year) || isNaN(month) || isNaN(day)) {
+    throw new Error("Fecha inválida");
+  }
+
+  const fecha = new Date(Date.UTC(year, month, day));
+
+  const opciones: Intl.DateTimeFormatOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  };
+
+  let fechaFormateada = fecha.toLocaleDateString("es-ES", opciones);
+
+  fechaFormateada =
+    fechaFormateada.charAt(0).toUpperCase() + fechaFormateada.slice(1);
+
+  fechaFormateada = fechaFormateada.replace(/de (\d{4})$/, "del $1");
+
+  return fechaFormateada;
+}
