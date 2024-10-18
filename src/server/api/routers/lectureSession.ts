@@ -55,10 +55,10 @@ export const lectureSessionRouter = createTRPCRouter({
         levelId: z.string().uuid(),
       }),
     )
-    .query(({ input, ctx }) => {
+    .query(async ({ input, ctx }) => {
       const user = ctx.session.user;
 
-      return ctx.db
+      const scheduledLectures = await ctx.db
         .select(lectureSessionCardSchema)
         .from(lectureSessions)
         .leftJoin(sq, eq(lectureSessions.id, sq.lectureSessionId))
@@ -66,7 +66,7 @@ export const lectureSessionRouter = createTRPCRouter({
         .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
         .leftJoin(levels, eq(lectures.levelId, levels.id))
         .leftJoin(programs, eq(levels.programId, programs.id))
-        .leftJoin(schedules, eq(users.id, schedules.studentId))
+        .leftJoin(schedules, eq(lectureSessions.id, schedules.lectureSessionId))
         .where(
           and(
             eq(levels.id, input.levelId),
@@ -75,6 +75,8 @@ export const lectureSessionRouter = createTRPCRouter({
             eq(schedules.studentId, user.id),
           ),
         );
+
+      return scheduledLectures;
     }),
 
   getAvailableLectureSessions: protectedProcedure
@@ -103,8 +105,6 @@ export const lectureSessionRouter = createTRPCRouter({
             sql<string>`"global-talk_schedule".student_id IS DISTINCT FROM ${user.id}`,
           ),
         );
-
-      console.log("availableLectures", availableLectures);
 
       return availableLectures;
     }),
