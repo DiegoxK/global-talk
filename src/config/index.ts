@@ -68,37 +68,37 @@ export const siteConfig: SiteConfig = {
     beginners_a0: {
       price: "90000",
       name: "Beginners_A0",
-      description: "Programa Beginners A0 – 2 niveles (4 meses)",
+      description: "Programa Beginners A0, 2 niveles (4 meses)",
     },
     pure_a1: {
       price: "90000",
       name: "Pure_A1",
-      description: "Programa Pure A1 – 2 niveles (4 meses)",
+      description: "Programa Pure A1, 2 niveles (4 meses)",
     },
     beginners_plus_pure_a1: {
       price: "90000",
       name: "Beginners + Pure A1",
-      description: "Programa Beginners + Pure A1 – 2 niveles (4 meses)",
+      description: "Programa Beginners + Pure A1, 2 niveles (4 meses)",
     },
     from_a2_to_b1: {
       price: "90000",
       name: "From A2 to B1",
-      description: "Programa From A2 to B1 – 2 niveles (4 meses)",
+      description: "Programa From A2 to B1, 2 niveles (4 meses)",
     },
     from_b1_to_b2: {
       price: "90000",
       name: "From B1 to B2",
-      description: "Programa From B1 to B2 – 2 niveles (4 meses)",
+      description: "Programa From B1 to B2, 2 niveles (4 meses)",
     },
     intensive_b2: {
       price: "90000",
       name: "Intensive B2",
-      description: "Programa Intensive B2 – 2 niveles (4 meses)",
+      description: "Programa Intensive B2, 2 niveles (4 meses)",
     },
     business: {
       price: "90000",
       name: "Business English",
-      description: "Programa Business English – 2 niveles (4 meses)",
+      description: "Programa Business English, 2 niveles (4 meses)",
     },
   },
 };
