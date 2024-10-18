@@ -2,20 +2,9 @@ import { NextResponse } from "next/server";
 import { groups, levels, programs, users } from "@/server/db/schema";
 import { db } from "@/server/db";
 import { env } from "@/env";
-import { and, count, eq, gt, sql } from "drizzle-orm";
-import { chargeSubscription, getCustomerById } from "@/lib/epayco";
+import { and, eq, gt, sql } from "drizzle-orm";
 
 export const maxDuration = 60;
-
-interface Student {
-  planType: "RECURRENT" | "LEVEL" | "COMPLETE" | "STAFF" | "EXTERNAL";
-  id: string;
-  name: string;
-  programId: string;
-  group: {
-    startingDate: string;
-  };
-}
 
 function getFinishLevelDate(startDate: Date, currentLevel: number): Date {
   const resultDate = new Date(startDate);
@@ -130,14 +119,15 @@ export async function GET(req: Request, _res: Response) {
               gtu.id AS student_id,
               COUNT(gtl.id) AS level_count
            FROM
-             ${users}
-             LEFT JOIN ${programs} AS gtp ON gtp.id = gtu.program_id
+              ${users} AS gtu
+              LEFT JOIN ${programs} AS gtp ON gtp.id = gtu.program_id
               LEFT JOIN ${levels} AS gtl ON gtl.program_id = gtp.id
            GROUP BY
               gtu.id
           ) AS sq
         WHERE
-          gtu.role = ${env.STUDENT_ROLE}
+          sq.student_id = gtu.id
+          AND gtu.role = ${env.STUDENT_ROLE}
           AND gtu.group_id = ${group.id}
           AND sq.level_count < ${group.currentLevel}
         `,
