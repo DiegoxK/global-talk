@@ -1,11 +1,12 @@
+import { columns } from "@/app/(routes)/academy/admin/users/components/columns";
 import { env } from "@/env";
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { users } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { groups, lectures, levels, programs, users } from "@/server/db/schema";
+import { count, eq, sql } from "drizzle-orm";
 import { createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -150,4 +151,41 @@ export const userRouter = createTRPCRouter({
 
       throw new Error("Unauthorized");
     }),
+
+  getUserHomeInfo: protectedProcedure.query(async ({ ctx }) => {
+    const user = ctx.session.user;
+
+    const userHomeInfo = await ctx.db
+      .select({
+        image: users.image,
+        studentFullName:
+          sql<string>`concat(${users.name}, ' ', ${users.lastName})`.as(
+            "student_full_name",
+          ),
+        levelCount: count(levels.id).as("level_count"),
+        lecturesCount: count(lectures.id).as("lectures_count"),
+        programName: programs.name,
+        programProficiency: programs.proficiency,
+        currentUserLevel: users.current_level,
+        startDate: groups.startingDate,
+      })
+      .from(users)
+      .leftJoin(groups, eq(users.groupId, groups.id))
+      .leftJoin(programs, eq(users.programId, programs.id))
+      .leftJoin(levels, eq(levels.programId, programs.id))
+      .leftJoin(lectures, eq(lectures.levelId, levels.id))
+      .where(eq(users.id, user.id))
+      .groupBy(
+        users.id,
+        users.image,
+        users.name,
+        users.lastName,
+        programs.name,
+        programs.proficiency,
+        users.current_level,
+        groups.startingDate,
+      );
+
+    return userHomeInfo[0];
+  }),
 });
