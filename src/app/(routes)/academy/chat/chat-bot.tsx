@@ -5,29 +5,35 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ArrowUp } from "lucide-react";
 import Combobox from "@/components/ui/combobox";
+import { Logo } from "@/vectors/logo";
+import { useState } from "react";
+import { api } from "@/trpc/react";
 
 const formSchema = z.object({
   userText: z.string(),
   prompt: z.string(),
 });
 
+type roles = "system" | "user" | "assistant";
+
 interface ChatBotProps {
   prompts: { label: string; value: string }[];
 }
 
 export default function ChatBot({ prompts }: ChatBotProps) {
+  const [messages, setMessages] = useState<{ role: roles; content: string }[]>(
+    [],
+  );
+  const { data: airesponse } = api.prompt.getAiResponse.useQuery({
+    messages: messages,
+  });
+
+  console.log(airesponse);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,6 +44,14 @@ export default function ChatBot({ prompts }: ChatBotProps) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+
+    setMessages([
+      ...messages,
+      {
+        role: "user",
+        content: values.userText,
+      },
+    ]);
   }
 
   return (
@@ -64,7 +78,20 @@ export default function ChatBot({ prompts }: ChatBotProps) {
             />
           </div>
 
-          <div className="flex">
+          <div className="mb-10 flex h-full w-full flex-col items-center justify-center gap-5 self-center">
+            <Logo className="fill-white opacity-70" height={70} width={70} />
+            <p className="w-[50rem] text-center text-white opacity-70">
+              Globy is a smart AI assistant designed to help you improve your
+              English skills. Whether you&apos;re practicing grammar, expanding
+              your vocabulary, or working on conversation skills, Globy provides
+              personalized lessons and instant feedback. It can correct your
+              sentences, explain tricky grammar rules, and even offer practice
+              exercises tailored to your level. With Globy, learning English
+              becomes interactive, fun, and effective!
+            </p>
+          </div>
+
+          <div className="flex justify-self-end">
             <FormField
               control={form.control}
               name="userText"
