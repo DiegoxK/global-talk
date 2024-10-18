@@ -27,12 +27,14 @@ interface ComboboxProps<TFieldValues extends FieldValues> {
   values?: { label: string; value: string | number }[];
   field: ControllerRenderProps<TFieldValues>;
   fieldName: string;
+  className?: string;
 }
 
 export default function Combobox<TFieldValues extends FieldValues>({
   values,
   field,
   fieldName,
+  className,
 }: ComboboxProps<TFieldValues>) {
   const [open, setOpen] = useState(false);
   const label = values?.find((value) => value.value === field.value)?.label;
@@ -48,6 +50,7 @@ export default function Combobox<TFieldValues extends FieldValues>({
             className={cn(
               "w-full justify-between font-normal",
               !field.value && "text-muted-foreground",
+              className,
             )}
           >
             {field.value && values && label
