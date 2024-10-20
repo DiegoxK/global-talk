@@ -19,15 +19,15 @@ const createLectureSessionSchema = createInsertSchema(lectureSessions, {
 });
 
 // Obtain a table that gets the schedulesCount to each session
-const sq = db
+const scheduleCount = db
   .select({
     lectureSessionId: lectureSessions.id,
-    schedulesCount: count(schedules.id).as("schedule_count"),
+    schedulesCount: count(schedules.id).as("schedules_count"),
   })
   .from(lectureSessions)
   .leftJoin(schedules, eq(lectureSessions.id, schedules.lectureSessionId))
   .groupBy(lectureSessions.id)
-  .as("sq");
+  .as("schedule_count");
 
 const lectureSessionCardSchema = {
   id: lectureSessions.id,
@@ -45,7 +45,7 @@ const lectureSessionCardSchema = {
   ),
   teacherImage: users.image,
   levelName: levels.name,
-  schedulesCount: sq.schedulesCount,
+  schedulesCount: scheduleCount.schedulesCount,
 };
 
 export const lectureSessionRouter = createTRPCRouter({
@@ -61,7 +61,10 @@ export const lectureSessionRouter = createTRPCRouter({
       const scheduledLectures = await ctx.db
         .select(lectureSessionCardSchema)
         .from(lectureSessions)
-        .leftJoin(sq, eq(lectureSessions.id, sq.lectureSessionId))
+        .leftJoin(
+          scheduleCount,
+          eq(lectureSessions.id, scheduleCount.lectureSessionId),
+        )
         .leftJoin(users, eq(lectureSessions.teacherId, users.id))
         .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
         .leftJoin(levels, eq(lectures.levelId, levels.id))
@@ -88,11 +91,11 @@ export const lectureSessionRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       const user = ctx.session.user;
 
-      const availableLectures = await ctx.db
-        .select(lectureSessionCardSchema)
+      const scheduled = ctx.db
+        .select({
+          lectureTitle: lectures.title,
+        })
         .from(lectureSessions)
-        .leftJoin(sq, eq(lectureSessions.id, sq.lectureSessionId))
-        .leftJoin(users, eq(lectureSessions.teacherId, users.id))
         .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
         .leftJoin(levels, eq(lectures.levelId, levels.id))
         .leftJoin(programs, eq(levels.programId, programs.id))
@@ -102,9 +105,28 @@ export const lectureSessionRouter = createTRPCRouter({
             eq(levels.id, input.levelId),
             eq(lectureSessions.groupId, user.groupId),
             eq(programs.id, user.programId),
-            sql<string>`"global-talk_schedule".student_id IS DISTINCT FROM ${user.id}`,
+            eq(schedules.studentId, user.id),
           ),
-        );
+        )
+        .as("scheduled");
+
+      const query = ctx.db
+        .select(lectureSessionCardSchema)
+        .from(lectureSessions)
+        .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
+        .leftJoin(scheduled, eq(lectures.title, scheduled.lectureTitle))
+        .leftJoin(
+          scheduleCount,
+          eq(lectureSessions.id, scheduleCount.lectureSessionId),
+        )
+        .leftJoin(users, eq(lectureSessions.teacherId, users.id))
+        .leftJoin(levels, eq(lectures.levelId, levels.id))
+        .leftJoin(programs, eq(levels.programId, programs.id))
+        .where(sql`${scheduled.lectureTitle} IS NULL`);
+
+      console.log(query.toSQL());
+
+      const availableLectures = await query;
 
       return availableLectures;
     }),
@@ -121,7 +143,10 @@ export const lectureSessionRouter = createTRPCRouter({
         groupId: groups.id,
       })
       .from(lectureSessions)
-      .leftJoin(sq, eq(lectureSessions.id, sq.lectureSessionId))
+      .leftJoin(
+        scheduleCount,
+        eq(lectureSessions.id, scheduleCount.lectureSessionId),
+      )
       .leftJoin(users, eq(lectureSessions.teacherId, users.id))
       .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
       .leftJoin(levels, eq(lectures.levelId, levels.id))
