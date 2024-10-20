@@ -10,8 +10,11 @@ import { Input } from "@/components/ui/input";
 import { ArrowUp } from "lucide-react";
 import Combobox from "@/components/ui/combobox";
 import { Logo } from "@/vectors/logo";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "@/trpc/react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import ReactMarkdown from "react-markdown";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const formSchema = z.object({
   userText: z.string(),
@@ -22,17 +25,54 @@ type roles = "system" | "user" | "assistant";
 
 interface ChatBotProps {
   prompts: { label: string; value: string }[];
+  userImage?: string | null;
+  userName?: string | null;
 }
 
-export default function ChatBot({ prompts }: ChatBotProps) {
+export default function ChatBot({
+  prompts,
+  userImage,
+  userName,
+}: ChatBotProps) {
   const [messages, setMessages] = useState<{ role: roles; content: string }[]>(
     [],
   );
-  const { data: airesponse } = api.prompt.getAiResponse.useQuery({
-    messages: messages,
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const { mutate: getAiResponse } = api.prompt.getAiResponse.useMutation({
+    onSuccess: (message) => {
+      if (message) {
+        setMessages([
+          ...messages,
+          {
+            role: "assistant",
+            content: message,
+          },
+        ]);
+      }
+    },
   });
 
-  console.log(airesponse);
+  useEffect(() => {
+    if (messages[messages.length - 1]?.role === "user") {
+      getAiResponse({
+        messages,
+      });
+    }
+
+    const timer = setTimeout(() => {
+      scrollToBottom();
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [messages, getAiResponse]);
+
+  const areMessages = Boolean(messages.length);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,15 +83,28 @@ export default function ChatBot({ prompts }: ChatBotProps) {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    if (areMessages) {
+      setMessages([
+        ...messages,
+        {
+          role: "user",
+          content: values.userText,
+        },
+      ]);
+    } else {
+      setMessages([
+        {
+          role: "system",
+          content: values.prompt,
+        },
+        {
+          role: "user",
+          content: values.userText,
+        },
+      ]);
+    }
 
-    setMessages([
-      ...messages,
-      {
-        role: "user",
-        content: values.userText,
-      },
-    ]);
+    form.resetField("userText");
   }
 
   return (
@@ -61,7 +114,7 @@ export default function ChatBot({ prompts }: ChatBotProps) {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex h-full w-full flex-col justify-between"
         >
-          <div className="flex justify-end p-4">
+          <div className="flex ps-4 pt-4">
             <FormField
               control={form.control}
               name="prompt"
@@ -78,19 +131,61 @@ export default function ChatBot({ prompts }: ChatBotProps) {
             />
           </div>
 
-          <div className="mb-10 flex h-full w-full flex-col items-center justify-center gap-5 self-center">
-            <Logo className="fill-white opacity-70" height={70} width={70} />
-            <p className="w-[50rem] text-center text-white opacity-70">
-              Globy is a smart AI assistant designed to help you improve your
-              English skills. Whether you&apos;re practicing grammar, expanding
-              your vocabulary, or working on conversation skills, Globy provides
-              personalized lessons and instant feedback. It can correct your
-              sentences, explain tricky grammar rules, and even offer practice
-              exercises tailored to your level. With Globy, learning English
-              becomes interactive, fun, and effective!
-            </p>
-          </div>
-
+          {areMessages ? (
+            <ScrollArea className="flex-grow rounded-sm p-4">
+              {messages.map((message, index) => (
+                <div
+                  key={index}
+                  className={`mb-4 flex items-start ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                >
+                  {message.role === "assistant" && (
+                    <Avatar className="mr-2">
+                      <AvatarImage src="/ai/globy.jpg" alt={message.role} />
+                      <AvatarFallback>AI</AvatarFallback>
+                    </Avatar>
+                  )}
+                  <div
+                    className={`rounded-lg px-4 py-2 ${
+                      message.role === "system"
+                        ? "bg-yellow-100 text-yellow-800"
+                        : message.role === "user"
+                          ? "bg-gray-100 text-gray-800"
+                          : "bg-purple-100 text-stone-800"
+                    }`}
+                  >
+                    <ReactMarkdown>{message.content}</ReactMarkdown>
+                  </div>
+                  {message.role === "user" && (
+                    <Avatar className="ml-2">
+                      <AvatarImage
+                        src={userImage ? userImage : undefined}
+                        alt={message.role}
+                      />
+                      <AvatarFallback>
+                        {userName
+                          ? userName[0]?.toUpperCase()
+                          : message.role[0]?.toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  )}
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
+            </ScrollArea>
+          ) : (
+            <div className="mb-10 flex h-full w-full flex-col items-center justify-center gap-5 self-center">
+              <Logo className="fill-white opacity-70" height={70} width={70} />
+              <p className="w-[50rem] text-center text-white opacity-70">
+                Globy is a smart AI assistant designed to help you improve your
+                English skills. Whether you&apos;re practicing grammar,
+                expanding your vocabulary, or working on conversation skills,
+                Globy provides personalized lessons and instant feedback. It can
+                correct your sentences, explain tricky grammar rules, and even
+                offer practice exercises tailored to your level. With Globy,
+                learning English becomes interactive, fun, and effective!
+              </p>
+            </div>
+          )}
           <div className="flex justify-self-end">
             <FormField
               control={form.control}
