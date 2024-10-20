@@ -19,6 +19,7 @@ export const promptRouter = createTRPCRouter({
       .select({
         label: prompts.name,
         value: prompts.prompt,
+        description: prompts.description,
       })
       .from(prompts);
   }),
