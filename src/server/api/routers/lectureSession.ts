@@ -122,7 +122,14 @@ export const lectureSessionRouter = createTRPCRouter({
         .leftJoin(users, eq(lectureSessions.teacherId, users.id))
         .leftJoin(levels, eq(lectures.levelId, levels.id))
         .leftJoin(programs, eq(levels.programId, programs.id))
-        .where(sql`${scheduled.lectureTitle} IS NULL`);
+        .where(
+          and(
+            sql`${scheduled.lectureTitle} IS NULL`,
+            eq(levels.id, input.levelId),
+            eq(lectureSessions.groupId, user.groupId),
+            eq(programs.id, user.programId),
+          ),
+        );
 
       console.log(query.toSQL());
 
