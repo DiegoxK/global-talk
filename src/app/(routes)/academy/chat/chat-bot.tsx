@@ -15,6 +15,7 @@ import { api } from "@/trpc/react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ReactMarkdown from "react-markdown";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import TypingEffect from "./_components/typing";
 
 const formSchema = z.object({
   userText: z.string(),
@@ -37,6 +38,7 @@ export default function ChatBot({
   const [messages, setMessages] = useState<{ role: roles; content: string }[]>(
     [],
   );
+  const [isThinking, setIsThinking] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -54,6 +56,7 @@ export default function ChatBot({
             content: message,
           },
         ]);
+        setIsThinking(false);
       }
     },
   });
@@ -104,6 +107,8 @@ export default function ChatBot({
       ]);
     }
 
+    setIsThinking(true);
+
     form.resetField("userText");
   }
 
@@ -153,7 +158,11 @@ export default function ChatBot({
                           : "bg-purple-100 text-stone-800"
                     }`}
                   >
-                    <ReactMarkdown>{message.content}</ReactMarkdown>
+                    {message.role === "assistant" ? (
+                      <TypingEffect content={message.content} />
+                    ) : (
+                      message.content
+                    )}
                   </div>
                   {message.role === "user" && (
                     <Avatar className="ml-2">
@@ -170,6 +179,11 @@ export default function ChatBot({
                   )}
                 </div>
               ))}
+              {isThinking && (
+                <div className="mb-6 mt-10 flex h-full w-full items-center justify-center text-white">
+                  <div className="loader"></div>
+                </div>
+              )}
               <div ref={messagesEndRef} />
             </ScrollArea>
           ) : (
