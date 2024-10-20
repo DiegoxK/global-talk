@@ -231,11 +231,9 @@ export default function ChatBot({
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Textarea
+                    <Input
                       disabled={!currentPrompt}
-                      rows={1}
-                      cols={1}
-                      className="min-h-12 w-full resize-none rounded-none rounded-bl-sm border-none bg-primary text-white placeholder-opacity-25 placeholder:text-white/50 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className="w-full resize-none rounded-none rounded-bl-sm border-none bg-primary text-white placeholder-opacity-25 placeholder:text-white/50 focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Envía un mensaje a Globy!"
                       {...field}
                     />
