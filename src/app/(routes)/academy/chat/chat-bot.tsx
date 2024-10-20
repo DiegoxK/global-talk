@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, TimerReset } from "lucide-react";
 import Combobox from "@/components/ui/combobox";
 import { Logo } from "@/vectors/logo";
 import { useEffect, useRef, useState } from "react";
@@ -16,6 +16,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import ReactMarkdown from "react-markdown";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import TypingEffect from "./_components/typing";
+import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
   userText: z.string(),
@@ -25,7 +26,7 @@ const formSchema = z.object({
 type roles = "system" | "user" | "assistant";
 
 interface ChatBotProps {
-  prompts: { label: string; value: string }[];
+  prompts: { label: string; value: string; description: string }[];
   userImage?: string | null;
   userName?: string | null;
 }
@@ -81,9 +82,12 @@ export default function ChatBot({
     resolver: zodResolver(formSchema),
     defaultValues: {
       userText: "",
-      prompt: prompts[0]?.value ?? "",
+      prompt: "",
     },
   });
+
+  const currentPrompt = form.watch("prompt");
+  console.log(currentPrompt);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (areMessages) {
@@ -117,9 +121,9 @@ export default function ChatBot({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex h-full w-full flex-col justify-between"
+          className="mt-4 flex h-full w-full flex-col justify-between"
         >
-          <div className="flex ps-4 pt-4">
+          <div className="flex justify-between ps-4">
             <FormField
               control={form.control}
               name="prompt"
@@ -134,10 +138,30 @@ export default function ChatBot({
                 </FormItem>
               )}
             />
+
+            <Button
+              className="me-4 border border-primary-600 bg-primary text-white"
+              size="icon"
+              type="button"
+              onClick={() => {
+                setMessages([]);
+                form.reset();
+              }}
+            >
+              <TimerReset className="h-4 w-4" />
+            </Button>
           </div>
 
-          {areMessages ? (
+          {currentPrompt ? (
             <ScrollArea className="flex-grow rounded-sm p-4">
+              <div className="mb-4 flex items-start">
+                <div className="rounded-lg bg-yellow-100 px-4 py-2 text-yellow-800">
+                  {
+                    prompts.find((prompt) => prompt.value === currentPrompt)
+                      ?.description
+                  }
+                </div>
+              </div>
               {messages.map((message, index) => (
                 <div
                   key={index}
@@ -150,18 +174,17 @@ export default function ChatBot({
                     </Avatar>
                   )}
                   <div
-                    className={`rounded-lg px-4 py-2 ${
-                      message.role === "system"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : message.role === "user"
-                          ? "bg-gray-100 text-gray-800"
-                          : "bg-purple-100 text-stone-800"
+                    className={`rounded-lg ${
+                      message.role === "user"
+                        ? "bg-gray-100 px-4 py-2 text-gray-800"
+                        : message.role === "assistant" &&
+                          "bg-purple-100 px-4 py-2 text-stone-800"
                     }`}
                   >
                     {message.role === "assistant" ? (
                       <TypingEffect content={message.content} />
                     ) : (
-                      message.content
+                      message.role === "user" && message.content
                     )}
                   </div>
                   {message.role === "user" && (
@@ -188,15 +211,16 @@ export default function ChatBot({
             </ScrollArea>
           ) : (
             <div className="mb-10 flex h-full w-full flex-col items-center justify-center gap-5 self-center">
-              <Logo className="fill-white opacity-70" height={70} width={70} />
-              <p className="w-[50rem] text-center text-white opacity-70">
-                Globy is a smart AI assistant designed to help you improve your
-                English skills. Whether you&apos;re practicing grammar,
-                expanding your vocabulary, or working on conversation skills,
-                Globy provides personalized lessons and instant feedback. It can
-                correct your sentences, explain tricky grammar rules, and even
-                offer practice exercises tailored to your level. With Globy,
-                learning English becomes interactive, fun, and effective!
+              <Logo className="fill-white" height={70} width={70} />
+              <p className="w-[50rem] text-center text-white">
+                Globy es un asistente de IA inteligente diseñado para ayudarte a
+                mejorar tus habilidades en inglés. Ya sea que estés practicando
+                gramática, ampliando tu vocabulario o trabajando en habilidades
+                de conversación, Globy ofrece lecciones personalizadas y
+                comentarios instantáneos. Puede corregir tus oraciones, explicar
+                reglas gramaticales complicadas e incluso ofrecer ejercicios de
+                práctica adaptados a tu nivel. ¡Con Globy, aprender inglés se
+                vuelve interactivo, divertido y efectivo!
               </p>
             </div>
           )}
@@ -207,8 +231,11 @@ export default function ChatBot({
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Input
-                      className="w-full rounded-none rounded-bl-sm border-none bg-primary py-6 text-white placeholder-opacity-25 placeholder:text-white/50 focus-visible:ring-0 focus-visible:ring-offset-0"
+                    <Textarea
+                      disabled={!currentPrompt}
+                      rows={1}
+                      cols={1}
+                      className="min-h-12 w-full resize-none rounded-none rounded-bl-sm border-none bg-primary text-white placeholder-opacity-25 placeholder:text-white/50 focus-visible:ring-0 focus-visible:ring-offset-0"
                       placeholder="Envía un mensaje a Globy!"
                       {...field}
                     />
@@ -217,6 +244,7 @@ export default function ChatBot({
               )}
             />
             <Button
+              disabled={!currentPrompt}
               className="flex h-full w-14 items-center justify-center rounded-none rounded-br-sm"
               size="icon"
               type="submit"
