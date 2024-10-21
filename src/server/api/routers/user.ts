@@ -87,53 +87,18 @@ export const userRouter = createTRPCRouter({
       // });
     }),
 
-  updateUserName: protectedProcedure
-    .input(
-      z.object({
-        username: z.string(),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
-
-      return await ctx.db
-        .update(users)
-        .set({
-          name: input.username,
-        })
-        .where(eq(users.id, userId));
-    }),
-
-  updateImage: protectedProcedure
-    .input(
-      z.object({
-        img: z.string().url(),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
-
-      // TODO: Delete previous image
-
-      return await ctx.db
-        .update(users)
-        .set({
-          image: input.img,
-        })
-        .where(eq(users.id, userId));
-    }),
-
   updateUser: protectedProcedure
     .input(
       z.object({
-        email: z.string().email(),
         name: z.string(),
+        lastName: z.string(),
+        email: z.string().email(),
         img: z.string().url().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
-      const userEmail = input.email;
+      const userEmail = ctx.session.user.email;
 
       const user = await ctx.db.query.users.findFirst({
         where: (table, funcs) => funcs.eq(table.email, userEmail),
@@ -144,6 +109,8 @@ export const userRouter = createTRPCRouter({
           .update(users)
           .set({
             name: input.name,
+            lastName: input.lastName,
+            email: input.email,
             image: input.img,
           })
           .where(eq(users.id, userId));
