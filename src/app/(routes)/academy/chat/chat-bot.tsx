@@ -117,7 +117,7 @@ export default function ChatBot({
   }
 
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className="mb-4 flex h-full w-full flex-col">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -138,7 +138,6 @@ export default function ChatBot({
                 </FormItem>
               )}
             />
-
             <Button
               className="me-4 border border-primary-600 bg-primary text-white"
               size="icon"
@@ -184,6 +183,7 @@ export default function ChatBot({
                     {message.role === "assistant" ? (
                       <TypingEffect content={message.content} />
                     ) : (
+                      // <ReactMarkdown>{message.content}</ReactMarkdown>
                       message.role === "user" && message.content
                     )}
                   </div>
