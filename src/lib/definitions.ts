@@ -18,3 +18,4 @@ export type ProgramInfo = RouterOutput["program"]["getProgramName"];
 export type UserHomeInfo = NonNullable<RouterOutput["user"]["getUserHomeInfo"]>;
 export type Transaction =
   RouterOutput["transaction"]["getAllTransactions"][number];
+export type Prompt = RouterOutput["prompt"]["getAllPrompts"][number];
