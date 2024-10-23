@@ -216,4 +216,27 @@ export const lectureSessionRouter = createTRPCRouter({
         .delete(lectureSessions)
         .where(eq(lectureSessions.id, input.lectureSessionId));
     }),
+
+  endLectureSession: protectedProcedure
+    .input(
+      z.object({
+        sessionRecording: z.string().url(),
+        lectureSessionId: z.string().uuid(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const user = ctx.session.user;
+
+      if (user.role !== env.TEACHER_ROLE && user.role !== env.ADMIN_ROLE) {
+        throw new Error("Only teachers can end lectureSessions");
+      }
+
+      await ctx.db
+        .update(lectureSessions)
+        .set({
+          finished: true,
+          meetUrl: input.sessionRecording,
+        })
+        .where(eq(lectureSessions.id, input.lectureSessionId));
+    }),
 });
