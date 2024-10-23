@@ -16,3 +16,5 @@ export type TeacherLectureSession =
 export type Level = RouterOutput["level"]["getUserLevels"][number];
 export type ProgramInfo = RouterOutput["program"]["getProgramName"];
 export type UserHomeInfo = NonNullable<RouterOutput["user"]["getUserHomeInfo"]>;
+export type Transaction =
+  RouterOutput["transaction"]["getAllTransactions"][number];
