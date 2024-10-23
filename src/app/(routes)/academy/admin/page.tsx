@@ -11,7 +11,7 @@ export default function Admin() {
           <p>Gestion de usuarios</p>
         </button>
       </Link>
-      <Link href="/academy/admin/transactions">
+      <Link href="/academy/admin/prompts">
         <button className="flex h-[410px] w-[410px] flex-col items-center justify-center rounded-md border shadow-md">
           <Prompts width={280} height={280} />
           <h2 className="text-2xl font-bold text-primary-600">Prompts</h2>
