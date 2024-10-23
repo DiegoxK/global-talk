@@ -25,8 +25,6 @@ import { useState } from "react";
 import type { Transaction } from "@/lib/definitions";
 import DataTableDialog from "./data-table-dialog";
 import { DataTablePagination } from "./data-table-pagination";
-import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
 
 interface DataTableProps<TData extends Transaction, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -68,23 +66,13 @@ export function DataTable<TData extends Transaction, TValue>({
       )}
       <div className="flex items-center justify-between pb-4">
         <Input
-          placeholder="Buscar por email..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Buscar por estatus..."
+          value={(table.getColumn("status")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("status")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        <Button
-          onClick={() => {
-            setTransaction(null);
-            setIsDialogOpen(true);
-          }}
-          className="rounded-sm"
-        >
-          <PlusCircle className="mr-2 h-5 w-5" />
-          Añadir usuario
-        </Button>
       </div>
       <div className="max-w-[calc(100vw-22rem)] rounded-md border">
         <Table>
