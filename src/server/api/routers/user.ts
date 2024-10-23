@@ -10,6 +10,13 @@ import { count, eq, sql } from "drizzle-orm";
 import { createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
+function isValidImageUrl(url: string): boolean {
+  const imageUrlPattern = /\.(jpeg|jpg|png|bmp|webp)$/i;
+  const urlPattern = /^(https?:\/\/)?[^\s/$.?#].[^\s]*$/i;
+
+  return urlPattern.test(url) && imageUrlPattern.test(url);
+}
+
 export const userSchema = createSelectSchema(users);
 
 export const userRouter = createTRPCRouter({
@@ -103,6 +110,10 @@ export const userRouter = createTRPCRouter({
       const user = await ctx.db.query.users.findFirst({
         where: (table, funcs) => funcs.eq(table.email, userEmail),
       });
+
+      if (input.img && !isValidImageUrl(input.img)) {
+        throw new Error("La url de la imagen no es válida");
+      }
 
       if (user && user.id === userId) {
         return await ctx.db
