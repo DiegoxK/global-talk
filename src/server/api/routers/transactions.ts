@@ -1,6 +1,6 @@
 import { transactions } from "@/server/db/schema";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { and, count, eq } from "drizzle-orm";
+import { and, asc, count, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import { env } from "@/env";
 
@@ -12,8 +12,29 @@ export const transactionRouter = createTRPCRouter({
       throw new Error("Unauthorized");
     }
 
-    const transactions = await ctx.db.query.transactions.findMany();
+    const pageTransactions = await ctx.db.query.transactions.findMany({
+      with: {
+        user: {
+          columns: {
+            name: true,
+            lastName: true,
+            email: true,
+            phone: true,
+            city: true,
+            planType: true,
+          },
+          with: {
+            program: {
+              columns: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: desc(transactions.date),
+    });
 
-    return transactions;
+    return pageTransactions;
   }),
 });
