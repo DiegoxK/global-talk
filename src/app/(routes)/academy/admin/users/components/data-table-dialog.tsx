@@ -98,13 +98,14 @@ export default function DataTableDialog({
     },
   });
 
-  // const { mutate: updateUser } = api.user.updateUser.useMutation({
-  //   onSuccess: () => {
-  //     setUser(undefined);
-  //     form.reset();
-  //     router.refresh();
-  //   },
-  // });
+  const { mutate: updateUser } = api.user.updateUserAsAdmin.useMutation({
+    onSuccess: () => {
+      setUser(undefined);
+      setOpen(false);
+      form.reset();
+      router.refresh();
+    },
+  });
 
   const { data: programs } = api.program.getProgramsIds.useQuery();
   const { data: groups } = api.groups.getgroups.useQuery();
@@ -128,6 +129,8 @@ export default function DataTableDialog({
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!isEditing) {
       createUser(values);
+    } else {
+      updateUser(values);
     }
     console.log(values);
   }
