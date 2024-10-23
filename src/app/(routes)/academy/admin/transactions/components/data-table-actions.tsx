@@ -32,21 +32,10 @@ export default function DataTableActions({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
         <DropdownMenuItem
-          onClick={() => {
-            setTransaction(transaction);
-            setIsDialogOpen(true);
-          }}
+          onClick={() => navigator.clipboard.writeText(transaction.receipt)}
         >
-          Editar
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          className="text-destructive focus:bg-red-100 focus:text-destructive"
-          onClick={() => navigator.clipboard.writeText(transaction.description)}
-        >
-          Eliminar
+          Copiar factura
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
