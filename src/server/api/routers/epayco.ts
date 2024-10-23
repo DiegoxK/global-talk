@@ -38,6 +38,21 @@ function areDatesInSameWeek(date1: Date, date2: Date): boolean {
   return weekStart1.getTime() === weekStart2.getTime();
 }
 
+function getWeekAndYear(): { week: string; year: string } {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1);
+  const days = Math.floor(
+    (now.getTime() - start.getTime()) / (24 * 60 * 60 * 1000),
+  );
+
+  const week = Math.ceil((days + start.getDay() + 1) / 7)
+    .toString()
+    .padStart(2, "0");
+  const year = now.getFullYear().toString();
+
+  return { week, year };
+}
+
 // function validateTransaction(refPayco: string) {
 
 // }
@@ -71,6 +86,8 @@ export const epaycoRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      const { week, year } = getWeekAndYear();
+
       const paymentDetails: PaymentDetails = {
         nameBilling: input.nameBilling,
         emailBilling: input.emailBilling,
@@ -254,7 +271,7 @@ export const epaycoRouter = createTRPCRouter({
         const currentLastAddedGroup = await ctx.db
           .insert(groups)
           .values({
-            name: "Grupo semana #1",
+            name: `Grupo semana #${week} - ${year}`,
             creationDate: new Date().toISOString(),
             startingDate: getNextWeekTuesday().toISOString(),
             currentLevel: 0,
@@ -293,7 +310,7 @@ export const epaycoRouter = createTRPCRouter({
           const currentLastAddedGroup = await ctx.db
             .insert(groups)
             .values({
-              name: `Grupo semana #${Number(groupNumber) + 1}`,
+              name: `Grupo semana #${week} - ${year}`,
               creationDate: new Date().toISOString(),
               startingDate: getNextWeekTuesday().toISOString(),
               currentLevel: 0,
