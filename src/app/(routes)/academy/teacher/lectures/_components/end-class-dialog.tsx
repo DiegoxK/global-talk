@@ -78,8 +78,8 @@ export default function EndClassDialog({
             <AlertDialogHeader>
               <AlertDialogTitle>Alerta!</AlertDialogTitle>
               <AlertDialogDescription>
-                Para finalizar la clase debes de tener acceso al enlace de
-                acceso a la grabacion.
+                Para finalizar la clase debes de tener el enlace de acceso a la
+                grabacion.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <FormField
