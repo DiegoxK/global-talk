@@ -125,6 +125,62 @@ export const userRouter = createTRPCRouter({
       });
     }),
 
+  updateUserAsAdmin: protectedProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        lastName: z.string(),
+        email: z.string().email(),
+        phone: z.string(),
+        city: z.string(),
+        programId: z.string(),
+        current_level: z.number(),
+        groupId: z.number(),
+        active: z.boolean(),
+        role: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = ctx.session.user;
+
+      if (user.role !== env.ADMIN_ROLE) {
+        throw new Error("Unauthorized");
+      }
+
+      const userEmail = input.email;
+
+      const userExist = await ctx.db.query.users.findFirst({
+        where: (table, funcs) => funcs.eq(table.email, userEmail),
+      });
+
+      if (userExist) {
+        const currentRole =
+          input.role === "Admin"
+            ? env.ADMIN_ROLE
+            : input.role === "Profesor"
+              ? env.TEACHER_ROLE
+              : env.STUDENT_ROLE;
+
+        return await ctx.db
+          .update(users)
+          .set({
+            name: input.name,
+            lastName: input.lastName,
+            email: input.email,
+            phone: input.phone,
+            city: input.city,
+            programId: input.programId,
+            groupId: input.groupId,
+            current_level: input.current_level,
+            active: input.active,
+            role: currentRole,
+          })
+          .where(eq(users.email, userEmail));
+      }
+
+      throw new Error("El usuario no existe");
+    }),
+
   updateUser: protectedProcedure
     .input(
       z.object({
