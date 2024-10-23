@@ -11,6 +11,8 @@ import {
 import type { UserWithRole } from "@/lib/definitions";
 import { type Dispatch, type SetStateAction } from "react";
 
+import { Checkbox } from "@/components/ui/checkbox";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -48,6 +51,17 @@ const formSchema = z.object({
       message: "No puede ser mayor a 25 caracteres",
     }),
   email: z.string().email({ message: "Campo requerido" }),
+  phone: z.string().min(1, { message: "Campo requerido" }),
+  city: z.string().min(1, { message: "Campo requerido" }),
+  programId: z.string({
+    message: "Campo requerido",
+  }),
+  groupId: z.number({
+    message: "Campo requerido",
+  }),
+  active: z.boolean({
+    message: "Campo requerido",
+  }),
   role: z
     .string()
     .min(1, {
@@ -56,9 +70,7 @@ const formSchema = z.object({
     .max(10, {
       message: "No puede ser mayor a 10 caracteres",
     }),
-  programId: z.string().uuid({
-    message: "Campo requerido",
-  }),
+  current_level: z.coerce.number().min(1, { message: "Campo requerido" }),
 });
 
 interface DataTableDialogProps {
@@ -77,7 +89,25 @@ export default function DataTableDialog({
   const router = useRouter();
   const isEditing = Boolean(user);
 
+  const { mutate: createUser } = api.user.createUser.useMutation({
+    onSuccess: () => {
+      setUser(undefined);
+      setOpen(false);
+      form.reset();
+      router.refresh();
+    },
+  });
+
+  // const { mutate: updateUser } = api.user.updateUser.useMutation({
+  //   onSuccess: () => {
+  //     setUser(undefined);
+  //     form.reset();
+  //     router.refresh();
+  //   },
+  // });
+
   const { data: programs } = api.program.getProgramsIds.useQuery();
+  const { data: groups } = api.groups.getgroups.useQuery();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -85,12 +115,20 @@ export default function DataTableDialog({
       name: user?.name ?? "",
       lastName: user?.lastName ?? "",
       email: user?.email ?? "",
+      phone: user?.phone ?? "",
+      city: user?.city ?? "",
       programId: user?.program.id ?? "",
+      groupId: user?.group.id ?? 0,
+      current_level: user?.current_level ?? 0,
+      active: user?.active ?? false,
       role: user?.role ?? "student",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!isEditing) {
+      createUser(values);
+    }
     console.log(values);
   }
 
@@ -170,17 +208,57 @@ export default function DataTableDialog({
               />
               <FormField
                 control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Numero de telefono <Required /> <FormMessage />
+                    </FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="321000000" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="city"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Ciudad <Required /> <FormMessage />
+                    </FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="Medellín" {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="programId"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel>
-                      Curso <Required /> <FormMessage />
+                      Programa <Required /> <FormMessage />
                     </FormLabel>
                     <Combobox
-                      fieldName="curso"
+                      fieldName="programa"
                       values={programs}
                       field={field}
                     />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="groupId"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>
+                      Grupo <Required /> <FormMessage />
+                    </FormLabel>
+                    <Combobox fieldName="grupo" values={groups} field={field} />
                   </FormItem>
                 )}
               />
@@ -210,6 +288,49 @@ export default function DataTableDialog({
                       ]}
                       field={field}
                     />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="current_level"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Nivel actual <Required /> <FormMessage />
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="ejemplo@globtm.co"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="active"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Usuario Activo? <Required /> <FormMessage />
+                    </FormLabel>
+                    <div className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormDescription>
+                          Si el usuario está activo, podrá ingresar a las clases
+                          normalmente.
+                        </FormDescription>
+                      </div>
+                    </div>
                   </FormItem>
                 )}
               />
