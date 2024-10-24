@@ -10,6 +10,7 @@ import {
   Clock,
   type LucideIcon,
   Pencil,
+  Search,
   UserRound,
 } from "lucide-react";
 import { cn, formatDate, formatTime } from "@/lib/utils";
@@ -85,8 +86,12 @@ export default function LectureCard({
           Editar Clase
         </CardButton>
       ) : (
-        <CardButton action={action} Icon={CirclePlus}>
-          No disponible
+        <CardButton
+          className="bg-primary-800 text-destructive-foreground"
+          action={action}
+          Icon={Search}
+        >
+          Información
         </CardButton>
       )}
     </div>
@@ -127,7 +132,7 @@ interface CardParagraphProps {
 }
 
 const CardParagraph = ({ children, Icon }: CardParagraphProps) => (
-  <p className="flex items-center gap-2">
+  <p className="flex items-center gap-2 text-sm">
     <Icon className="h-5 w-5 text-primary-700" />
     {children}
   </p>
