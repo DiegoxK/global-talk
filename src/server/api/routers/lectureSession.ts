@@ -72,6 +72,7 @@ export const lectureSessionRouter = createTRPCRouter({
         .leftJoin(schedules, eq(lectureSessions.id, schedules.lectureSessionId))
         .where(
           and(
+            eq(lectureSessions.finished, false),
             eq(levels.id, input.levelId),
             eq(lectureSessions.groupId, user.groupId),
             eq(programs.id, user.programId),
@@ -124,6 +125,7 @@ export const lectureSessionRouter = createTRPCRouter({
         .leftJoin(programs, eq(levels.programId, programs.id))
         .where(
           and(
+            eq(lectureSessions.finished, false),
             sql`${scheduled.lectureTitle} IS NULL`,
             eq(levels.id, input.levelId),
             eq(lectureSessions.groupId, user.groupId),
@@ -131,11 +133,64 @@ export const lectureSessionRouter = createTRPCRouter({
           ),
         );
 
-      console.log(query.toSQL());
-
       const availableLectures = await query;
 
       return availableLectures;
+    }),
+
+  getFinishedLectureSessions: protectedProcedure
+    .input(
+      z.object({
+        levelId: z.string().uuid(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const user = ctx.session.user;
+
+      const scheduled = ctx.db
+        .select({
+          lectureTitle: lectures.title,
+        })
+        .from(lectureSessions)
+        .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
+        .leftJoin(levels, eq(lectures.levelId, levels.id))
+        .leftJoin(programs, eq(levels.programId, programs.id))
+        .leftJoin(schedules, eq(lectureSessions.id, schedules.lectureSessionId))
+        .where(
+          and(
+            eq(levels.id, input.levelId),
+            eq(lectureSessions.groupId, user.groupId),
+            eq(programs.id, user.programId),
+            eq(schedules.studentId, user.id),
+          ),
+        )
+        .as("scheduled");
+
+      const query = ctx.db
+        .select(lectureSessionCardSchema)
+        .from(lectureSessions)
+        .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
+        .leftJoin(scheduled, eq(lectures.title, scheduled.lectureTitle))
+        .leftJoin(
+          scheduleCount,
+          eq(lectureSessions.id, scheduleCount.lectureSessionId),
+        )
+        .leftJoin(users, eq(lectureSessions.teacherId, users.id))
+        .leftJoin(levels, eq(lectures.levelId, levels.id))
+        .leftJoin(programs, eq(levels.programId, programs.id))
+        .where(
+          and(
+            eq(lectureSessions.finished, true),
+            sql`${scheduled.lectureTitle} IS NULL`,
+            eq(levels.id, input.levelId),
+            eq(lectureSessions.groupId, user.groupId),
+            eq(programs.id, user.programId),
+          ),
+        );
+
+      const finishedLectures = await query;
+
+      return finishedLectures;
     }),
 
   getMyTeacherLectureSessions: protectedProcedure.query(async ({ ctx }) => {
