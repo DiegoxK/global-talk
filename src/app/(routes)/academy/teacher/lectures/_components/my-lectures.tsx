@@ -2,10 +2,10 @@
 import type { TeacherLectureSession } from "@/lib/definitions";
 import { useState } from "react";
 import LectureForm from "./lecture-form";
-import LectureCard from "../../../_components/ui/lecture-card";
 
 import { Plus } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import SortedLectures from "./sorted-lectures";
 
 interface MyLecturesProps {
   lectures: TeacherLectureSession[];
@@ -47,20 +47,20 @@ export default function MyLectures({ lectures }: MyLecturesProps) {
       <div className="mt-4">
         <h1 className="text-xl font-bold text-primary">Mis clases</h1>
         <Separator />
-        <div className="grid h-fit grid-cols-1 gap-3 pb-4 pt-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {lectures.map((lecture) => (
-            <LectureCard
-              lecture={lecture}
-              action={() => {
-                setOpen(true);
-                setLecture(lecture);
-              }}
-              key={lecture.id}
-              state="teacher"
-              scheduleCount={lecture.schedulesCount}
-            />
-          ))}
-        </div>
+        {lectures.length > 0 ? (
+          <SortedLectures
+            action={() => {
+              setOpen(true);
+            }}
+            state="teacher"
+            setLecture={setLecture}
+            lectureSessions={lectures}
+          />
+        ) : (
+          <div className="mt-5 flex h-[100px] w-full items-center justify-center text-muted-foreground">
+            Aún no se han finalizado clases en este nivel.
+          </div>
+        )}
       </div>
     </>
   );
