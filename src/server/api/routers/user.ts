@@ -71,6 +71,44 @@ export const userRouter = createTRPCRouter({
 
     return usersWithRole;
   }),
+
+  getAllStudents: protectedProcedure.query(async ({ ctx }) => {
+    const user = ctx.session.user;
+
+    if (user.role !== env.ADMIN_ROLE && user.role !== env.TEACHER_ROLE) {
+      throw new Error("Unauthorized");
+    }
+
+    const students = await ctx.db.query.users.findMany({
+      columns: {
+        image: true,
+        name: true,
+        lastName: true,
+        email: true,
+        city: true,
+        phone: true,
+        active: true,
+        current_level: true,
+      },
+      with: {
+        program: {
+          columns: {
+            name: true,
+            proficiency: true,
+          },
+        },
+        group: {
+          columns: {
+            name: true,
+          },
+        },
+      },
+      where: eq(users.role, env.STUDENT_ROLE),
+    });
+
+    return students;
+  }),
+
   createUser: protectedProcedure
     .input(
       z.object({
