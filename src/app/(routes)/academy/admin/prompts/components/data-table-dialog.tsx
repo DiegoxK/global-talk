@@ -140,7 +140,7 @@ export default function DataTableDialog({
                       Nombre <Required /> <FormMessage />
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="Antonio" {...field} />
+                      <Input placeholder="Asistente Gramatica" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
