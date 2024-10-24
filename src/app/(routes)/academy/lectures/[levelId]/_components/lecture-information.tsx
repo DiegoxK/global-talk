@@ -55,9 +55,10 @@ interface ScheduleLectureProps {
 }
 
 const ScheduleLecture = ({ lecture, onSubmit }: ScheduleLectureProps) => {
-  const { mutate: createSchedule } = api.schedule.createSchedule.useMutation({
-    onSuccess: onSubmit,
-  });
+  const { mutate: createSchedule, isPending } =
+    api.schedule.createSchedule.useMutation({
+      onSuccess: onSubmit,
+    });
 
   const createScheduleHandler = () => {
     createSchedule({ lectureId: lecture.id });
@@ -74,7 +75,11 @@ const ScheduleLecture = ({ lecture, onSubmit }: ScheduleLectureProps) => {
         <span className="font-bold text-primary-600">{lecture.name}</span>?
       </div>
       <DialogFooter>
-        <Button className="rounded-sm" onClick={createScheduleHandler}>
+        <Button
+          disabled={isPending}
+          className="rounded-sm"
+          onClick={createScheduleHandler}
+        >
           Agendar
         </Button>
       </DialogFooter>
@@ -91,9 +96,10 @@ const ScheduleInformation = ({
   lecture,
   onSubmit,
 }: ScheduleInformationProps) => {
-  const { mutate: removeSchedule } = api.schedule.removeSchedule.useMutation({
-    onSuccess: onSubmit,
-  });
+  const { mutate: removeSchedule, isPending } =
+    api.schedule.removeSchedule.useMutation({
+      onSuccess: onSubmit,
+    });
 
   const removeScheduleHandler = () => {
     removeSchedule({ lectureId: lecture.id });
@@ -166,6 +172,7 @@ const ScheduleInformation = ({
             <div className="m-0">
               <p className="text-destructive">Desagendar</p>
               <Button
+                disabled={isPending}
                 onClick={removeScheduleHandler}
                 className="mt-2 bg-destructive text-destructive-foreground hover:bg-background hover:text-destructive hover:outline hover:outline-1 hover:outline-destructive"
                 size="icon"
