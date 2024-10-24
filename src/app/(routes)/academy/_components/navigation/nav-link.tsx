@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 interface NavLinkProps {
-  disabled: boolean;
+  disabled?: boolean;
   Icon: LucideIcon;
   href: string;
   location: string;
