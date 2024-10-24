@@ -320,7 +320,7 @@ export default function LectureForm({
                         <FormControl>
                           <Input
                             type="text"
-                            placeholder="https://off2class.com/..."
+                            placeholder="2544781..."
                             {...field}
                           />
                         </FormControl>
