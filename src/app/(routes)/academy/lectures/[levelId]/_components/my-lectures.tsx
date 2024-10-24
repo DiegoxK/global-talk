@@ -78,7 +78,7 @@ export default function MyLectures({
           </div>
         )}
       </div>
-      <div className="mb-4">
+      <div className="mb-2">
         <h1 className="text-xl font-bold text-primary">Clases finalizadas</h1>
         <Separator />
         {finishedLectures.length > 0 ? (
