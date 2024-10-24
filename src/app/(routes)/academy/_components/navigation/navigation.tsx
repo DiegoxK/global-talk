@@ -2,8 +2,10 @@
 
 import { BrainCog, DoorOpen, School } from "lucide-react";
 import { NavLink } from "./nav-link";
+import type { User } from "@/lib/definitions";
 
 interface NavigationProps {
+  user: User;
   firstLevelId?: string;
   location: string;
 }
@@ -11,6 +13,7 @@ interface NavigationProps {
 export default function Navigation({
   location,
   firstLevelId,
+  user,
 }: NavigationProps) {
   const links = [
     {
@@ -34,6 +37,7 @@ export default function Navigation({
     <div className="space-y-2">
       {links.map((link) => (
         <NavLink
+          disabled={!user.active}
           Icon={link.icon}
           location={location}
           subRoute={link.subRoute}
