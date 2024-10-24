@@ -147,30 +147,10 @@ export const lectureSessionRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       const user = ctx.session.user;
 
-      const scheduled = ctx.db
-        .select({
-          lectureTitle: lectures.title,
-        })
-        .from(lectureSessions)
-        .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
-        .leftJoin(levels, eq(lectures.levelId, levels.id))
-        .leftJoin(programs, eq(levels.programId, programs.id))
-        .leftJoin(schedules, eq(lectureSessions.id, schedules.lectureSessionId))
-        .where(
-          and(
-            eq(levels.id, input.levelId),
-            eq(lectureSessions.groupId, user.groupId),
-            eq(programs.id, user.programId),
-            eq(schedules.studentId, user.id),
-          ),
-        )
-        .as("scheduled");
-
       const query = ctx.db
         .select(lectureSessionCardSchema)
         .from(lectureSessions)
         .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
-        .leftJoin(scheduled, eq(lectures.title, scheduled.lectureTitle))
         .leftJoin(
           scheduleCount,
           eq(lectureSessions.id, scheduleCount.lectureSessionId),
@@ -181,7 +161,6 @@ export const lectureSessionRouter = createTRPCRouter({
         .where(
           and(
             eq(lectureSessions.finished, true),
-            sql`${scheduled.lectureTitle} IS NULL`,
             eq(levels.id, input.levelId),
             eq(lectureSessions.groupId, user.groupId),
             eq(programs.id, user.programId),
