@@ -24,17 +24,26 @@ export const levelRouter = createTRPCRouter({
     });
   }),
 
-  getUserLevels: protectedProcedure.query(({ ctx }) => {
+  getUserLevels: protectedProcedure.query(async ({ ctx }) => {
     const user = ctx.session.user;
     const programId = user.programId;
 
     if (!programId) {
-      return ctx.db.query.levels.findMany();
+      const userLevels = await ctx.db.query.levels.findMany();
+      return {
+        levels: userLevels,
+        currentUserLevel: user.current_level,
+      };
     }
 
-    return ctx.db.query.levels.findMany({
+    const userLevels = await ctx.db.query.levels.findMany({
       where: eq(levels.programId, programId),
     });
+
+    return {
+      levels: userLevels,
+      currentUserLevel: user.current_level,
+    };
   }),
 
   getProgramLevelIds: protectedProcedure
