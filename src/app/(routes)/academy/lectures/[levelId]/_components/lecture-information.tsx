@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import type { LectureSession } from "@/lib/definitions";
-import { formatDate, formatTime } from "@/lib/utils";
+import { cn, formatDate, formatTime } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { FileSymlink, LogOut, SquareArrowOutUpRight } from "lucide-react";
 import Link from "next/link";
@@ -119,22 +119,32 @@ const ScheduleInformation = ({
           <p className="text-primary-700">Fecha</p>
           <p>{formatDate(lecture.date)}</p>
         </div>
+        {!lecture.isFinished && (
+          <>
+            <Separator />
+            <div className="flex justify-center space-x-4">
+              <div>
+                <p className="text-primary-700">Hora de inicio</p>
+                <p> {formatTime(lecture.startTime)}</p>
+              </div>
+              <div>
+                <p className="text-primary-700">Hora de fin</p>
+                <p>{formatTime(lecture.endTime)}</p>
+              </div>
+            </div>
+          </>
+        )}
         <Separator />
-
-        <div className="flex justify-center space-x-4">
-          <div>
-            <p className="text-primary-700">Hora de inicio</p>
-            <p> {formatTime(lecture.startTime)}</p>
-          </div>
-          <div>
-            <p className="text-primary-700">Hora de fin</p>
-            <p>{formatTime(lecture.endTime)}</p>
-          </div>
-        </div>
-        <Separator />
-        <div className="mx-auto grid w-fit grid-cols-3 gap-x-4">
+        <div
+          className={cn(
+            "mx-auto grid w-fit gap-x-4",
+            lecture.isFinished ? "grid-cols-2" : "grid-cols-3",
+          )}
+        >
           <div className="m-0">
-            <p className="text-primary-700">Ingresar</p>
+            <p className="text-primary-700">
+              {lecture.isFinished ? "Grabacion" : "Ingresar"}
+            </p>
             <Link href={lecture.meetUrl} target="_blank">
               <Button className="mt-2" size="icon">
                 <SquareArrowOutUpRight className="h-5 w-5" />
@@ -144,7 +154,7 @@ const ScheduleInformation = ({
           <div className="m-0">
             <p className="text-primary-700">Material</p>
             <Link
-              href={`https://app.off2class.com/student/sessions/${lecture.off2classUrl}`}
+              href={`https://app.off2class.com/student/${lecture.isFinished ? "lesson" : "sessions"}/${lecture.off2classUrl}`}
               target="_blank"
             >
               <Button className="mt-2" size="icon">
@@ -152,16 +162,18 @@ const ScheduleInformation = ({
               </Button>
             </Link>
           </div>
-          <div className="m-0">
-            <p className="text-destructive">Desagendar</p>
-            <Button
-              onClick={removeScheduleHandler}
-              className="mt-2 bg-destructive text-destructive-foreground hover:bg-background hover:text-destructive hover:outline hover:outline-1 hover:outline-destructive"
-              size="icon"
-            >
-              <LogOut className="h-5 w-5" />
-            </Button>
-          </div>
+          {!lecture.isFinished && (
+            <div className="m-0">
+              <p className="text-destructive">Desagendar</p>
+              <Button
+                onClick={removeScheduleHandler}
+                className="mt-2 bg-destructive text-destructive-foreground hover:bg-background hover:text-destructive hover:outline hover:outline-1 hover:outline-destructive"
+                size="icon"
+              >
+                <LogOut className="h-5 w-5" />
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </DialogContent>
