@@ -67,7 +67,7 @@ export default function MyLectures({
         />
       </div>
       <div>
-        <h1 className="text-xl font-bold text-primary">Clases grabadas</h1>
+        <h1 className="text-xl font-bold text-primary">Clases finalizadas</h1>
         <Separator />
         <SortedLectures
           action={() => {
