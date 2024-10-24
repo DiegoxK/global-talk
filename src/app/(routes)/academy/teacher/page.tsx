@@ -11,7 +11,7 @@ export default function Teacher() {
           <p>Gestion de mis clases</p>
         </button>
       </Link>
-      <Link href="/academy/teacher/lectures">
+      <Link href="/academy/teacher/students">
         <button className="flex h-[410px] w-[410px] flex-col items-center justify-center rounded-md border shadow-md">
           <Students width={280} height={280} />
           <h2 className="text-2xl font-bold text-primary-600">Estudiantes</h2>
