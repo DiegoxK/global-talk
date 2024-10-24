@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 interface NavLinkProps {
+  disabled: boolean;
   Icon: LucideIcon;
   href: string;
   location: string;
@@ -16,6 +17,7 @@ interface NavLinkProps {
 }
 
 export function NavLink({
+  disabled,
   Icon,
   href,
   location,
@@ -33,7 +35,7 @@ export function NavLink({
     return pathname.startsWith(href);
   };
 
-  return (
+  return !disabled ? (
     <Link
       className={cn(
         "flex items-center p-2 text-primary-700",
@@ -47,5 +49,18 @@ export function NavLink({
       <Icon className="mr-2 h-5 w-5" />
       {children}
     </Link>
+  ) : (
+    <div
+      className={cn(
+        "flex items-center p-2 text-primary-400",
+        isActive(href) && "rounded-md bg-primary ps-4 text-white",
+        className,
+      )}
+      onClick={toggleOpen !== undefined ? () => toggleOpen(false) : undefined}
+      {...props}
+    >
+      <Icon className="mr-2 h-5 w-5" />
+      {children}
+    </div>
   );
 }
