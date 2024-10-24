@@ -33,7 +33,7 @@ export default function SortedLectures({
 
   return (
     <Accordion
-      defaultValue={Object.keys(groupedByTitle)}
+      defaultValue={state === "finished" ? [] : Object.keys(groupedByTitle)}
       className="w-full px-1"
       type="multiple"
     >
