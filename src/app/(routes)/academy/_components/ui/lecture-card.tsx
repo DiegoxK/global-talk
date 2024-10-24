@@ -28,7 +28,7 @@ export default function LectureCard({
   scheduleCount,
 }: LectureCardProps) {
   return (
-    <div className="flex flex-col justify-between rounded-md border shadow-md">
+    <div className="flex w-[217px] flex-col justify-between rounded-md border shadow-md">
       <div>
         <div
           style={{
