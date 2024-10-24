@@ -6,15 +6,18 @@ import type { LectureSession } from "@/lib/definitions";
 import LectureInformation from "./lecture-information";
 import { useState } from "react";
 import LectureCard from "../../../_components/ui/lecture-card";
+import SortedLectures from "./sorted-lectures";
 
 interface ScheduledProps {
   scheduledLectures: LectureSession[];
   availableLectures: LectureSession[];
+  finishedLectures: LectureSession[];
 }
 
 export default function MyLectures({
   scheduledLectures,
   availableLectures,
+  finishedLectures,
 }: ScheduledProps) {
   // TODO: optimize re renders
   const [open, setOpen] = useState(true);
@@ -32,7 +35,7 @@ export default function MyLectures({
       <div className="mt-4">
         <h1 className="text-xl font-bold text-primary">Clases agendadas</h1>
         <Separator />
-        <div className="grid h-fit grid-cols-1 gap-3 pb-4 pt-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <div className="flex flex-wrap gap-2 py-2">
           {scheduledLectures.map((lecture) => {
             return (
               <LectureCard
@@ -50,26 +53,31 @@ export default function MyLectures({
           })}
         </div>
       </div>
-      <div className="mt-4">
+      <div>
         <h1 className="text-xl font-bold text-primary">Clases disponibles</h1>
         <Separator />
-        <div className="grid h-fit grid-cols-1 gap-3 pb-4 pt-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {availableLectures.map((lecture) => {
-            return (
-              <LectureCard
-                action={() => {
-                  setOpen(true);
-                  setState("schedule");
-                  setLecture(lecture);
-                }}
-                state={lecture.isFinished ? "finished" : "available"}
-                key={lecture.id}
-                lecture={lecture}
-                scheduleCount={lecture.schedulesCount}
-              />
-            );
-          })}
-        </div>
+        <SortedLectures
+          action={() => {
+            setOpen(true);
+            setState("schedule");
+          }}
+          state={"available"}
+          setLecture={setLecture}
+          lectureSessions={availableLectures}
+        />
+      </div>
+      <div>
+        <h1 className="text-xl font-bold text-primary">Clases grabadas</h1>
+        <Separator />
+        <SortedLectures
+          action={() => {
+            setOpen(true);
+            setState("view");
+          }}
+          state={"finished"}
+          setLecture={setLecture}
+          lectureSessions={finishedLectures}
+        />
       </div>
     </>
   );
