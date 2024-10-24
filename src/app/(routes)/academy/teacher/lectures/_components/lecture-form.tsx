@@ -296,7 +296,10 @@ export default function LectureForm({
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          URL de Google Meet <Required /> <FormMessage />
+                          {lectureSession?.isFinished
+                            ? "Url de la grabacion"
+                            : "URL de Google Meet"}{" "}
+                          <Required /> <FormMessage />
                         </FormLabel>
                         <FormControl>
                           <Input
@@ -374,7 +377,7 @@ export default function LectureForm({
                 </div>
 
                 <DialogFooter className="mt-4 justify-start">
-                  {isEditing && (
+                  {isEditing && !lectureSession?.isFinished && (
                     <Button
                       onClick={() => {
                         setEndLectureDialog(true);
@@ -398,12 +401,12 @@ export default function LectureForm({
                       <AlertDialogContent className="w-[470px]">
                         <AlertDialogHeader>
                           <AlertDialogTitle>
-                            {/* Are you absolutely sure? */}
                             ¿Estás completamente seguro?
                           </AlertDialogTitle>
                           <AlertDialogDescription>
                             Esta acción no se puede deshacer. Esto eliminará la
-                            clase y no se podrá recuperar.
+                            clase y el acceso a la grabacion no se podrá
+                            recuperar.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>

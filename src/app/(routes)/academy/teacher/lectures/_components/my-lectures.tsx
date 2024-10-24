@@ -9,9 +9,13 @@ import SortedLectures from "./sorted-lectures";
 
 interface MyLecturesProps {
   lectures: TeacherLectureSession[];
+  finishedLectures: TeacherLectureSession[];
 }
 
-export default function MyLectures({ lectures }: MyLecturesProps) {
+export default function MyLectures({
+  lectures,
+  finishedLectures,
+}: MyLecturesProps) {
   const [open, setOpen] = useState(false);
   const [lecture, setLecture] = useState<
     TeacherLectureSession | undefined | null
@@ -58,7 +62,25 @@ export default function MyLectures({ lectures }: MyLecturesProps) {
           />
         ) : (
           <div className="mt-5 flex h-[100px] w-full items-center justify-center text-muted-foreground">
-            Aún no se han finalizado clases en este nivel.
+            Aún no se creado clases!
+          </div>
+        )}
+      </div>
+      <div className="mt-4">
+        <h1 className="text-xl font-bold text-primary">Clases terminadas</h1>
+        <Separator />
+        {finishedLectures.length > 0 ? (
+          <SortedLectures
+            action={() => {
+              setOpen(true);
+            }}
+            state="teacher"
+            setLecture={setLecture}
+            lectureSessions={finishedLectures}
+          />
+        ) : (
+          <div className="mt-5 flex h-[100px] w-full items-center justify-center text-muted-foreground">
+            Aún no se han finalizado clases!
           </div>
         )}
       </div>

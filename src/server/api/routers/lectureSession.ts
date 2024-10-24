@@ -193,8 +193,43 @@ export const lectureSessionRouter = createTRPCRouter({
       .leftJoin(levels, eq(lectures.levelId, levels.id))
       .leftJoin(programs, eq(levels.programId, programs.id))
       .leftJoin(groups, eq(lectureSessions.groupId, groups.id))
-      .where(eq(lectureSessions.teacherId, user.id));
+      .where(
+        and(
+          eq(lectureSessions.teacherId, user.id),
+          eq(lectureSessions.finished, false),
+        ),
+      );
   }),
+  getMyTeacherFinishedLectureSessions: protectedProcedure.query(
+    async ({ ctx }) => {
+      const user = ctx.session.user;
+
+      return ctx.db
+        .select({
+          ...lectureSessionCardSchema,
+          lectureId: lectures.id,
+          levelId: levels.id,
+          programId: programs.id,
+          groupId: groups.id,
+        })
+        .from(lectureSessions)
+        .leftJoin(
+          scheduleCount,
+          eq(lectureSessions.id, scheduleCount.lectureSessionId),
+        )
+        .leftJoin(users, eq(lectureSessions.teacherId, users.id))
+        .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
+        .leftJoin(levels, eq(lectures.levelId, levels.id))
+        .leftJoin(programs, eq(levels.programId, programs.id))
+        .leftJoin(groups, eq(lectureSessions.groupId, groups.id))
+        .where(
+          and(
+            eq(lectureSessions.teacherId, user.id),
+            eq(lectureSessions.finished, true),
+          ),
+        );
+    },
+  ),
 
   editLectureSession: protectedProcedure
     .input(createLectureSessionSchema)
