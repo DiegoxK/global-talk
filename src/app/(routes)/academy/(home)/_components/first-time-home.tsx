@@ -15,6 +15,7 @@ export default function FirstTimeHome({
   programProficiency,
   currentUserLevel,
   startDate,
+  active,
 }: UserHomeInfo) {
   return (
     <div className="flex h-full flex-col justify-between px-4 pt-8">
@@ -61,10 +62,10 @@ export default function FirstTimeHome({
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             <Card className="bg-primary/5">
-              <Progress
+              {/* <Progress
                 value={(currentUserLevel / levelCount) * 100}
                 className="w-full"
-              />
+              /> */}
               <CardContent className="pt-6">
                 <BookOpen className="mb-2 h-8 w-8 text-primary" />
                 <h4 className="mb-1 text-lg font-semibold text-primary">
@@ -74,10 +75,10 @@ export default function FirstTimeHome({
               </CardContent>
             </Card>
             <Card className="bg-primary/5">
-              <Progress
+              {/* <Progress
                 value={(currentUserLevel / levelCount) * 100}
                 className="w-full"
-              />
+              /> */}
               <CardContent className="pt-6">
                 <Layers className="mb-2 h-8 w-8 text-primary" />
                 <h4 className="mb-1 text-lg font-semibold text-primary">
@@ -87,10 +88,10 @@ export default function FirstTimeHome({
               </CardContent>
             </Card>
             <Card className="bg-primary/5">
-              <Progress
+              {/* <Progress
                 value={(currentUserLevel / levelCount) * 100}
                 className="w-full"
-              />
+              /> */}
               <CardContent className="pt-6">
                 <Clock className="mb-2 h-8 w-8 text-primary" />
                 <h4 className="mb-1 text-lg font-semibold text-primary">
