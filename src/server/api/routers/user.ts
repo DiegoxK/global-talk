@@ -287,6 +287,7 @@ export const userRouter = createTRPCRouter({
         programProficiency: programs.proficiency,
         currentUserLevel: users.current_level,
         startDate: groups.startingDate,
+        active: users.active,
       })
       .from(users)
       .leftJoin(groups, eq(users.groupId, groups.id))
