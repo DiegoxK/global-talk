@@ -13,7 +13,7 @@ type PricingKey =
   | "pure_a1"
   | "beginners_plus_pure_a1"
   | "intensive_b2"
-  | "business"
+  | "business_english"
   | "from_a2_to_b1"
   | "from_b1_to_b2";
 
@@ -67,12 +67,12 @@ export const siteConfig: SiteConfig = {
   pricing: {
     beginners_a0: {
       price: "90000",
-      name: "Beginners_A0",
+      name: "Beginners A0",
       description: "Programa Beginners A0, 2 niveles (4 meses)",
     },
     pure_a1: {
       price: "90000",
-      name: "Pure_A1",
+      name: "Pure A1",
       description: "Programa Pure A1, 2 niveles (4 meses)",
     },
     beginners_plus_pure_a1: {
@@ -95,7 +95,7 @@ export const siteConfig: SiteConfig = {
       name: "Intensive B2",
       description: "Programa Intensive B2, 2 niveles (4 meses)",
     },
-    business: {
+    business_english: {
       price: "90000",
       name: "Business English",
       description: "Programa Business English, 2 niveles (4 meses)",
