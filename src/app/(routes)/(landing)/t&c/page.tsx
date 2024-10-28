@@ -1,6 +1,6 @@
 export default function TermsAndConditions() {
   return (
-    <div className="mx-24 my-12 space-y-4">
+    <div className="space-y-4 border-t px-64 py-12">
       <h1 className="text-4xl font-bold">Términos y condiciones de uso</h1>
       <h2 className="text-2xl font-bold">1. Introducción.</h2>
       <p>
@@ -13,7 +13,7 @@ export default function TermsAndConditions() {
         el cumplimiento de diversas leyes incluyendo:
       </p>
 
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           Ley 1480 de 2011 – Estatuto del consumidor. Garantizando la protección
           de derechos de los consumidores en Colombia.
@@ -31,7 +31,15 @@ export default function TermsAndConditions() {
           propiedad intelectual y de los derechos de autor en Colombia.
         </li>
       </ul>
-
+      <p>
+        Estos términos se rigen por las leyes de Colombia. Cualquier disputa que
+        surja en relación con estos términos estará sujeta a la jurisdicción de
+        los tribunales colombianos.
+      </p>
+      <p>
+        Al acceder o utilizar nuestros servicios, se da a entender que aceptas
+        que estás de acuerdo con estos términos.
+      </p>
       <h2 className="text-2xl font-bold">2. Definiciones.</h2>
       <p>
         <strong>Usuario:</strong> Cualquier persona registrada que accede a la
@@ -60,10 +68,16 @@ export default function TermsAndConditions() {
         acuerdo, por favor abstenerse de utilizar los servicios.
       </p>
 
+      <p>
+        Estos términos se rigen por las leyes de Colombia. Cualquier disputa que
+        surja en relación con estos términos estará sujeta a la jurisdicción de
+        los tribunales colombianos.
+      </p>
+
       <h2 className="text-2xl font-bold">4. Registro y cuentas.</h2>
 
       <h3 className="text-xl font-bold">4.1. Creación de Cuenta</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Requisitos para Registrarse:</strong> Para acceder a los
           Servicios de la Academia, los usuarios deben crear una cuenta
@@ -87,7 +101,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">4.2. Responsabilidad de la Cuenta</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Confidencialidad de las Credenciales:</strong> Los usuarios
           son responsables de mantener la confidencialidad de su nombre de
@@ -111,7 +125,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">4.3. Modificación de Información</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Actualización de Datos:</strong> Los usuarios deben asegurarse
           de que la información asociada con su cuenta esté siempre actualizada.
@@ -129,7 +143,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">4.4. Uso de la Cuenta</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Uso Personal:</strong> Las cuentas están destinadas a uso
           personal e intransferible. No se permite la transferencia de cuentas,
@@ -150,7 +164,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">4.5. Cierre de Cuenta</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Iniciativa del Usuario:</strong> Los usuarios pueden cerrar su
           cuenta en cualquier momento a través de la configuración de la cuenta
@@ -176,7 +190,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">4.6. Reactivación de Cuenta</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Solicitudes de Reactivación:</strong> En algunos casos, la
           Academia puede permitir la reactivación de cuentas cerradas a
@@ -192,7 +206,7 @@ export default function TermsAndConditions() {
         </li>
       </ul>
       <h3 className="text-xl font-bold">4.7. Cuentas Inactivas</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Política de Inactividad:</strong> La Academia se reserva el
           derecho de suspender o eliminar cuentas que permanezcan inactivas
@@ -209,7 +223,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">4.8. Privacidad de la Cuenta</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Política de Privacidad:</strong> La información personal del
           usuario recopilada durante el registro y el uso de la cuenta se
@@ -227,7 +241,7 @@ export default function TermsAndConditions() {
       <h2 className="text-2xl font-bold">5. Pagos y Facturación</h2>
 
       <h3 className="text-xl font-bold">5.1. Métodos de Pago</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Pasarela de Pagos:</strong> Los pagos por los cursos ofrecidos
           en la Academia se procesan a través de una pasarela de pagos externa,
@@ -244,7 +258,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">5.2. Seguridad de la Información</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Protección de Datos:</strong> La Academia no almacena ni
           procesa directamente la información de pago, como números de tarjetas
@@ -261,7 +275,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">5.3. Facturación</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Generación de Facturas:</strong> Una vez completado el pago,
           se generará una factura o recibo electrónico, que será enviado al
@@ -278,7 +292,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">5.4. Política de Reembolsos</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Condiciones de Reembolso:</strong> Los reembolsos se
           realizarán únicamente bajo las condiciones especificadas en la
@@ -299,7 +313,7 @@ export default function TermsAndConditions() {
       <h3 className="text-xl font-bold">
         5.5. Suscripciones y Pagos Recurrentes
       </h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Plan de Suscripción:</strong> La Academia ofrece planes de
           suscripción, y los pagos recurrentes serán gestionados automáticamente
@@ -317,7 +331,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">5.6. Incumplimiento de Pago</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Retrasos en el Pago:</strong> Si un pago no se procesa
           correctamente debido a problemas con el método de pago o la pasarela,
@@ -332,7 +346,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">5.7. Soporte al Cliente</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Asistencia en Pagos:</strong> Para cualquier problema
           relacionado con pagos, facturación, o reembolsos, los usuarios pueden
@@ -349,7 +363,7 @@ export default function TermsAndConditions() {
         Los usuarios se comprometen a utilizar los Servicios de manera ética,
         legal y respetuosa. Esto incluye, pero no se limita a:
       </p>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Respetar a los instructores y compañeros de clase:</strong> Se
           espera que los usuarios mantengan un comportamiento respetuoso en
@@ -365,7 +379,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">6.2. Prohibiciones Específicas</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Infrinjan la ley:</strong> Está prohibido utilizar la
           plataforma para realizar actividades ilegales, como la distribución de
@@ -392,7 +406,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">6.3. Uso del Contenido</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>
             Reproducir, distribuir, o compartir el contenido del curso sin
@@ -410,7 +424,12 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">6.4. Plataformas de Comunicación</h3>
-      <ul>
+      <p>
+        El uso de foros, chats, o cualquier otra herramienta de comunicación
+        proporcionada por la plataforma debe cumplir con los siguientes
+        lineamientos:
+      </p>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Contenido apropiado:</strong> No está permitido compartir
           contenido sexualmente explícito, violento, o que incite al odio.
@@ -435,7 +454,7 @@ export default function TermsAndConditions() {
         La Academia se reserva el derecho de tomar las siguientes acciones si un
         usuario incumple con esta política de Uso Aceptable:
       </p>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Advertencias:</strong> El usuario recibirá una advertencia en
           caso de una infracción menor.
@@ -458,7 +477,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">6.6. Reportes y Revisión</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Reporte de abuso:</strong> Los usuarios que experimenten o
           presencien cualquier conducta que infrinja estas normas pueden
@@ -476,7 +495,7 @@ export default function TermsAndConditions() {
       <h3 className="text-xl font-bold">
         7.1. Derechos de Autor y Marcas Registradas
       </h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Propiedad de la Academia:</strong> Todo el contenido
           disponible en la plataforma, incluyendo textos, gráficos, logotipos,
@@ -497,7 +516,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">7.2. Licencia de Uso del Contenido</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Licencia Limitada:</strong> Al registrarse y acceder a los
           servicios de la Academia, el usuario recibe una licencia limitada, no
@@ -519,7 +538,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">7.3. Contribuciones de Usuario</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Contenido Generado por el Usuario:</strong> Si el usuario
           envía, publica o comparte cualquier contenido en la plataforma (por
@@ -545,7 +564,7 @@ export default function TermsAndConditions() {
       <h3 className="text-xl font-bold">
         7.4. Infracción de Propiedad Intelectual
       </h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Reclamaciones por Infracción:</strong> La Academia respeta los
           derechos de propiedad intelectual de terceros y espera que los
@@ -566,7 +585,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">7.5. Protección Tecnológica</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Medidas de Seguridad:</strong> La Academia puede implementar
           medidas tecnológicas diseñadas para proteger el Contenido de la
@@ -577,7 +596,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">7.6. Retención de Derechos</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Derechos No Otorgados:</strong> Todos los derechos que no se
           otorguen expresamente en estos Términos de Servicio son reservados por
@@ -616,7 +635,7 @@ export default function TermsAndConditions() {
       <h2 className="text-2xl font-bold">11. Exención de Responsabilidad</h2>
 
       <h3 className="text-xl font-bold">11.1. Exactitud de la Información</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Contenido Educativo:</strong> La Academia se esfuerza por
           proporcionar contenido educativo de alta calidad y preciso. Sin
@@ -636,7 +655,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">11.2. Disponibilidad del Servicio</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Interrupciones del Servicio:</strong> La Academia hace todo lo
           posible por mantener la plataforma y los servicios disponibles en todo
@@ -656,7 +675,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">11.3. Servicios de Terceros</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Pasarela de Pagos:</strong> Como los pagos son gestionados por
           un proveedor externo, la Academia no asume responsabilidad alguna por
@@ -679,7 +698,7 @@ export default function TermsAndConditions() {
       <h3 className="text-xl font-bold">
         11.4. Rendimiento de los Estudiantes
       </h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Resultados Educativos:</strong> La Academia no garantiza
           ningún resultado específico en cuanto al aprendizaje o desarrollo de
@@ -696,7 +715,7 @@ export default function TermsAndConditions() {
       </ul>
 
       <h3 className="text-xl font-bold">11.5. Modificaciones y Errores</h3>
-      <ul>
+      <ul className="ms-5 list-disc space-y-2">
         <li>
           <strong>Cambios en el Contenido:</strong> La Academia se reserva el
           derecho de modificar, mejorar, o eliminar cualquier parte del
