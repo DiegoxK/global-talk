@@ -9,6 +9,7 @@ import { lectureRouter } from "./routers/lecture";
 import { groupRouter } from "./routers/group";
 import { promptRouter } from "./routers/prompt";
 import { transactionRouter } from "./routers/transactions";
+import { emailRouter } from "./routers/email";
 
 /**
  * This is the primary router for your server.
@@ -23,6 +24,7 @@ export const appRouter = createTRPCRouter({
   lectures: lectureRouter,
   groups: groupRouter,
   user: userRouter,
+  email: emailRouter,
   lectureSession: lectureSessionRouter,
   prompt: promptRouter,
   transaction: transactionRouter,
