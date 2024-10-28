@@ -2,6 +2,7 @@ import Mision from "../../../../../../public/about/mision.png";
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function MisionSection() {
   return (
@@ -24,15 +25,19 @@ export default function MisionSection() {
           </p>
         </div>
         <div className="space-x-4">
-          <Button size="lg" className="rounded-md text-lg">
-            UNIRME AHORA
-          </Button>
-          <Button
-            size="lg"
-            className="rounded-md border border-primary bg-white text-lg text-primary hover:bg-white hover:text-primary"
-          >
-            IR A INICIO
-          </Button>
+          <Link href="/join">
+            <Button size="lg" className="rounded-md text-lg">
+              UNIRME AHORA
+            </Button>
+          </Link>
+          <Link href="/">
+            <Button
+              size="lg"
+              className="rounded-md border border-primary bg-white text-lg text-primary hover:bg-white hover:text-primary"
+            >
+              IR A INICIO
+            </Button>
+          </Link>
         </div>
       </div>
       <div>
