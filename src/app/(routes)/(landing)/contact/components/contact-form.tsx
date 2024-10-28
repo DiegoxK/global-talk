@@ -17,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { api } from "@/trpc/react";
 
 type ContactType = z.infer<typeof contactSchema>;
 
@@ -66,6 +67,8 @@ const contactSchema = z.object({
 });
 
 export default function ContactForm() {
+  const { toast } = useToast();
+
   const form = useForm<ContactType>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
@@ -77,22 +80,33 @@ export default function ContactForm() {
     },
   });
 
+  const { mutate: sendContactEmail } = api.email.sendContactEmail.useMutation({
+    onSuccess: () => {
+      toast({
+        title: "¡Gracias!",
+        description:
+          "Gracias por contactarnos, te responderemos pronto al correo o numero suministrados.",
+        duration: 4000,
+      });
+      form.reset();
+    },
+    onError: (error) => {
+      toast({
+        title: "¡Error!",
+        description: error.message,
+        duration: 4000,
+      });
+    },
+  });
+
   const onSubmit = (values: ContactType) => {
-    const toastAlert = toast({
+    toast({
       title: "Enviando mensaje",
       description: "Por favor espera un momento",
-      duration: 2000,
+      duration: 10000000,
     });
 
-    setTimeout(() => {
-      toastAlert.update(
-        toast({
-          title: "Atualmente en mantenimiento!",
-          description: "Por favor inténtalo más tarde.",
-          duration: 4000,
-        }),
-      );
-    }, 3000);
+    sendContactEmail(values);
   };
 
   return (
