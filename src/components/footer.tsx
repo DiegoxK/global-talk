@@ -38,7 +38,7 @@ export default function Footer() {
               <div className="rounded-md bg-primary p-2">
                 <Phone className="fill-white" />
               </div>
-              <p>+57 310 000 0000</p>
+              <p>+57 314 868 0056</p>
             </div>
             <div className="flex items-center gap-2">
               <div className="rounded-md bg-primary p-2">
@@ -83,7 +83,7 @@ export default function Footer() {
               <Facebook className="fill-white" />
             </div>
           </Link>
-          <Link href="https://www.instagram.com/globaltalkmedallo">
+          <Link href="https://www.instagram.com/globtm/">
             <div className="rounded-md bg-primary p-3">
               <Instagram className="fill-white" />
             </div>
