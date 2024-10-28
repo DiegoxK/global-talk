@@ -17,6 +17,13 @@ export default function FirstTimeHome({
   startDate,
   active,
 }: UserHomeInfo) {
+  // TODO: Is transaction pending or canceled? - Inform to wait, or contact support
+  // TODO: Is user active? - Inform that level ended and user is inactive
+  // TODO: Did the program started? - Inform to check the lectures regularly
+  // TODO: Did the user payed for a level and is about to end? - Give a new interface for next level paiment
+  // TODO: Level ended and user hasn't payed for the next level - tell to stay alert for a new change on another group, or contact support
+  // TODO: Program ended - Show a message to inform that the program is over
+
   return (
     <div className="flex h-full flex-col justify-between px-4 pt-8">
       <div>

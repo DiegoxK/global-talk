@@ -153,7 +153,9 @@ export async function GET(req: Request, _res: Response) {
     }
   });
 
-  // ======Change group if student didn't pay for level==============
+  // TODO: send email to student 3 days before to inform that the level is about to end
+
+  // TODO: if user didn't pay for level, and it's too late, send an email when a group for that program and his next level is available
 
   return NextResponse.json({ message: "Request procesada" });
 }

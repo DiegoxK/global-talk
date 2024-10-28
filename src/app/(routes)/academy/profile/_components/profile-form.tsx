@@ -29,7 +29,7 @@ interface ProfileFormProps {
 }
 
 const formSchema = z.object({
-  imageUrl: z.string().url(),
+  imageUrl: z.string().optional(),
   name: z
     .string()
     .min(1, {
@@ -159,7 +159,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    ( url ) Imagen de perfil <Required /> <FormMessage />
+                    ( url ) Imagen de perfil <FormMessage />
                   </FormLabel>
                   <FormControl>
                     <Input placeholder="https://..." {...field} />
