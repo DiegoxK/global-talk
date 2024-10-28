@@ -72,12 +72,8 @@ export default function Footer() {
             Términos del servicio
           </NavLink>
           <div>|</div>
-          <NavLink className="text-black/60" href="/t&c#privacy">
+          <NavLink className="text-black/60" href="/t&c_privacy">
             Política de privacidad
-          </NavLink>
-          <div>|</div>
-          <NavLink className="text-black/60" href="/t&c#cookies">
-            Política de Cookies
           </NavLink>
         </div>
 
