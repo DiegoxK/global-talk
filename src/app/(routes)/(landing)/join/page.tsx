@@ -17,7 +17,7 @@ const plans = [
     ],
   },
   {
-    href: "/join/a1",
+    href: "/join/pure_a1",
     name: "Pure A1 ",
     description: "Refuerza tus conocimientos!",
     features: [
@@ -29,7 +29,7 @@ const plans = [
     ],
   },
   {
-    href: "/join/beginers",
+    href: "/join/beginners_plus_pure_a1",
     name: "Plan Beginners + Pure A1 ",
     description: "Comprende el inglés!",
     features: [
@@ -41,7 +41,7 @@ const plans = [
     ],
   },
   {
-    href: "/join/a2",
+    href: "/join/from_a2_to_b1",
     name: "From A2 to B1",
     description: "Conversa en inglés!",
     features: [
@@ -53,7 +53,7 @@ const plans = [
     ],
   },
   {
-    href: "/join/b1",
+    href: "/join/from_b1_to_b2",
     name: "From B1 to B2",
     description: "Refuerza a nivel profesional!",
     features: [
@@ -65,7 +65,7 @@ const plans = [
     ],
   },
   {
-    href: "/join/business",
+    href: "/join/business_english",
     name: "Business English",
     description: "Inglés para tu negocio!",
     features: [
