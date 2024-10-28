@@ -26,9 +26,12 @@ export default function Footer() {
           </div>
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="rounded-md bg-primary p-2">
-                <Mail className="fill-white" />
-              </div>
+              {/* TODO: Change to actual domain */}
+              <Link href="mailto:contacto@globtm.co">
+                <div className="rounded-md bg-primary p-2">
+                  <Mail className="fill-white" />
+                </div>
+              </Link>
               <p>contacto@globtm.co</p>
             </div>
             <div className="flex items-center gap-2">
@@ -79,15 +82,21 @@ export default function Footer() {
         </div>
 
         <div className="flex items-center justify-center gap-2 md:col-span-1 md:justify-end">
-          <div className="rounded-md bg-primary p-3">
-            <Facebook className="fill-white" />
-          </div>
-          <div className="rounded-md bg-primary p-3">
-            <Instagram className="fill-white" />
-          </div>
-          <div className="rounded-md bg-primary p-3">
-            <Linkedin className="fill-white" />
-          </div>
+          <Link href="https://www.facebook.com/globaltalkmedallo">
+            <div className="rounded-md bg-primary p-3">
+              <Facebook className="fill-white" />
+            </div>
+          </Link>
+          <Link href="https://www.instagram.com/globaltalkmedallo">
+            <div className="rounded-md bg-primary p-3">
+              <Instagram className="fill-white" />
+            </div>
+          </Link>
+          <Link href="https://www.linkedin.com/company/global-talk-medallo/">
+            <div className="rounded-md bg-primary p-3">
+              <Linkedin className="fill-white" />
+            </div>
+          </Link>
         </div>
       </div>
       <Separator />
