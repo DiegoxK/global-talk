@@ -1,7 +1,9 @@
 export default function Privacy() {
   return (
     <div className="space-y-4 border-t px-64 py-12">
-      <h1 className="text-4xl font-bold">Política de Privacidad</h1>
+      <h1 className="text-4xl font-bold text-primary">
+        Política de Privacidad
+      </h1>
       <h2 className="text-2xl font-bold">1. Introducción</h2>
       <p>
         Bienvenido a Global Talk Medallo. Esta Política de Privacidad explica

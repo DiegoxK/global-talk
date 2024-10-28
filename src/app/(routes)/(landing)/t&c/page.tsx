@@ -1,7 +1,9 @@
 export default function TermsAndConditions() {
   return (
     <div className="space-y-4 border-t px-64 py-12">
-      <h1 className="text-4xl font-bold">Términos y condiciones de uso</h1>
+      <h1 className="text-4xl font-bold text-primary">
+        Términos y condiciones de uso
+      </h1>
       <h2 className="text-2xl font-bold">1. Introducción.</h2>
       <p>
         Bienvenido a la academia Global Talk Medallo. Dentro de esta página se
