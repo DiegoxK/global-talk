@@ -8,35 +8,39 @@ import Image from "next/image";
 import { Laptop, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "@react-email/components";
+import { url } from "inspector";
 
 export default function Courses() {
   const courses = [
     {
-      plan: "Mensual",
-      proficiency: "A2",
-      price: "400,000",
+      plan: "64 clases",
+      proficiency: "A0",
+      price: "530,000/Nivel",
       image: Course1,
-      title: "De A2 a B1",
-      levels: 5,
+      title: "Beginners A0",
+      levels: 2,
       students: 5,
+      url: "/beginners_a0",
     },
     {
-      plan: "Mensual",
-      proficiency: "A2",
-      price: "400,000",
+      plan: "64 clases",
+      proficiency: "A1",
+      price: "530,000/Nivel",
       image: Course2,
-      title: "Inglés para los negocios",
-      levels: 5,
+      title: "Pure A1",
+      levels: 2,
       students: 5,
+      url: "/pure_a1",
     },
     {
-      plan: "Mensual",
+      plan: "128 clases",
       proficiency: "B2",
-      price: "400,000",
+      price: "1,900,000/Completo",
       image: Course3,
-      title: "De B1 a B2",
-      levels: 5,
+      title: "Plan Beginners + Pure A1",
+      levels: 4,
       students: 5,
+      url: "/beginners_plus_pure_a1",
     },
   ];
 
@@ -71,6 +75,7 @@ interface CourseCardProps {
   title: string;
   levels: number;
   students: number;
+  url: string;
 }
 
 const CourseCard = ({
@@ -81,17 +86,18 @@ const CourseCard = ({
   title,
   levels,
   students,
+  url,
 }: CourseCardProps) => {
   return (
     <div className="w-full rounded-md border shadow-md md:w-auto">
       <Image className="w-full md:w-auto" src={image} alt={title} />
       <div className="space-y-4 p-4">
         <div className="flex justify-between">
-          <Badge className="rounded-md">Plan {plan}</Badge>
-          <Badge className="rounded-md">{proficiency} Min</Badge>
+          <Badge className="rounded-md">{plan}</Badge>
+          <Badge className="rounded-md">{proficiency}</Badge>
         </div>
         <h3 className="text-2xl font-semibold">{title}</h3>
-        <p className="text-xl font-bold text-primary">COP ${price}/mes</p>
+        <p className="text-xl font-bold text-primary">COP ${price}</p>
         <div className="flex gap-2">
           <div className="flex items-center gap-2">
             <Laptop className="h-5 w-5 text-primary" />{" "}
@@ -103,7 +109,7 @@ const CourseCard = ({
           </div>
         </div>
       </div>
-      <Link href="/join">
+      <Link href={`/join${url}`}>
         <Button
           size="lg"
           className="w-full rounded-none rounded-b-md bg-primary-600 text-lg"
