@@ -12,7 +12,7 @@ export default function Team() {
     {
       picture: Jose,
       name: "José Carballido",
-      level: "C2,",
+      level: "C2",
       experience: 20,
       description:
         "‘‘Me apasiona enseñar, compartir tiempo con mis amigos familia escuchar música y el cine. He enseñado idiomas en Estados Unidos, España y Colombia.’’",
@@ -20,7 +20,7 @@ export default function Team() {
     {
       picture: Luis,
       name: "Luis Samudio",
-      level: "C2,",
+      level: "C2",
       experience: 20,
       description:
         "‘‘Soy una persona apasionada por el buen vivir, que disfruta del café. Extrovertido, sincero y emprendedor. Amante del séptimo arte como acción retro’’",
@@ -28,7 +28,7 @@ export default function Team() {
     {
       picture: Julio,
       name: "Julián Piedrahita",
-      level: "C1,",
+      level: "C1",
       experience: 1,
       description:
         "‘‘Soy un joven disciplinado y entusiasta, amante de los retos. Gracias a haber aprendido inglés y certificarlo, pude acceder a excelentes oportunidades laborales a mi edad.’’",
