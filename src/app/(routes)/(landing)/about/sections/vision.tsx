@@ -2,6 +2,7 @@ import Vision from "../../../../../../public/about/vision.png";
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function VisionSection() {
   return (
@@ -26,9 +27,11 @@ export default function VisionSection() {
           </p>
         </div>
         <div className="space-x-4">
-          <Button size="lg" className="rounded-md text-lg">
-            CONTÁCTANOS
-          </Button>
+          <Link href="/contact">
+            <Button size="lg" className="rounded-md text-lg">
+              CONTÁCTANOS
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
