@@ -59,6 +59,38 @@ import { useState } from "react";
 import { api, getBaseUrl } from "@/trpc/react";
 import Script from "next/script";
 import { type Pricing, siteConfig } from "@/config";
+import Combobox from "@/components/ui/combobox";
+
+const cities = [
+  { label: "Bogotá", value: "Bogotá" },
+  { label: "Medellín", value: "Medellín" },
+  { label: "Cali", value: "Cali" },
+  { label: "Barranquilla", value: "Barranquilla" },
+  { label: "Cartagena", value: "Cartagena" },
+  { label: "Cúcuta", value: "Cúcuta" },
+  { label: "Bucaramanga", value: "Bucaramanga" },
+  { label: "Pereira", value: "Pereira" },
+  { label: "Santa Marta", value: "Santa Marta" },
+  { label: "Manizales", value: "Manizales" },
+  { label: "Neiva", value: "Neiva" },
+  { label: "Valledupar", value: "Valledupar" },
+  { label: "Sincelejo", value: "Sincelejo" },
+  { label: "Tunja", value: "Tunja" },
+  { label: "Armenia", value: "Armenia" },
+  { label: "Popayán", value: "Popayán" },
+  { label: "Riohacha", value: "Riohacha" },
+  { label: "Villavicencio", value: "Villavicencio" },
+  { label: "Quibdó", value: "Quibdó" },
+  { label: "Ibagué", value: "Ibagué" },
+  { label: "Montería", value: "Montería" },
+  { label: "San Andrés", value: "San Andrés" },
+  { label: "Leticia", value: "Leticia" },
+  { label: "Pasto", value: "Pasto" },
+  { label: "Yopal", value: "Yopal" },
+  { label: "Tulúa", value: "Tulúa" },
+  { label: "Turbaco", value: "Turbaco" },
+  { label: "Barrancabermeja", value: "Barrancabermeja" },
+];
 
 const documentTypes = [
   { value: "NIT", label: "Número de identificación tributaria" },
@@ -425,18 +457,20 @@ export default function Level({ params }: { params: { plan: string } }) {
                       </FormItem>
                     )}
                   />
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 items-center gap-4">
                     <FormField
                       control={form.control}
                       name="city"
                       render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="flex flex-col gap-2">
                           <FormLabel>
                             Ciudad <Required /> <FormMessage />
                           </FormLabel>
-                          <FormControl>
-                            <Input placeholder="Medellín" {...field} />
-                          </FormControl>
+                          <Combobox
+                            fieldName="ciudad"
+                            values={cities}
+                            field={field}
+                          />
                         </FormItem>
                       )}
                     />

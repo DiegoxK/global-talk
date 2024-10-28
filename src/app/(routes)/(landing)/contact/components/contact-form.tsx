@@ -18,8 +18,41 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { api } from "@/trpc/react";
+import Required from "@/components/ui/required";
+import Combobox from "@/components/ui/combobox";
 
 type ContactType = z.infer<typeof contactSchema>;
+
+const cities = [
+  { label: "Bogotá", value: "Bogotá" },
+  { label: "Medellín", value: "Medellín" },
+  { label: "Cali", value: "Cali" },
+  { label: "Barranquilla", value: "Barranquilla" },
+  { label: "Cartagena", value: "Cartagena" },
+  { label: "Cúcuta", value: "Cúcuta" },
+  { label: "Bucaramanga", value: "Bucaramanga" },
+  { label: "Pereira", value: "Pereira" },
+  { label: "Santa Marta", value: "Santa Marta" },
+  { label: "Manizales", value: "Manizales" },
+  { label: "Neiva", value: "Neiva" },
+  { label: "Valledupar", value: "Valledupar" },
+  { label: "Sincelejo", value: "Sincelejo" },
+  { label: "Tunja", value: "Tunja" },
+  { label: "Armenia", value: "Armenia" },
+  { label: "Popayán", value: "Popayán" },
+  { label: "Riohacha", value: "Riohacha" },
+  { label: "Villavicencio", value: "Villavicencio" },
+  { label: "Quibdó", value: "Quibdó" },
+  { label: "Ibagué", value: "Ibagué" },
+  { label: "Montería", value: "Montería" },
+  { label: "San Andrés", value: "San Andrés" },
+  { label: "Leticia", value: "Leticia" },
+  { label: "Pasto", value: "Pasto" },
+  { label: "Yopal", value: "Yopal" },
+  { label: "Tulúa", value: "Tulúa" },
+  { label: "Turbaco", value: "Turbaco" },
+  { label: "Barrancabermeja", value: "Barrancabermeja" },
+];
 
 const contactSchema = z.object({
   name: z
@@ -122,10 +155,7 @@ export default function ContactForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  Tu nombre completo{" "}
-                  <span className="text-primary">
-                    <span className="text-primary">*</span>
-                  </span>
+                  Tu nombre completo <Required /> <FormMessage />
                 </FormLabel>
                 <FormControl>
                   <Input placeholder="Juan Pérez" {...field} />
@@ -139,7 +169,7 @@ export default function ContactForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  Tu celular <span className="text-primary">*</span>
+                  Tu celular <Required /> <FormMessage />
                 </FormLabel>
                 <FormControl>
                   <Input placeholder="321000000" {...field} />
@@ -154,7 +184,7 @@ export default function ContactForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Tu correo <span className="text-primary">*</span>
+                Tu correo <Required /> <FormMessage />
               </FormLabel>
               <FormControl>
                 <Input placeholder="alfonso@globtm.com" {...field} />
@@ -163,6 +193,18 @@ export default function ContactForm() {
           )}
         />
         <FormField
+          control={form.control}
+          name="city"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>
+                Escoge tu Ciudad <Required /> <FormMessage />
+              </FormLabel>
+              <Combobox fieldName="ciudad" values={cities} field={field} />
+            </FormItem>
+          )}
+        />
+        {/* <FormField
           control={form.control}
           name="city"
           render={({ field }) => (
@@ -175,14 +217,14 @@ export default function ContactForm() {
               </FormControl>
             </FormItem>
           )}
-        />
+        /> */}
         <FormField
           control={form.control}
           name="message"
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Mensaje <span className="text-primary">*</span>
+                Mensaje <Required /> <FormMessage />
               </FormLabel>
               <FormControl>
                 <Textarea placeholder="Tu mensaje" {...field} />
