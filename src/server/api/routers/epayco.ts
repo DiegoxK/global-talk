@@ -412,7 +412,6 @@ export const epaycoRouter = createTRPCRouter({
   //         doc_type: input.idType,
   //         doc_number: input.idNumber,
   //         extras_epayco: { extra1: invoice },
-  //         // TODO: Change in production
   //         test: "TRUE",
   //         url_confirmation:
   //           "https://globtm.vercel.app/api/checkout/confirmacion",
