@@ -160,7 +160,7 @@
 .ribbon {
   --f: 10px;
   --r: 15px;
-  --t: 14px;
+  --t: -25px;
 
   position: absolute;
   inset: var(--t) calc(-1 * var(--f)) auto auto;

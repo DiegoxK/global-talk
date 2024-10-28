@@ -66,9 +66,7 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
       <div className="flex flex-wrap last:gap-6">
         {plans.map((plan, index) => (
           <div key={index}>
-            <Card
-              className={cn("relative flex flex-col", plan.savings && "pt-16")}
-            >
+            <Card className="relative flex flex-col">
               {plan.savings && <div className="ribbon">{plan.savings}</div>}
               <CardHeader>
                 <CardTitle>{plan.title}</CardTitle>
@@ -101,7 +99,6 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
     </div>
   );
 };
-
 const PureA1 = ({ planId }: { planId: string }) => {
   const plans = [
     {
@@ -145,38 +142,35 @@ const PureA1 = ({ planId }: { planId: string }) => {
       </h1>
       <div className="flex flex-wrap last:gap-6">
         {plans.map((plan, index) => (
-          <Card key={index} className="flex flex-col">
-            <CardHeader>
-              <CardTitle>{plan.title}</CardTitle>
-              <CardDescription>{plan.description}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <p className="mb-2 text-2xl font-bold text-primary">
-                {plan.price}
-              </p>
-              <p className="mb-4 text-sm text-muted-foreground">
-                Duración: {plan.duration}
-              </p>
-              <ul className="space-y-2">
-                {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start">
-                    <Check className="mr-2 mt-0.5 h-5 w-5 text-green-500" />
-                    <span className="text-sm">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-            <CardFooter className="flex flex-col items-start">
-              {plan.savings && (
-                <p className="my-2 text-sm font-semibold text-green-600">
-                  {plan.savings}
+          <div key={index}>
+            <Card className="relative flex flex-col">
+              {plan.savings && <div className="ribbon">{plan.savings}</div>}
+              <CardHeader>
+                <CardTitle>{plan.title}</CardTitle>
+                <CardDescription>{plan.description}</CardDescription>
+              </CardHeader>
+              <CardContent className="mb-4 flex-grow">
+                <p className="mb-2 text-2xl font-bold text-primary">
+                  {plan.price}
                 </p>
-              )}
-            </CardFooter>
-            <Link href={plan.href}>
-              <Button className="mt-1 w-full">Seleccionar Plan</Button>
-            </Link>
-          </Card>
+                <p className="mb-4 text-sm text-muted-foreground">
+                  Duración: {plan.duration}
+                </p>
+                <ul className="space-y-2">
+                  {plan.features.map((feature, featureIndex) => (
+                    <li key={featureIndex} className="flex items-start">
+                      <Check className="mr-2 mt-0.5 h-5 w-5 text-green-500" />
+                      <span className="text-sm">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+
+              <Link href={plan.href}>
+                <Button className="mt-1 w-full">Seleccionar Plan</Button>
+              </Link>
+            </Card>
+          </div>
         ))}
       </div>
     </div>
