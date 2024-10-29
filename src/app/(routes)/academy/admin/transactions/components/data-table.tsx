@@ -114,11 +114,7 @@ export function DataTable<TData extends Transaction, TValue>({
                     </TableCell>
                   ))}
                   <TableCell className="mr-3 mt-1 flex items-center justify-end">
-                    <DataTableActions
-                      transaction={row.original}
-                      setIsDialogOpen={setIsDialogOpen}
-                      setTransaction={setTransaction}
-                    />
+                    <DataTableActions transaction={row.original} />
                   </TableCell>
                 </TableRow>
               ))
