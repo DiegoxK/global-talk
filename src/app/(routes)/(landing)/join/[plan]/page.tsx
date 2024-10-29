@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { ContactByWhatsApp } from "./_components/contact-by-whatsapp";
 
