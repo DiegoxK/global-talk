@@ -189,6 +189,7 @@ export default function Level({ params }: { params: { plan: string } }) {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setModalOpen(true);
     setIsLoading(true);
 
     if (typeof window !== "undefined" && window.ePayco) {
@@ -250,8 +251,7 @@ export default function Level({ params }: { params: { plan: string } }) {
                 <AlertDialogHeader>
                   <AlertDialogTitle>Procesando...</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Por favor espera un momento mientras se procesa la
-                    suscripción.
+                    Por favor espera un momento mientras se procesa el pago.
                   </AlertDialogDescription>
                   <div className="loader-the-progress"></div>
                 </AlertDialogHeader>
@@ -495,14 +495,11 @@ export default function Level({ params }: { params: { plan: string } }) {
                     />
                   </div>
                   <Button
-                    onClick={() => {
-                      setModalOpen(true);
-                    }}
                     disabled={!form.formState.isDirty}
                     type="submit"
                     className="w-full"
                   >
-                    Confirmar suscripción
+                    Confirmar datos
                   </Button>
                 </form>
               </Form>
