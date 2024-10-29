@@ -32,6 +32,7 @@ import Required from "@/components/ui/required";
 import Combobox from "@/components/ui/combobox";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   name: z
@@ -89,12 +90,28 @@ export default function DataTableDialog({
   const router = useRouter();
   const isEditing = Boolean(user);
 
+  const { toast } = useToast();
+
   const { mutate: createUser } = api.user.createUser.useMutation({
     onSuccess: () => {
       setUser(undefined);
       setOpen(false);
       form.reset();
+
+      toast({
+        title: "Usuario creado",
+        description: "El usuario se ha creado correctamente",
+        duration: 4000,
+      });
+
       router.refresh();
+    },
+    onError: (error) => {
+      toast({
+        title: "Error al crear usuario",
+        description: error.message,
+        duration: 4000,
+      });
     },
   });
 
@@ -103,6 +120,13 @@ export default function DataTableDialog({
       setUser(undefined);
       setOpen(false);
       form.reset();
+
+      toast({
+        title: "Usuario actualizado",
+        description: "El usuario se ha actualizado correctamente",
+        duration: 4000,
+      });
+
       router.refresh();
     },
   });
@@ -128,11 +152,23 @@ export default function DataTableDialog({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!isEditing) {
+      toast({
+        title: "Creando usuario",
+        description: "Por favor espera un momento mientras se crea el usuario",
+        duration: 10000000,
+      });
+
       createUser(values);
     } else {
+      toast({
+        title: "Actualizando usuario",
+        description:
+          "Por favor espera un momento mientras se actualiza el usuario",
+        duration: 10000000,
+      });
+
       updateUser(values);
     }
-    console.log(values);
   }
 
   return (
