@@ -4,6 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import MastercardLogo from "../../../../../../../public/payco/mastercard.png";
+import AmericanLogo from "../../../../../../../public/payco/american.png";
+import DaviplataLogo from "../../../../../../../public/payco/daviplata.png";
+import NequiLogo from "../../../../../../../public/payco/nequi.png";
+
+import VisaLogo from "../../../../../../../public/payco/visa.png";
+
 import { ChevronsUpDown, Check } from "lucide-react";
 
 import {
@@ -46,7 +53,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import { cn, getUserIP } from "@/lib/utils";
+import { cn, formatToCOP, getUserIP } from "@/lib/utils";
 import {
   Command,
   CommandEmpty,
@@ -60,6 +67,7 @@ import { api, getBaseUrl } from "@/trpc/react";
 import Script from "next/script";
 import { type Pricing, siteConfig } from "@/config";
 import Combobox from "@/components/ui/combobox";
+import Image from "next/image";
 
 const cities = [
   { label: "Bogotá", value: "Bogotá" },
@@ -147,6 +155,8 @@ const formSchema = z.object({
 });
 
 export default function Level({ params }: { params: { plan: string } }) {
+  const plan = params.plan as keyof Pricing;
+
   const [open, setOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -193,8 +203,6 @@ export default function Level({ params }: { params: { plan: string } }) {
     setIsLoading(true);
 
     if (typeof window !== "undefined" && window.ePayco) {
-      const plan = params.plan as keyof Pricing;
-
       const ip = await getUserIP();
 
       if (!ip) {
@@ -214,8 +222,8 @@ export default function Level({ params }: { params: { plan: string } }) {
         city: values.city,
         typeDocBilling: values.idType,
         name: siteConfig.pricing[plan].name,
-        description: siteConfig.pricing[plan].description,
-        amount: siteConfig.pricing[plan].price,
+        description: siteConfig.pricing[plan].description.level,
+        amount: siteConfig.pricing[plan].price.level,
         currency: "cop",
         ip,
         lang: "es",
@@ -282,7 +290,7 @@ export default function Level({ params }: { params: { plan: string } }) {
           <CardHeader>
             <CardTitle>Checkout - Pago de nivel</CardTitle>
             <CardDescription>
-              Programa Beginners A0 – 2 niveles (4 meses)
+              {siteConfig.pricing[plan].description.level}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -290,20 +298,22 @@ export default function Level({ params }: { params: { plan: string } }) {
               <div>
                 <h3 className="text-lg font-semibold">Detalles del Plan</h3>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Matrícula individual: 300.000 pesos / mes
+                  Matrícula individual:{" "}
+                  {formatToCOP(siteConfig.pricing[plan].price.level)} pesos /
+                  nivel
                 </p>
                 <ul className="mt-2 list-inside list-disc space-y-1 text-sm">
-                  <li>16 clases de una hora (4 por semana)</li>
-                  <li>Acceso a la plataforma de aprendizaje</li>
-                  <li>Grabaciones de las clases</li>
-                  <li>Todos los materiales</li>
-                  <li>Evaluación al final del nivel</li>
-                  <li>1 cupo en un grupo de máximo 5 personas</li>
+                  {siteConfig.pricing[plan].features.level.map(
+                    (feature, index) => (
+                      <li key={index}>{feature}</li>
+                    ),
+                  )}
                 </ul>
-                <p className="mt-2 text-sm font-semibold text-primary">
-                  Este plan es recurrente y se cobrará 300.000 pesos
-                  mensualmente durante el transcurso del programa (4 meses).
-                </p>
+                {siteConfig.pricing[plan].extra?.level && (
+                  <p className="mt-2 text-sm font-semibold text-primary">
+                    {siteConfig.pricing[plan].extra?.level}
+                  </p>
+                )}
               </div>
               <Separator />
 
@@ -501,11 +511,38 @@ export default function Level({ params }: { params: { plan: string } }) {
                   >
                     Confirmar datos
                   </Button>
+                  <Separator />
+                  <div className="mt-4 flex flex-wrap justify-center gap-4">
+                    <Image
+                      src={AmericanLogo}
+                      alt="American Express"
+                      width={125}
+                      height={80}
+                    />
+                    <Image
+                      src={MastercardLogo}
+                      alt="Mastercard"
+                      width={120}
+                      height={120}
+                    />
+                    <Image
+                      src={DaviplataLogo}
+                      alt="Daviplata"
+                      width={150}
+                      height={120}
+                    />
+                    <Image
+                      src={NequiLogo}
+                      alt="Nequi"
+                      width={190}
+                      height={120}
+                    />
+                    <Image src={VisaLogo} alt="Visa" width={100} height={120} />
+                  </div>
                 </form>
               </Form>
             </div>
           </CardContent>
-          <CardFooter></CardFooter>
         </Card>
       </div>
     </>
