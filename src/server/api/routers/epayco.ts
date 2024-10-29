@@ -414,7 +414,7 @@ export const epaycoRouter = createTRPCRouter({
   //         extras_epayco: { extra1: invoice },
   //         test: "TRUE",
   //         url_confirmation:
-  //           "https://globtm.vercel.app/api/checkout/confirmacion",
+  //           "https://www.academiaglobtm.com/api/checkout/confirmacion",
   //         method_confirmation: "POST",
   //         ip: input.customerIp,
   //       });

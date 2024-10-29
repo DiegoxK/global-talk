@@ -222,8 +222,8 @@ export default function Level({ params }: { params: { plan: string } }) {
         country: "co",
         transactionType: "LEVEL",
         // TODO: Change in production to the base url
-        confirmation: `https://globtm.vercel.app/api/checkout/confirmation`,
-        response: "https://globtm.vercel.app/response",
+        confirmation: `https://www.academiaglobtm.com/api/checkout/confirmation`,
+        response: "https://www.academiaglobtm.com/response",
         test: "true",
       };
 

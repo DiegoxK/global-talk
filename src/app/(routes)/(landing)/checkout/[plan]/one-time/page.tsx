@@ -221,9 +221,8 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
         lang: "es",
         country: "co",
         transactionType: "COMPLETE",
-        // TODO: Change in production to the base url
-        confirmation: `https://globtm.vercel.app/api/checkout/confirmation`,
-        response: "https://globtm.vercel.app/response",
+        confirmation: `https://www.academiaglobtm.com/api/checkout/confirmation`,
+        response: "https://www.academiaglobtm.com/response",
         test: "true",
       };
 
