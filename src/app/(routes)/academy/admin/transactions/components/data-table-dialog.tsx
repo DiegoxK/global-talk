@@ -1,34 +1,12 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import type { Transaction } from "@/lib/definitions";
 import { type Dispatch, type SetStateAction } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import Required from "@/components/ui/required";
-import Combobox from "@/components/ui/combobox";
-import { api } from "@/trpc/react";
-import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z
@@ -69,16 +47,10 @@ interface DataTableDialogProps {
 }
 
 export default function DataTableDialog({
-  transaction,
   open,
   setTransaction,
   setOpen,
 }: DataTableDialogProps) {
-  const router = useRouter();
-  const isEditing = Boolean(transaction);
-
-  const { data: programs } = api.program.getProgramsIds.useQuery();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
