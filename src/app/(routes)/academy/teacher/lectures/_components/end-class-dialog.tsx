@@ -35,6 +35,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Required from "@/components/ui/required";
 import { api } from "@/trpc/react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface EndClassDialogProps {
   lectureSessionId?: string;
@@ -47,6 +48,8 @@ export default function EndClassDialog({
   endLectureDialog,
   setEndLectureDialog,
 }: EndClassDialogProps) {
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,15 +60,39 @@ export default function EndClassDialog({
   const { mutate: endLectureSession } =
     api.lectureSession.endLectureSession.useMutation({
       onSuccess: () => {
+        toast({
+          title: "Clase finalizada",
+          description: "La clase se ha finalizado correctamente",
+          duration: 4000,
+        });
         setEndLectureDialog(false);
+      },
+      onError: (error) => {
+        toast({
+          title: "Error al finalizar clase",
+          description: error.message,
+          duration: 4000,
+        });
       },
     });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    toast({
+      title: "Finalizando clase",
+      description: "Por favor espera un momento mientras se finaliza la clase",
+      duration: 10000000,
+    });
+
     if (lectureSessionId) {
       endLectureSession({
         lectureSessionId: lectureSessionId,
         sessionRecording: values.sessionRecording,
+      });
+    } else {
+      toast({
+        title: "Error al finalizar clase",
+        description: "La clase no se ha finalizado correctamente",
+        duration: 4000,
       });
     }
   }
