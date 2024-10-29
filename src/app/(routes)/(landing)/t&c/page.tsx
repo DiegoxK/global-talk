@@ -115,9 +115,9 @@ export default function TermsAndConditions() {
           <strong>Notificación de Acceso No Autorizado:</strong> Si el usuario
           sospecha que su cuenta ha sido comprometida o utilizada sin su
           autorización, debe notificarlo inmediatamente a la Academia a través
-          de soporte@globtm.co. La Academia no será responsable por cualquier
-          pérdida o daño que resulte del acceso no autorizado a la cuenta del
-          usuario si no se reporta de manera oportuna.
+          de contacto@academiaglobtm.com. La Academia no será responsable por
+          cualquier pérdida o daño que resulte del acceso no autorizado a la
+          cuenta del usuario si no se reporta de manera oportuna.
         </li>
         <li>
           <strong>Mantenimiento de la Seguridad:</strong> Se recomienda a los
@@ -353,8 +353,8 @@ export default function TermsAndConditions() {
           <strong>Asistencia en Pagos:</strong> Para cualquier problema
           relacionado con pagos, facturación, o reembolsos, los usuarios pueden
           contactar al equipo de soporte de la Academia a través de
-          soporte@globtm.co. Es importante proporcionar detalles completos del
-          problema para facilitar una rápida resolución.
+          contacto@academiaglobtm.com. Es importante proporcionar detalles
+          completos del problema para facilitar una rápida resolución.
         </li>
       </ul>
 
@@ -483,7 +483,7 @@ export default function TermsAndConditions() {
         <li>
           <strong>Reporte de abuso:</strong> Los usuarios que experimenten o
           presencien cualquier conducta que infrinja estas normas pueden
-          reportarlo a la Academia a través de soporte@globtm.co.
+          reportarlo a la Academia a través de contacto@academiaglobtm.com.
         </li>
         <li>
           <strong>Revisión de contenidos:</strong> La Academia se reserva el
@@ -751,9 +751,9 @@ export default function TermsAndConditions() {
       <h2 className="text-2xl font-bold">13. Contacto</h2>
       <p>
         Si tienes alguna pregunta o comentario sobre estos Términos, puedes
-        {/* TODO: Change all instances for actual domain */}
-        contactarnos en <a href="mailto:soporte@globtm.co">
-          soporte@globtm.co
+        contactarnos en{" "}
+        <a href="mailto:contacto@academiaglobtm.com">
+          contacto@academiaglobtm.com
         </a>{" "}
         o al teléfono +57 300 000 0000.
       </p>

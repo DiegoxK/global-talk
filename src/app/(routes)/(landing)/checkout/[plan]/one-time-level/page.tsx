@@ -221,7 +221,6 @@ export default function Level({ params }: { params: { plan: string } }) {
         lang: "es",
         country: "co",
         transactionType: "LEVEL",
-        // TODO: Change in production to the base url
         confirmation: `https://www.academiaglobtm.com/api/checkout/confirmation`,
         response: "https://www.academiaglobtm.com/response",
         test: "true",
