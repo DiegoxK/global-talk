@@ -46,6 +46,7 @@ import Combobox from "@/components/ui/combobox";
 import Required from "@/components/ui/required";
 import { useRouter } from "next/navigation";
 import EndClassDialog from "./end-class-dialog";
+import { useToast } from "@/components/ui/use-toast";
 
 export type FormSchema = z.infer<typeof formSchema>;
 
@@ -104,6 +105,8 @@ export default function LectureForm({
   const router = useRouter();
   const isEditing = Boolean(lectureSession);
 
+  const { toast } = useToast();
+
   const [staendLectureDialogte, setEndLectureDialog] = useState(false);
 
   const form = useForm<FormSchema>({
@@ -121,10 +124,17 @@ export default function LectureForm({
     },
   });
 
-  const onSuccessfulSubmit = () => {
+  const onSuccessfulSubmit = (title: string, description: string) => {
     setOpen(false);
     setLecture(undefined);
     form.reset();
+
+    toast({
+      title,
+      description,
+      duration: 4000,
+    });
+
     router.refresh();
   };
 
@@ -134,17 +144,53 @@ export default function LectureForm({
 
   const { mutate: editLectureSession } =
     api.lectureSession.editLectureSession.useMutation({
-      onSuccess: onSuccessfulSubmit,
+      onSuccess: () => {
+        onSuccessfulSubmit(
+          "Clase actualizada",
+          "La clase se ha actualizado correctamente",
+        );
+      },
+      onError: (error) => {
+        toast({
+          title: "Error al actualizar clase",
+          description: error.message,
+          duration: 4000,
+        });
+      },
     });
 
   const { mutate: createLectureSession } =
     api.lectureSession.createLectureSession.useMutation({
-      onSuccess: onSuccessfulSubmit,
+      onSuccess: () => {
+        onSuccessfulSubmit(
+          "Clase creada",
+          "La clase se ha creado correctamente",
+        );
+      },
+      onError: (error) => {
+        toast({
+          title: "Error al crear clase",
+          description: error.message,
+          duration: 4000,
+        });
+      },
     });
 
   const { mutate: deleteLectureSession } =
     api.lectureSession.deleteLectureSession.useMutation({
-      onSuccess: onSuccessfulSubmit,
+      onSuccess: () => {
+        onSuccessfulSubmit(
+          "Clase eliminada",
+          "La clase se ha eliminado correctamente",
+        );
+      },
+      onError: (error) => {
+        toast({
+          title: "Error al eliminar clase",
+          description: error.message,
+          duration: 4000,
+        });
+      },
     });
 
   const programId = form.watch("programId");
@@ -171,24 +217,41 @@ export default function LectureForm({
 
   function onSubmit(values: FormSchema) {
     if (isEditing) {
+      toast({
+        title: "Actualizando clase",
+        description:
+          "Por favor espera un momento mientras se actualiza la clase",
+        duration: 10000000,
+      });
+
       editLectureSession({
         id: lectureSession?.id,
         ...values,
       });
     } else {
+      toast({
+        title: "Creando clase",
+        description: "Por favor espera un momento mientras se crea la clase",
+        duration: 10000000,
+      });
+
       createLectureSession(values);
     }
   }
 
   function onDelete() {
     if (isEditing && lectureSession) {
+      toast({
+        title: "Eliminando clase",
+        description: "Por favor espera un momento mientras se elimina la clase",
+        duration: 10000000,
+      });
+
       deleteLectureSession({
         lectureSessionId: lectureSession.id,
       });
     }
   }
-
-  console.log(form.formState.errors);
 
   return (
     <>
