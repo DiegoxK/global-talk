@@ -1,5 +1,7 @@
 import { api } from "@/trpc/server";
 import RightSidebar from "../../_components/ui/right-sidebar";
+import { getServerAuthSession } from "@/server/auth";
+import { redirect } from "next/navigation";
 
 export default async function LecturesLayout({
   children,
@@ -9,8 +11,9 @@ export default async function LecturesLayout({
   params: { levelId: string };
 }) {
   const userInformation = await api.level.getUserLevels();
+  const session = await getServerAuthSession();
 
-  //TODO: If user is not active, redirect to the dashboard
+  if (session?.user?.active === false) return redirect("/academy");
 
   return (
     <div className="flex justify-between">
