@@ -240,7 +240,11 @@ export default function Level({ params }: { params: { plan: string } }) {
       />
       <div className="container mx-auto border-t py-10">
         <AlertDialog open={modalOpen} onOpenChange={setModalOpen}>
-          <AlertDialogContent>
+          <AlertDialogContent
+            onEscapeKeyDown={(event) => {
+              event.preventDefault();
+            }}
+          >
             {isLoading ? (
               <>
                 <AlertDialogHeader>
@@ -249,6 +253,7 @@ export default function Level({ params }: { params: { plan: string } }) {
                     Por favor espera un momento mientras se procesa la
                     suscripción.
                   </AlertDialogDescription>
+                  <div className="loader-the-progress"></div>
                 </AlertDialogHeader>
               </>
             ) : (
@@ -265,9 +270,9 @@ export default function Level({ params }: { params: { plan: string } }) {
                   </div>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogAction className="w-full">
+                  {/* <AlertDialogAction className="w-full">
                     Continuar
-                  </AlertDialogAction>
+                  </AlertDialogAction> */}
                 </AlertDialogFooter>
               </>
             )}
