@@ -95,3 +95,21 @@ export function formatDateToSpanish(fechaString: string): string {
 
   return fechaFormateada;
 }
+
+export function formatToCOP(amount: string): string {
+  // Convert the string to a number
+  const numAmount = parseFloat(amount);
+
+  // Check if the conversion is valid
+  if (isNaN(numAmount)) {
+    throw new Error("Invalid number format");
+  }
+
+  // Format the number as COP
+  const formatter = new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+  });
+
+  return formatter.format(numAmount);
+}
