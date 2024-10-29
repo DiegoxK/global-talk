@@ -84,6 +84,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [updatingImg, setUpdatingImg] = useState(false);
+  const [imageError, setImageError] = useState("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -118,6 +119,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
     },
     onError: (error) => {
       console.error(error);
+      setImageError(error.message);
     },
   });
 
@@ -167,10 +169,14 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                 <AlertDialogTitle>
                   Error al actualizar imagen de perfil
                 </AlertDialogTitle>
-                <AlertDialogDescription>
-                  Ocurrió un error al intentar actualizar la imagen de perfil.
-                  Por favor intenta de nuevo mas tarde.
-                </AlertDialogDescription>
+                {imageError ? (
+                  <AlertDialogDescription>{imageError}</AlertDialogDescription>
+                ) : (
+                  <AlertDialogDescription>
+                    Ocurrió un error al intentar actualizar la imagen de perfil.
+                    Por favor intenta de nuevo mas tarde.
+                  </AlertDialogDescription>
+                )}
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogAction>Continue</AlertDialogAction>
