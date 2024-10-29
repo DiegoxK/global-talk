@@ -10,6 +10,8 @@ export default async function LecturesLayout({
 }) {
   const userInformation = await api.level.getUserLevels();
 
+  //TODO: If user is not active, redirect to the dashboard
+
   return (
     <div className="flex justify-between">
       {children}
