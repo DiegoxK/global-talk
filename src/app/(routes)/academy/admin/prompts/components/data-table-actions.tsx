@@ -24,6 +24,7 @@ import { MoreHorizontal } from "lucide-react";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 interface DataTableActionsProps {
   prompt: Prompt;
@@ -38,10 +39,24 @@ export default function DataTableActions({
 }: DataTableActionsProps) {
   const router = useRouter();
 
+  const { toast } = useToast();
+
   const [openAlert, setOpenAlert] = useState(false);
   const { mutate: deletePrompt } = api.prompt.deletePrompt.useMutation({
     onSuccess: () => {
+      toast({
+        title: "Prompto eliminado",
+        description: "El prompt se ha eliminado correctamente",
+        duration: 4000,
+      });
       router.refresh();
+    },
+    onError: (error) => {
+      toast({
+        title: "Error al eliminar prompt",
+        description: error.message,
+        duration: 4000,
+      });
     },
   });
 
@@ -60,6 +75,12 @@ export default function DataTableActions({
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
+                toast({
+                  title: "Eliminando prompt",
+                  description:
+                    "Por favor espera un momento mientras se elimina el prompt",
+                  duration: 10000000,
+                });
                 deletePrompt({ id: prompt.id });
                 setOpenAlert(false);
               }}
