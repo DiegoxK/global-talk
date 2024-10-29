@@ -5,8 +5,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
@@ -14,14 +12,10 @@ import type { Dispatch, SetStateAction } from "react";
 
 interface DataTableActionsProps {
   transaction: Transaction;
-  setTransaction: Dispatch<SetStateAction<Transaction | undefined | null>>;
-  setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function DataTableActions({
   transaction,
-  setTransaction,
-  setIsDialogOpen,
 }: DataTableActionsProps) {
   return (
     <DropdownMenu>
