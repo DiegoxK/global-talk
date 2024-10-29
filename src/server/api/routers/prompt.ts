@@ -115,8 +115,6 @@ export const promptRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const user = ctx.session.user;
 
-      console.log(input.messages);
-
       if (!user) {
         throw new Error("Unauthorized");
       }
