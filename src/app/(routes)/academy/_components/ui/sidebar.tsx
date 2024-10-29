@@ -32,11 +32,11 @@ export default function Sidebar({ user, program, firstLevel }: SidebarProps) {
         <p className="mt-[-5px] font-thin">{user.email}</p>
         <p className="mt-1 flex items-center gap-1 font-semibold text-primary-700">
           <UserRound />
-          {user.role === env.STUDENT_ROLE
-            ? "Estudiante"
+          {user.role === env.ADMIN_ROLE
+            ? "Administrador"
             : user.role === env.TEACHER_ROLE
               ? "Profesor"
-              : "Administrador"}
+              : "Estudiante"}
         </p>
         {program && (
           <p className="font-light text-primary-400">

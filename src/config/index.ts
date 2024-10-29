@@ -18,9 +18,23 @@ type PricingKey =
   | "from_b1_to_b2";
 
 interface PricingDetails {
-  price: string;
+  price: {
+    level: string;
+    complete: string;
+  };
   name: string;
-  description: string;
+  description: {
+    level: string;
+    complete: string;
+  };
+  features: {
+    level: string[];
+    complete: string[];
+  };
+  extra?: {
+    level?: string;
+    complete?: string;
+  };
 }
 
 export type Pricing = Record<PricingKey, PricingDetails>;
@@ -66,39 +80,212 @@ export const siteConfig: SiteConfig = {
 
   pricing: {
     beginners_a0: {
-      price: "10000",
+      price: {
+        level: "10000",
+        complete: "10000",
+      },
       name: "Beginners A0",
-      description: "Programa Beginners A0, 2 niveles (4 meses)",
+      description: {
+        level: "Programa Beginners A0, 2 niveles (4 meses)",
+        complete: "Programa Beginners A0, 2 niveles (4 meses)",
+      },
+      features: {
+        level: [
+          "16 clases de una hora (4 por semana)",
+          "Acceso a la plataforma de aprendizaje",
+          "Grabaciones de las clases",
+          "Todos los materiales",
+          "Evaluación al final de cada nivel",
+          "1 cupo en un grupo de máximo 5 personas",
+        ],
+        complete: [
+          "16 clases de una hora (4 por semana)",
+          "Acceso a la plataforma de aprendizaje",
+          "Grabaciones de las clases",
+          "Todos los materiales",
+          "Evaluación al final de cada nivel",
+          "1 cupo en un grupo de máximo 5 personas",
+        ],
+      },
+      extra: {
+        level:
+          "Este plan es recurrente y se cobrará 300.000 pesos mensualmente durante el transcurso del programa (4 meses).",
+        complete: "asdsad",
+      },
     },
     pure_a1: {
-      price: "10000",
+      price: {
+        level: "10000",
+        complete: "10000",
+      },
       name: "Pure A1",
-      description: "Programa Pure A1, 2 niveles (4 meses)",
+      description: {
+        level: "Programa Pure A1, 2 niveles (4 meses)",
+        complete: "Programa Pure A1, 2 niveles (4 meses)",
+      },
+      features: {
+        level: [
+          "16 clases de una hora (4 por semana)",
+          "Acceso a la plataforma de aprendizaje",
+          "Grabaciones de las clases",
+          "Todos los materiales",
+          "Evaluación al final de cada nivel",
+          "1 cupo en un grupo de máximo 5 personas",
+        ],
+        complete: [
+          "16 clases de una hora (4 por semana)",
+          "Acceso a la plataforma de aprendizaje",
+          "Grabaciones de las clases",
+          "Todos los materiales",
+          "Evaluación al final de cada nivel",
+          "1 cupo en un grupo de máximo 5 personas",
+        ],
+      },
     },
     beginners_plus_pure_a1: {
-      price: "10000",
+      price: {
+        level: "10000",
+        complete: "10000",
+      },
       name: "Beginners + Pure A1",
-      description: "Programa Beginners + Pure A1, 2 niveles (4 meses)",
+      description: {
+        level: "Programa Beginners + Pure A1, 2 niveles (4 meses)",
+        complete: "Programa Beginners + Pure A1, 2 niveles (4 meses)",
+      },
+      features: {
+        level: [
+          "16 clases de una hora (4 por semana)",
+          "Acceso a la plataforma de aprendizaje",
+          "Grabaciones de las clases",
+          "Todos los materiales",
+          "Evaluación al final de cada nivel",
+          "1 cupo en un grupo de máximo 5 personas",
+        ],
+        complete: [
+          "16 clases de una hora (4 por semana)",
+          "Acceso a la plataforma de aprendizaje",
+          "Grabaciones de las clases",
+          "Todos los materiales",
+          "Evaluación al final de cada nivel",
+          "1 cupo en un grupo de máximo 5 personas",
+        ],
+      },
     },
     from_a2_to_b1: {
-      price: "10000",
+      price: {
+        level: "10000",
+        complete: "10000",
+      },
       name: "From A2 to B1",
-      description: "Programa From A2 to B1, 2 niveles (4 meses)",
+      description: {
+        level: "Programa From A2 to B1, 2 niveles (4 meses)",
+        complete: "Programa From A2 to B1, 2 niveles (4 meses)",
+      },
+      features: {
+        level: [
+          "16 clases de una hora (4 por semana)",
+          "Acceso a la plataforma de aprendizaje",
+          "Grabaciones de las clases",
+          "Todos los materiales",
+          "Evaluación al final de cada nivel",
+          "1 cupo en un grupo de máximo 5 personas",
+        ],
+        complete: [
+          "16 clases de una hora (4 por semana)",
+          "Acceso a la plataforma de aprendizaje",
+          "Grabaciones de las clases",
+          "Todos los materiales",
+          "Evaluación al final de cada nivel",
+          "1 cupo en un grupo de máximo 5 personas",
+        ],
+      },
     },
     from_b1_to_b2: {
-      price: "10000",
+      price: {
+        level: "10000",
+        complete: "10000",
+      },
       name: "From B1 to B2",
-      description: "Programa From B1 to B2, 2 niveles (4 meses)",
+      description: {
+        level: "Programa From B1 to B2, 2 niveles (4 meses)",
+        complete: "Programa From B1 to B2, 2 niveles (4 meses)",
+      },
+      features: {
+        level: [
+          "16 clases de una hora (4 por semana)",
+          "Acceso a la plataforma de aprendizaje",
+          "Grabaciones de las clases",
+          "Todos los materiales",
+          "Evaluación al final de cada nivel",
+          "1 cupo en un grupo de máximo 5 personas",
+        ],
+        complete: [
+          "16 clases de una hora (4 por semana)",
+          "Acceso a la plataforma de aprendizaje",
+          "Grabaciones de las clases",
+          "Todos los materiales",
+          "Evaluación al final de cada nivel",
+          "1 cupo en un grupo de máximo 5 personas",
+        ],
+      },
     },
     intensive_b2: {
-      price: "10000",
+      price: {
+        level: "10000",
+        complete: "10000",
+      },
       name: "Intensive B2",
-      description: "Programa Intensive B2, 2 niveles (4 meses)",
+      description: {
+        level: "Programa Intensive B2, 2 niveles (4 meses)",
+        complete: "Programa Intensive B2, 2 niveles (4 meses)",
+      },
+      features: {
+        level: [
+          "16 clases de una hora (4 por semana)",
+          "Acceso a la plataforma de aprendizaje",
+          "Grabaciones de las clases",
+          "Todos los materiales",
+          "Evaluación al final de cada nivel",
+          "1 cupo en un grupo de máximo 5 personas",
+        ],
+        complete: [
+          "16 clases de una hora (4 por semana)",
+          "Acceso a la plataforma de aprendizaje",
+          "Grabaciones de las clases",
+          "Todos los materiales",
+          "Evaluación al final de cada nivel",
+          "1 cupo en un grupo de máximo 5 personas",
+        ],
+      },
     },
     business_english: {
-      price: "10000",
+      price: {
+        level: "10000",
+        complete: "10000",
+      },
       name: "Business English",
-      description: "Programa Business English, 2 niveles (4 meses)",
+      description: {
+        level: "Programa Business English, 2 niveles (4 meses)",
+        complete: "Programa Business English, 2 niveles (4 meses)",
+      },
+      features: {
+        level: [
+          "16 clases de una hora (4 por semana)",
+          "Acceso a la plataforma de aprendizaje",
+          "Grabaciones de las clases",
+          "Todos los materiales",
+          "Evaluación al final de cada nivel",
+          "1 cupo en un grupo de máximo 5 personas",
+        ],
+        complete: [
+          "16 clases de una hora (4 por semana)",
+          "Acceso a la plataforma de aprendizaje",
+          "Grabaciones de las clases",
+          "Todos los materiales",
+          "Evaluación al final de cada nivel",
+          "1 cupo en un grupo de máximo 5 personas",
+        ],
+      },
     },
   },
 };
