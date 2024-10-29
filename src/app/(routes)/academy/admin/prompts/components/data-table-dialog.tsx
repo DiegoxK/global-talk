@@ -30,6 +30,7 @@ import Required from "@/components/ui/required";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   name: z
@@ -64,12 +65,26 @@ export default function DataTableDialog({
   const router = useRouter();
   const isEditing = Boolean(prompt);
 
+  const { toast } = useToast();
+
   const { mutate: createPrompt } = api.prompt.createPrompt.useMutation({
     onSuccess: () => {
       setPrompt(undefined);
       setOpen(false);
       form.reset();
+      toast({
+        title: "Prompto creado",
+        description: "El prompt se ha creado correctamente",
+        duration: 4000,
+      });
       router.refresh();
+    },
+    onError: (error) => {
+      toast({
+        title: "Error al crear prompt",
+        description: error.message,
+        duration: 4000,
+      });
     },
   });
 
@@ -78,7 +93,19 @@ export default function DataTableDialog({
       setPrompt(undefined);
       setOpen(false);
       form.reset();
+      toast({
+        title: "Prompto actualizado",
+        description: "El prompt se ha actualizado correctamente",
+        duration: 4000,
+      });
       router.refresh();
+    },
+    onError: (error) => {
+      toast({
+        title: "Error al actualizar prompt",
+        description: error.message,
+        duration: 4000,
+      });
     },
   });
 
@@ -93,14 +120,25 @@ export default function DataTableDialog({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!isEditing) {
+      toast({
+        title: "Creando prompt",
+        description: "Por favor espera un momento mientras se crea el prompt",
+        duration: 10000000,
+      });
       createPrompt(values);
     } else {
+      toast({
+        title: "Actualizando prompt",
+        description:
+          "Por favor espera un momento mientras se actualiza el prompt",
+        duration: 10000000,
+      });
+
       updatePrompt({
         id: prompt?.id,
         ...values,
       });
     }
-    console.log(values);
   }
 
   return (
