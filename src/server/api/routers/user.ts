@@ -298,7 +298,7 @@ export const userRouter = createTRPCRouter({
       }
 
       throw new Error(
-        `No se encontró una imagen o cuenta de gravatar para el correo: ${user.email}`,
+        `No se encontró ninguna imagen o cuenta de gravatar para el correo: ${user.email}`,
       );
 
       // return await ctx.db.update(users).set({}).where(eq(users.id, userId));
