@@ -37,13 +37,14 @@ export default function LectureInformation({
   const { toast } = useToast();
 
   const onSuccessfulSubmit = (title: string, description: string) => {
-    setOpen(false);
-
-    toast({
-      title,
-      description,
-      duration: 4000,
-    });
+    setTimeout(() => {
+      setOpen(false);
+    }, 1500),
+      toast({
+        title,
+        description,
+        duration: 5000,
+      });
 
     router.refresh();
   };
@@ -106,7 +107,15 @@ const ScheduleLecture = ({ lecture, onSubmit }: ScheduleLectureProps) => {
   };
 
   return (
-    <DialogContent className="max-h-[90vh]">
+    <DialogContent
+      onEscapeKeyDown={(e) => {
+        e.preventDefault();
+      }}
+      onPointerDownOutside={(e) => {
+        e.preventDefault();
+      }}
+      className="max-h-[90vh]"
+    >
       <DialogHeader>
         <DialogTitle>{lecture.name}</DialogTitle>
         <DialogDescription>{lecture.description}</DialogDescription>
@@ -162,7 +171,15 @@ const ScheduleInformation = ({
   };
 
   return (
-    <DialogContent className="flex max-h-[90vh] flex-col items-center text-center">
+    <DialogContent
+      onEscapeKeyDown={(e) => {
+        e.preventDefault();
+      }}
+      onPointerDownOutside={(e) => {
+        e.preventDefault();
+      }}
+      className="flex max-h-[90vh] flex-col items-center text-center"
+    >
       <DialogHeader>
         <DialogTitle className="text-center">{lecture.name}</DialogTitle>
         <DialogDescription className="text-center">
