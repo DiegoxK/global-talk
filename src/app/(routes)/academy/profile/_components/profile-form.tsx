@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -28,19 +27,16 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
 import { Input } from "@/components/ui/input";
@@ -48,14 +44,10 @@ import Required from "@/components/ui/required";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import {
-  ArrowBigRight,
-  ArrowRight,
-  ArrowRightToLine,
-  PencilLine,
-} from "lucide-react";
+import { ArrowRight, PencilLine } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ProfileFormProps {
   user: User;
@@ -81,6 +73,7 @@ const formSchema = z.object({
 
 export default function ProfileForm({ user }: ProfileFormProps) {
   const router = useRouter();
+  const { toast } = useToast();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [updatingImg, setUpdatingImg] = useState(false);
@@ -101,11 +94,22 @@ export default function ProfileForm({ user }: ProfileFormProps) {
       form.control._defaultValues.lastName = form.getValues("lastName");
       form.control._defaultValues.email = form.getValues("email");
 
+      toast({
+        title: "Perfil actualizado",
+        description: "Los cambios se han guardado correctamente",
+        duration: 4000,
+      });
+
       form.reset();
       router.refresh();
     },
     onError: (error) => {
       console.error(error);
+      toast({
+        title: "Error al actualizar perfil",
+        description: error.message,
+        duration: 4000,
+      });
     },
   });
 
@@ -124,6 +128,13 @@ export default function ProfileForm({ user }: ProfileFormProps) {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    toast({
+      title: "Actualizando perfil",
+      description:
+        "Por favor espera un momento mientras se actualiza el perfil",
+      duration: 10000000,
+    });
+
     updateUser({
       name: values.name,
       lastName: values.lastName,
