@@ -251,8 +251,7 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
                 <AlertDialogHeader>
                   <AlertDialogTitle>Procesando...</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Por favor espera un momento mientras se procesa la
-                    suscripción.
+                    Por favor espera un momento mientras se procesa el pago.
                   </AlertDialogDescription>
                   <div className="loader-the-progress"></div>
                 </AlertDialogHeader>
@@ -500,7 +499,7 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
                     type="submit"
                     className="w-full"
                   >
-                    Confirmar suscripción
+                    Confirmar datos
                   </Button>
                 </form>
               </Form>
