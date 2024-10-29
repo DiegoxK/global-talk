@@ -1,4 +1,4 @@
-import { columns } from "@/app/(routes)/academy/admin/users/components/columns";
+import { createHash } from "crypto";
 import { env } from "@/env";
 import {
   createTRPCRouter,
@@ -10,14 +10,26 @@ import { count, eq, sql } from "drizzle-orm";
 import { createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
-function isValidImageUrl(url: string): boolean {
-  const imageUrlPattern = /\.(jpeg|jpg|png|bmp|webp)$/i;
-  const urlPattern = /^(https?:\/\/)?[^\s/$.?#].[^\s]*$/i;
-
-  return urlPattern.test(url) && imageUrlPattern.test(url);
+interface GravatarResponse {
+  hash: string;
+  display_name: string;
+  profile_url: string;
+  avatar_url: string;
+  avatar_alt_text: string;
+  location: string;
+  description: string;
+  job_title: string;
+  company: string;
+  verified_accounts: string[];
+  pronunciation: string;
+  pronouns: string;
 }
 
 export const userSchema = createSelectSchema(users);
+
+function hashStringToSHA256(input: string): string {
+  return createHash("sha256").update(input).digest("hex");
+}
 
 export const userRouter = createTRPCRouter({
   getAllUsers: protectedProcedure.query(async ({ ctx }) => {
@@ -225,20 +237,25 @@ export const userRouter = createTRPCRouter({
         name: z.string(),
         lastName: z.string(),
         email: z.string().email(),
-        img: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
       const userEmail = ctx.session.user.email;
 
+      if (input.email) {
+        const user = await ctx.db.query.users.findFirst({
+          where: (table, funcs) => funcs.eq(table.email, input.email),
+        });
+
+        if (user && user.id !== userId) {
+          throw new Error("El correo ya está en uso");
+        }
+      }
+
       const user = await ctx.db.query.users.findFirst({
         where: (table, funcs) => funcs.eq(table.email, userEmail),
       });
-
-      if (input.img && !isValidImageUrl(input.img)) {
-        throw new Error("La url de la imagen no es válida");
-      }
 
       if (user && user.id === userId) {
         return await ctx.db
@@ -247,13 +264,46 @@ export const userRouter = createTRPCRouter({
             name: input.name,
             lastName: input.lastName,
             email: input.email,
-            image: input.img,
           })
           .where(eq(users.id, userId));
       }
 
       throw new Error("Unauthorized");
     }),
+
+  updateProfileImage: protectedProcedure.mutation(async ({ ctx }) => {
+    const userId = ctx.session.user.id;
+    const userEmail = ctx.session.user.email;
+
+    const user = await ctx.db.query.users.findFirst({
+      where: (table, funcs) => funcs.eq(table.email, userEmail),
+    });
+
+    if (user && user.id === userId) {
+      const profileIdentifier = hashStringToSHA256(user.email);
+
+      const response = await fetch(
+        `https://api.gravatar.com/v3/profiles/${profileIdentifier}`,
+      );
+
+      const data = (await response.json()) as GravatarResponse;
+
+      if (data.avatar_url) {
+        return await ctx.db
+          .update(users)
+          .set({
+            image: data.avatar_url,
+          })
+          .where(eq(users.id, userId));
+      }
+
+      throw new Error("No se encontro la imagen de gravatar");
+
+      // return await ctx.db.update(users).set({}).where(eq(users.id, userId));
+    }
+
+    throw new Error("Unauthorized");
+  }),
 
   deleteUser: protectedProcedure
     .input(
