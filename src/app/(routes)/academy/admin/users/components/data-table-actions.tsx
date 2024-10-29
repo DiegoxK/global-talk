@@ -24,6 +24,7 @@ import { MoreHorizontal } from "lucide-react";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 interface DataTableActionsProps {
   user: UserWithRole;
@@ -37,11 +38,24 @@ export default function DataTableActions({
   setIsDialogOpen,
 }: DataTableActionsProps) {
   const router = useRouter();
+  const { toast } = useToast();
 
   const [openAlert, setOpenAlert] = useState(false);
   const { mutate: deleteUser } = api.user.deleteUser.useMutation({
     onSuccess: () => {
+      toast({
+        title: "Usuario eliminado",
+        description: "El usuario se ha eliminado correctamente",
+        duration: 4000,
+      });
       router.refresh();
+    },
+    onError: (error) => {
+      toast({
+        title: "Error al eliminar usuario",
+        description: error.message,
+        duration: 4000,
+      });
     },
   });
 
@@ -60,6 +74,12 @@ export default function DataTableActions({
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
+                toast({
+                  title: "Eliminando usuario",
+                  description:
+                    "Por favor espera un momento mientras se elimina el usuario",
+                  duration: 10000000,
+                });
                 deleteUser({ userEmail: user.email });
                 setOpenAlert(false);
               }}
