@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/components/ui/use-toast";
 import type { LectureSession } from "@/lib/definitions";
 import { cn, formatDate, formatTime } from "@/lib/utils";
 import { api } from "@/trpc/react";
@@ -33,17 +34,42 @@ export default function LectureInformation({
 }: LectureInformationProps) {
   const router = useRouter();
 
-  const onSuccessfulSubmit = () => {
+  const { toast } = useToast();
+
+  const onSuccessfulSubmit = (title: string, description: string) => {
     setOpen(false);
+
+    toast({
+      title,
+      description,
+      duration: 4000,
+    });
+
     router.refresh();
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {state === "view" && lecture ? (
-        <ScheduleInformation lecture={lecture} onSubmit={onSuccessfulSubmit} />
+        <ScheduleInformation
+          lecture={lecture}
+          onSubmit={() => {
+            onSuccessfulSubmit(
+              "Desagendada",
+              "La clase ha sido desagendada correctamente",
+            );
+          }}
+        />
       ) : state === "schedule" && lecture ? (
-        <ScheduleLecture lecture={lecture} onSubmit={onSuccessfulSubmit} />
+        <ScheduleLecture
+          lecture={lecture}
+          onSubmit={() => {
+            onSuccessfulSubmit(
+              "Agendada",
+              "La clase ha sido agendada correctamente",
+            );
+          }}
+        />
       ) : null}
     </Dialog>
   );
@@ -55,12 +81,27 @@ interface ScheduleLectureProps {
 }
 
 const ScheduleLecture = ({ lecture, onSubmit }: ScheduleLectureProps) => {
+  const { toast } = useToast();
+
   const { mutate: createSchedule, isPending } =
     api.schedule.createSchedule.useMutation({
       onSuccess: onSubmit,
+      onError: (error) => {
+        toast({
+          title: "Error al agendar la clase",
+          description: error.message,
+          duration: 4000,
+        });
+      },
     });
 
   const createScheduleHandler = () => {
+    toast({
+      title: "Agendando",
+      description: `Agendando la clase ${lecture.name} ...`,
+      duration: 10000000,
+    });
+
     createSchedule({ lectureId: lecture.id });
   };
 
@@ -96,12 +137,27 @@ const ScheduleInformation = ({
   lecture,
   onSubmit,
 }: ScheduleInformationProps) => {
+  const { toast } = useToast();
+
   const { mutate: removeSchedule, isPending } =
     api.schedule.removeSchedule.useMutation({
       onSuccess: onSubmit,
+      onError: (error) => {
+        toast({
+          title: "Error al desagendar la clase",
+          description: error.message,
+          duration: 4000,
+        });
+      },
     });
 
   const removeScheduleHandler = () => {
+    toast({
+      title: "Desagendando",
+      description: `Desagendando la clase ${lecture.name} ...`,
+      duration: 10000000,
+    });
+
     removeSchedule({ lectureId: lecture.id });
   };
 
