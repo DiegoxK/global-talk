@@ -223,7 +223,7 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
         // TODO: Change in production to the base url
         confirmation: `https://globtm.vercel.app/api/checkout/confirmation`,
         response: "https://globtm.vercel.app/response",
-        test: "true",
+        test: "false",
       };
 
       createSession(paymentDetails);

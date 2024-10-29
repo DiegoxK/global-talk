@@ -129,6 +129,9 @@ export async function POST(req: NextRequest) {
 
     // Validar la firma y otros datos
     if (x_signature === signature) {
+      console.log("x_signature", x_signature);
+      console.log("signature", signature);
+
       // La firma es válida, puedes verificar el estado de la transacción
       switch (Number(x_cod_response)) {
         case 1:
