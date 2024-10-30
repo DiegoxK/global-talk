@@ -19,11 +19,11 @@ const plans = [
     name: "Beginners A0",
     description: "Perfecto para iniciar!",
     features: [
-      "Plataforma en línea",
-      "Clases en grupo",
-      "Materiales de estudio",
-      "Seguimiento de progreso",
-      "64 clases de inglés durante 4 meses en el desarrollo de 2 niveles",
+      "Introducción a vocabulario básico en inglés",
+      "Desarrollo de habilidades auditivas y de pronunciación",
+      "Frases comunes para situaciones diarias",
+      "Actividades interactivas para principiantes",
+      "Seguimiento personalizado por el instructor",
     ],
   },
   {
@@ -31,23 +31,23 @@ const plans = [
     name: "Pure A1 ",
     description: "Refuerza tus conocimientos!",
     features: [
-      "Plataforma en línea",
-      "Clases en grupo",
-      "Materiales de estudio",
-      "Seguimiento de progreso",
-      "64 clases de inglés durante 4 meses en el desarrollo de 2 niveles",
+      "Práctica de conversación en temas cotidianos",
+      "Gramática y vocabulario nivel básico",
+      "Ejercicios de pronunciación y escucha",
+      "Pequeñas evaluaciones para medir progreso",
+      "Acceso a recursos digitales de estudio",
     ],
   },
   {
     href: "/join/beginners_plus_pure_a1",
-    name: "Plan Beginners + Pure A1 ",
+    name: "Beginners + Pure A1 ",
     description: "Comprende el inglés!",
     features: [
-      "Plataforma en línea",
-      "Clases en grupo",
-      "Materiales de estudio",
-      "Seguimiento de progreso",
-      "124 clases de inglés durante 8 meses en el desarrollo de 4 niveles",
+      "Refuerzo en estructuras gramaticales clave",
+      "Práctica conversacional en situaciones cotidianas",
+      "Actividades para mejorar comprensión auditiva",
+      "Enfoque en construcción de frases",
+      "Guías de autoestudio y material de práctica adicional",
     ],
   },
   {
@@ -55,11 +55,11 @@ const plans = [
     name: "From A2 to B1",
     description: "Conversa en inglés!",
     features: [
-      "Plataforma en línea",
-      "Clases en grupo",
-      "Materiales de estudio",
-      "Seguimiento de progreso",
-      "128 clases de inglés durante 8 meses en el desarrollo de 2 niveles",
+      "Simulaciones de conversación realista",
+      "Gramática y vocabulario de nivel intermedio",
+      "Desarrollo de habilidades de escritura y lectura",
+      "Actividades de comprensión auditiva avanzadas",
+      "Feedback constante de los instructores",
     ],
   },
   {
@@ -67,11 +67,23 @@ const plans = [
     name: "From B1 to B2",
     description: "Refuerza a nivel profesional!",
     features: [
-      "Plataforma en línea",
-      "Clases en grupo",
-      "Materiales de estudio",
-      "Seguimiento de progreso",
-      "128 clases de inglés durante 10 meses en el desarrollo de 2 niveles",
+      "Mejora de habilidades comunicativas en inglés",
+      "Conversación sobre temas complejos y profesionales",
+      "Ejercicios avanzados de gramática y vocabulario",
+      "Actividades prácticas para mejorar fluidez",
+      "Simulaciones de entrevistas y presentaciones",
+    ],
+  },
+  {
+    href: "/join/intensive_b2",
+    name: "Intensive B2",
+    description: "Aprendizaje intensivo",
+    features: [
+      "Intensivo en habilidades de escucha y conversación",
+      "Inmersión en temas actuales y profesionales",
+      "Práctica constante de redacción avanzada",
+      "Retroalimentación diaria y guía personalizada",
+      "Tareas de autoestudio para consolidar aprendizaje",
     ],
   },
   {
@@ -79,11 +91,11 @@ const plans = [
     name: "Business English",
     description: "Inglés para tu negocio!",
     features: [
-      "Plataforma en línea",
-      "Clases en grupo",
-      "Materiales de estudio",
-      "Seguimiento de progreso",
-      "160 clases de inglés durante 10 meses en el desarrollo de 5 niveles",
+      "Vocabulario y expresiones específicas de negocios",
+      "Simulaciones de reuniones y llamadas en inglés",
+      "Escritura profesional de correos y documentos",
+      "Enfoque en presentaciones y negociaciones",
+      "Consejos para mejorar la comunicación en el ámbito laboral",
     ],
   },
 ];
@@ -122,9 +134,9 @@ export default function JoinPage({
         <h1 className="text-4xl font-bold text-primary">
           Elige tu plan de inglés
         </h1>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-8">
           {plans.map((plan, index) => (
-            <Card key={index} className="flex w-[322px] flex-col p-0 pt-6">
+            <Card key={index} className="flex w-[610px] flex-col p-0 pt-6">
               <div className="pl-6 pr-8">
                 <CardHeader>
                   <CardTitle className="text-2xl font-bold text-primary">
@@ -138,7 +150,7 @@ export default function JoinPage({
                       <li key={featureIndex} className="flex">
                         <CheckIcon
                           size={16}
-                          className="mr-2 h-4 min-h-4 w-4 min-w-4 text-primary"
+                          className="mr-2 mt-2 h-4 min-h-4 w-4 min-w-4 text-primary"
                         />
                         <span>{feature}</span>
                       </li>
@@ -147,7 +159,10 @@ export default function JoinPage({
                 </CardContent>
               </div>
               <Link href={plan.href}>
-                <Button className="mt-6 w-full rounded-t-none text-lg">
+                <Button
+                  style={{ backgroundSize: "100px" }}
+                  className="bg-pattern mt-6 w-full rounded-t-none text-lg transition-all hover:bg-none"
+                >
                   Unete!
                 </Button>
               </Link>
