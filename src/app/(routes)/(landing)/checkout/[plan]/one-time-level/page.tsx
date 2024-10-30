@@ -297,9 +297,11 @@ export default function Level({ params }: { params: { plan: string } }) {
             <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-semibold">Detalles del Plan</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="mt-1 text-sm">
                   Matrícula individual:{" "}
-                  {formatToCOP(siteConfig.pricing[plan].price.level)} pesos /
+                  <strong>
+                    {formatToCOP(siteConfig.pricing[plan].price.level)}
+                  </strong>{" "}
                   nivel
                 </p>
                 <ul className="mt-2 list-inside list-disc space-y-1 text-sm">
