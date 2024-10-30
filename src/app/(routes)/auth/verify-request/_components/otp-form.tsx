@@ -101,10 +101,10 @@ export function InputOTPForm({ email }: { email: string }) {
         <FormDescription className="text-white">
           El código fue enviado a tu correo electrónico{" "}
           <span className="font-bold text-primary-900">{email}</span>.
-          <p className="text-primary-100">
-            Recuerda revisar la carpeta de spam.
-          </p>
         </FormDescription>
+        <p className="text-sm text-primary-100">
+          *Recuerda revisar la carpeta de spam*
+        </p>
       </form>
     </Form>
   );
