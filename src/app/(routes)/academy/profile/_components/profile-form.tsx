@@ -250,31 +250,32 @@ export default function ProfileForm({ user }: ProfileFormProps) {
         </DialogContent>
       </Dialog>
 
-      <div className="flex py-5">
+      <div className="flex flex-col py-5 md:flex-row">
         <div>
-          <div className="relative flex w-fit flex-col items-center gap-4 rounded-md border px-4 py-6">
+          <div className="relative flex w-full flex-col items-center gap-4 rounded-md border px-4 py-6 md:w-fit">
             <div
               className="absolute right-3 top-3 cursor-pointer rounded-full bg-primary-600 p-2 text-white hover:bg-primary-700"
               onClick={() => setDialogOpen(true)}
             >
               <PencilLine className="h-5 w-5" />
             </div>
-            <Avatar className="mx-6 h-36 w-36 bg-primary">
+            <Avatar className="mx-6 my-10 h-48 w-48 bg-primary md:my-0 md:h-36 md:w-36">
               <AvatarImage src={user.image ?? undefined} />
               <AvatarFallback className="bg-transparent">
                 <Logo className="fill-white" height={40} width={38} />
               </AvatarFallback>
             </Avatar>
             <Separator />
-            <div className="flex flex-col gap-1">
-              <h3 className="text-2xl font-bold text-primary">
+            <div className="my-6 flex flex-col gap-1 md:my-0">
+              <h3 className="text-center text-2xl font-bold text-primary md:text-left">
                 {user.name} {user.lastName}
               </h3>
-              <p>{user.email}</p>
-              <p>{user.city}</p>
+              <p className="text-center md:text-left">{user.email}</p>
+              <p className="text-center md:text-left">{user.city}</p>
             </div>
           </div>
         </div>
+        <Separator className="my-4 md:hidden" />
         <div className="w-full px-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
