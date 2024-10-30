@@ -12,9 +12,13 @@ import { WhatsApp } from "@/vectors/miscellaneous";
 
 interface ContactByWhatsAppProps {
   programName: string;
+  savings: string;
 }
 
-export const ContactByWhatsApp = ({ programName }: ContactByWhatsAppProps) => {
+export const ContactByWhatsApp = ({
+  programName,
+  savings,
+}: ContactByWhatsAppProps) => {
   const phoneNumber = "+573148680056";
   const message = `Estoy interesado en participar en el programa de inglés ${programName} y me gustaría conocer más sobre el sistema de referidos.`;
 
@@ -25,7 +29,10 @@ export const ContactByWhatsApp = ({ programName }: ContactByWhatsAppProps) => {
   };
 
   return (
-    <Card className="mx-auto w-full max-w-md">
+    <Card className="relative mx-auto w-full max-w-md">
+      <div className="ribbon-green">
+        Ahorras hasta {savings} mil pesos por persona!
+      </div>
       <CardHeader className="text-center">
         <CardTitle className="text-2xl font-bold text-green-500">
           Matrícula grupal

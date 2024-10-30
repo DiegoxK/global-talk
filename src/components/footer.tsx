@@ -25,7 +25,9 @@ export default function Footer() {
             </p>
           </div>
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
+
+            <Link href="mailto:contacto@globtm.co">
+              <div className="flex items-center gap-2">
               <Link href="mailto:contacto@academiaglobtm.com">
                 <div className="rounded-md bg-primary p-2">
                   <Mail className="fill-white" />
@@ -33,6 +35,8 @@ export default function Footer() {
               </Link>
               <p>contacto@academiaglobtm.com</p>
             </div>
+            </Link>
+
             <div className="flex items-center gap-2">
               <div className="rounded-md bg-primary p-2">
                 <Phone className="fill-white" />

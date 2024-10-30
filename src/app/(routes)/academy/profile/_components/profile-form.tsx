@@ -166,8 +166,10 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                   Imagen de gravatar encontrada!
                 </AlertDialogTitle>
                 <AlertDialogDescription>
-                  Tu imagen de perfil ha sido actualizada correctamente. Los
-                  cambios pueden tardar un momento en reflejarse.
+                  Tu imagen de perfil ha sido actualizada correctamente.{" "}
+                  <strong>
+                    Los cambios pueden tardar de 10 a 15 minutos en reflejarse.
+                  </strong>
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

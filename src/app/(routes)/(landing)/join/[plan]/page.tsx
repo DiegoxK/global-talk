@@ -1,4 +1,4 @@
-import { Check, Phone } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { ContactByWhatsApp } from "./_components/contact-by-whatsapp";
+import { cn } from "@/lib/utils";
 
 export default function Page({ params }: { params: { plan: string } }) {
   const planId = params.plan;
@@ -39,15 +40,15 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time-level`,
       title: "Pago único por nivel",
       description: "Matrícula individual",
-      price: "530 mil COP / nivel",
+      price: "600 mil COP / nivel",
       duration: "2 meses",
       features: [
         "32 clases de una hora (4 por semana)",
         "Acceso a la plataforma de aprendizaje",
         "Grabaciones de las clases",
-        "Todos los materiales",
+        "Material de estudio",
         "Evaluación al final del nivel",
-        "1 cupo en un grupo de máximo 5 personas",
+        "1 cupo en clases de máximo 5 personas",
       ],
     },
 
@@ -55,15 +56,16 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time`,
       title: "Programa completo",
       description: "Matrícula individual - Programa completo",
-      price: "1 millón COP / programa",
+      price: "1 millón COP ",
       duration: "4 meses (2 niveles)",
       features: [
         "64 clases de una hora (4 por semana)",
+        "Programa completo: 2 niveles",
         "Acceso a la plataforma de aprendizaje",
         "Grabaciones de las clases",
-        "Todos los materiales",
+        "Material de estudio",
         "Evaluación al final de cada nivel",
-        "1 cupo en un grupo de máximo 5 personas",
+        "1 cupo en clases de máximo 5 personas",
       ],
       savings: "Ahorras 200 mil pesos",
     },
@@ -102,7 +104,15 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
                 </CardContent>
 
                 <Link href={plan.href}>
-                  <Button className="mt-1 w-full">Seleccionar Plan</Button>
+                  <Button
+                    style={{ backgroundSize: "100px" }}
+                    className={cn(
+                      "mt-1 w-full",
+                      plan.savings && "bg-pattern hover:bg-none",
+                    )}
+                  >
+                    Seleccionar Plan
+                  </Button>
                 </Link>
               </Card>
             </div>
@@ -114,7 +124,7 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
         <h1 className="text-4xl font-bold text-primary">
           Beginners A0 - Matrícula grupal
         </h1>
-        <ContactByWhatsApp programName="Beginners A0" />
+        <ContactByWhatsApp programName="Beginners A0" savings="350" />
       </div>
     </>
   );
@@ -125,15 +135,15 @@ const PureA1 = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time-level`,
       title: "Pago único por nivel",
       description: "Matrícula individual",
-      price: "530 mil COP / nivel",
+      price: "600 mil COP / nivel",
       duration: "2 meses",
       features: [
         "32 clases de una hora (4 por semana)",
         "Acceso a la plataforma de aprendizaje",
         "Grabaciones de las clases",
-        "Todos los materiales",
-        "Evaluación al final del nivel",
-        "1 cupo en un grupo de máximo 5 personas",
+        "Material de estudio",
+        "Evaluación al final de cada nivel",
+        "1 cupo en clases de máximo 5 personas",
       ],
     },
 
@@ -141,10 +151,11 @@ const PureA1 = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time`,
       title: "Programa completo",
       description: "Matrícula individual - Programa completo",
-      price: "1 millón COP / programa",
+      price: "1 millón COP ",
       duration: "4 meses (2 niveles)",
       features: [
         "64 clases de una hora (4 por semana)",
+        "Programa completo: 2 niveles",
         "Acceso a la plataforma de aprendizaje",
         "Grabaciones de las clases",
         "Todos los materiales",
@@ -188,7 +199,15 @@ const PureA1 = ({ planId }: { planId: string }) => {
                 </CardContent>
 
                 <Link href={plan.href}>
-                  <Button className="mt-1 w-full">Seleccionar Plan</Button>
+                  <Button
+                    style={{ backgroundSize: "100px" }}
+                    className={cn(
+                      "mt-1 w-full",
+                      plan.savings && "bg-pattern hover:bg-none",
+                    )}
+                  >
+                    Seleccionar Plan
+                  </Button>
                 </Link>
               </Card>
             </div>
@@ -200,44 +219,45 @@ const PureA1 = ({ planId }: { planId: string }) => {
         <h1 className="text-4xl font-bold text-primary">
           Pure A1 - Matrícula grupal
         </h1>
-        <ContactByWhatsApp programName="Pure A1" />
+        <ContactByWhatsApp programName="Pure A1" savings="350" />
       </div>
     </>
   );
 };
 const BeginnersPlusPureA1 = ({ planId }: { planId: string }) => {
   const plans = [
-    {
-      href: `/checkout/${planId}/one-time-level`,
-      title: "Pago único por nivel",
-      description: "Matrícula individual",
-      price: "530 mil COP / nivel",
-      duration: "2 meses",
-      features: [
-        "32 clases de una hora (4 por semana)",
-        "Acceso a la plataforma de aprendizaje",
-        "Grabaciones de las clases",
-        "Todos los materiales",
-        "Evaluación al final del nivel",
-        "1 cupo en un grupo de máximo 5 personas",
-      ],
-    },
+    // {
+    //   href: `/checkout/${planId}/one-time-level`,
+    //   title: "Pago único por nivel",
+    //   description: "Matrícula individual",
+    //   price: "600 mil COP / nivel",
+    //   duration: "2 meses",
+    //   features: [
+    //     "32 clases de una hora (4 por semana)",
+    //     "Acceso a la plataforma de aprendizaje",
+    //     "Grabaciones de las clases",
+    //     "Material de estudio",
+    //     "Evaluación al final de cada nivel",
+    //     "1 cupo en clases de máximo 5 personas",
+    //   ],
+    // },
 
     {
       href: `/checkout/${planId}/one-time`,
       title: "Programa completo",
       description: "Matrícula individual - Programa completo",
-      price: "1 millón COP / programa",
-      duration: "4 meses (2 niveles)",
+      price: "1.900.000 COP ",
+      duration: "8 meses (2 niveles)",
       features: [
-        "64 clases de una hora (4 por semana)",
+        "124 clases de una hora (4 por semana)",
         "Acceso a la plataforma de aprendizaje",
+        "Programa completo: 4 niveles",
         "Grabaciones de las clases",
         "Todos los materiales",
         "Evaluación al final de cada nivel",
         "1 cupo en un grupo de máximo 5 personas",
       ],
-      savings: "Ahorras 200 mil pesos",
+      savings: "Ahorras 500 mil pesos",
     },
   ];
 
@@ -274,7 +294,15 @@ const BeginnersPlusPureA1 = ({ planId }: { planId: string }) => {
                 </CardContent>
 
                 <Link href={plan.href}>
-                  <Button className="mt-1 w-full">Seleccionar Plan</Button>
+                  <Button
+                    style={{ backgroundSize: "100px" }}
+                    className={cn(
+                      "mt-1 w-full",
+                      plan.savings && "bg-pattern hover:bg-none",
+                    )}
+                  >
+                    Seleccionar Plan
+                  </Button>
                 </Link>
               </Card>
             </div>
@@ -286,7 +314,7 @@ const BeginnersPlusPureA1 = ({ planId }: { planId: string }) => {
         <h1 className="text-4xl font-bold text-primary">
           Beginners + Pure A1 - Matrícula grupal
         </h1>
-        <ContactByWhatsApp programName="Beginners + Pure A1" />
+        <ContactByWhatsApp programName="Beginners + Pure A1" savings="600" />
       </div>
     </>
   );
@@ -297,15 +325,16 @@ const FromA2ToB1 = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time-level`,
       title: "Pago único por nivel",
       description: "Matrícula individual",
-      price: "530 mil COP / nivel",
+      price: "630 mil COP / nivel",
       duration: "2 meses",
       features: [
         "32 clases de una hora (4 por semana)",
+        "Prueba de nivel",
         "Acceso a la plataforma de aprendizaje",
         "Grabaciones de las clases",
-        "Todos los materiales",
-        "Evaluación al final del nivel",
-        "1 cupo en un grupo de máximo 5 personas",
+        "Material de estudio",
+        "Evaluación al final de cada nivel",
+        "1 cupo en clases de máximo 5 personas",
       ],
     },
 
@@ -313,17 +342,19 @@ const FromA2ToB1 = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time`,
       title: "Programa completo",
       description: "Matrícula individual - Programa completo",
-      price: "1 millón COP / programa",
-      duration: "4 meses (2 niveles)",
+      price: "3 millón COP ",
+      duration: "10 meses (5 niveles)",
       features: [
-        "64 clases de una hora (4 por semana)",
+        "160 clases de una hora (4 por semana)",
+        "Prueba de nivel",
         "Acceso a la plataforma de aprendizaje",
+        "Programa completo: 5 niveles",
         "Grabaciones de las clases",
         "Todos los materiales",
         "Evaluación al final de cada nivel",
         "1 cupo en un grupo de máximo 5 personas",
       ],
-      savings: "Ahorras 200 mil pesos",
+      savings: "Ahorras 500 mil pesos",
     },
   ];
 
@@ -360,7 +391,15 @@ const FromA2ToB1 = ({ planId }: { planId: string }) => {
                 </CardContent>
 
                 <Link href={plan.href}>
-                  <Button className="mt-1 w-full">Seleccionar Plan</Button>
+                  <Button
+                    style={{ backgroundSize: "100px" }}
+                    className={cn(
+                      "mt-1 w-full",
+                      plan.savings && "bg-pattern hover:bg-none",
+                    )}
+                  >
+                    Seleccionar Plan
+                  </Button>
                 </Link>
               </Card>
             </div>
@@ -372,7 +411,7 @@ const FromA2ToB1 = ({ planId }: { planId: string }) => {
         <h1 className="text-4xl font-bold text-primary">
           From B1 to B2 - Matrícula grupal
         </h1>
-        <ContactByWhatsApp programName="From B1 to B2" />
+        <ContactByWhatsApp programName="From B1 to B2" savings="700" />
       </div>
     </>
   );
@@ -383,15 +422,15 @@ const FromB1ToB2 = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time-level`,
       title: "Pago único por nivel",
       description: "Matrícula individual",
-      price: "530 mil COP / nivel",
+      price: "630 mil COP / nivel",
       duration: "2 meses",
       features: [
         "32 clases de una hora (4 por semana)",
         "Acceso a la plataforma de aprendizaje",
         "Grabaciones de las clases",
-        "Todos los materiales",
-        "Evaluación al final del nivel",
-        "1 cupo en un grupo de máximo 5 personas",
+        "Material de estudio",
+        "Evaluación al final de cada nivel",
+        "1 cupo en clases de máximo 5 personas",
       ],
     },
 
@@ -399,17 +438,18 @@ const FromB1ToB2 = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time`,
       title: "Programa completo",
       description: "Matrícula individual - Programa completo",
-      price: "1 millón COP / programa",
-      duration: "4 meses (2 niveles)",
+      price: "3 millón COP ",
+      duration: "10 meses (5 niveles)",
       features: [
-        "64 clases de una hora (4 por semana)",
+        "160 clases de una hora (4 por semana)",
         "Acceso a la plataforma de aprendizaje",
+        "Programa completo: 5 niveles",
         "Grabaciones de las clases",
         "Todos los materiales",
         "Evaluación al final de cada nivel",
         "1 cupo en un grupo de máximo 5 personas",
       ],
-      savings: "Ahorras 200 mil pesos",
+      savings: "Ahorras 500 mil pesos",
     },
   ];
 
@@ -446,7 +486,15 @@ const FromB1ToB2 = ({ planId }: { planId: string }) => {
                 </CardContent>
 
                 <Link href={plan.href}>
-                  <Button className="mt-1 w-full">Seleccionar Plan</Button>
+                  <Button
+                    style={{ backgroundSize: "100px" }}
+                    className={cn(
+                      "mt-1 w-full",
+                      plan.savings && "bg-pattern hover:bg-none",
+                    )}
+                  >
+                    Seleccionar Plan
+                  </Button>
                 </Link>
               </Card>
             </div>
@@ -459,44 +507,46 @@ const FromB1ToB2 = ({ planId }: { planId: string }) => {
         <h1 className="text-4xl font-bold text-primary">
           From B1 to B2 - Matrícula grupal
         </h1>
-        <ContactByWhatsApp programName="From B1 to B2" />
+        <ContactByWhatsApp programName="From B1 to B2" savings="700" />
       </div>
     </>
   );
 };
 const IntensiveB2 = ({ planId }: { planId: string }) => {
   const plans = [
-    {
-      href: `/checkout/${planId}/one-time-level`,
-      title: "Pago único por nivel",
-      description: "Matrícula individual",
-      price: "530 mil COP / nivel",
-      duration: "2 meses",
-      features: [
-        "32 clases de una hora (4 por semana)",
-        "Acceso a la plataforma de aprendizaje",
-        "Grabaciones de las clases",
-        "Todos los materiales",
-        "Evaluación al final del nivel",
-        "1 cupo en un grupo de máximo 5 personas",
-      ],
-    },
+    // {
+    //   href: `/checkout/${planId}/one-time-level`,
+    //   title: "Pago único por nivel",
+    //   description: "Matrícula individual",
+    //   price: "630 mil COP / nivel",
+    //   duration: "2 meses",
+    //   features: [
+    //     "32 clases de una hora (4 por semana)",
+    //     "Acceso a la plataforma de aprendizaje",
+    //     "Grabaciones de las clases",
+    //     "Material de estudio",
+    //     "Evaluación al final de cada nivel",
+    //     "1 cupo en clases de máximo 5 personas",
+    //   ],
+    // },
 
     {
       href: `/checkout/${planId}/one-time`,
       title: "Programa completo",
       description: "Matrícula individual - Programa completo",
-      price: "1 millón COP / programa",
-      duration: "4 meses (2 niveles)",
+      price: "1 millón COP ",
+      duration: "3 meses (2 niveles)",
       features: [
-        "64 clases de una hora (4 por semana)",
+        "120 clases de una hora (4 por semana)",
         "Acceso a la plataforma de aprendizaje",
+        "Prueba de nivel",
+        "Programa completo: 2 niveles",
         "Grabaciones de las clases",
         "Todos los materiales",
         "Evaluación al final de cada nivel",
         "1 cupo en un grupo de máximo 5 personas",
       ],
-      savings: "Ahorras 200 mil pesos",
+      savings: "Preparacion examenes",
     },
   ];
 
@@ -533,7 +583,15 @@ const IntensiveB2 = ({ planId }: { planId: string }) => {
                 </CardContent>
 
                 <Link href={plan.href}>
-                  <Button className="mt-1 w-full">Seleccionar Plan</Button>
+                  <Button
+                    style={{ backgroundSize: "100px" }}
+                    className={cn(
+                      "mt-1 w-full",
+                      plan.savings && "bg-pattern hover:bg-none",
+                    )}
+                  >
+                    Seleccionar Plan
+                  </Button>
                 </Link>
               </Card>
             </div>
@@ -545,7 +603,7 @@ const IntensiveB2 = ({ planId }: { planId: string }) => {
         <h1 className="text-4xl font-bold text-primary">
           Intensive B2 - Matrícula grupal
         </h1>
-        <ContactByWhatsApp programName="Intensive B2" />
+        {/* <ContactByWhatsApp programName="Intensive B2" savings="350" /> */}
       </div>
     </>
   );
@@ -556,15 +614,15 @@ const BusinessEnglish = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time-level`,
       title: "Pago único por nivel",
       description: "Matrícula individual",
-      price: "530 mil COP / nivel",
+      price: "630 mil COP / nivel",
       duration: "2 meses",
       features: [
         "32 clases de una hora (4 por semana)",
         "Acceso a la plataforma de aprendizaje",
         "Grabaciones de las clases",
-        "Todos los materiales",
-        "Evaluación al final del nivel",
-        "1 cupo en un grupo de máximo 5 personas",
+        "Material de estudio",
+        "Evaluación al final de cada nivel",
+        "1 cupo en clases de máximo 5 personas",
       ],
     },
 
@@ -572,17 +630,18 @@ const BusinessEnglish = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time`,
       title: "Programa completo",
       description: "Matrícula individual - Programa completo",
-      price: "1 millón COP / programa",
-      duration: "4 meses (2 niveles)",
+      price: "3 millón COP ",
+      duration: "10 meses (5 niveles)",
       features: [
-        "64 clases de una hora (4 por semana)",
+        "160 clases de una hora (4 por semana)",
         "Acceso a la plataforma de aprendizaje",
+        "Programa completo: 5 niveles",
         "Grabaciones de las clases",
         "Todos los materiales",
         "Evaluación al final de cada nivel",
         "1 cupo en un grupo de máximo 5 personas",
       ],
-      savings: "Ahorras 200 mil pesos",
+      savings: "Ahorras 500 mil pesos",
     },
   ];
 
@@ -619,7 +678,15 @@ const BusinessEnglish = ({ planId }: { planId: string }) => {
                 </CardContent>
 
                 <Link href={plan.href}>
-                  <Button className="mt-1 w-full">Seleccionar Plan</Button>
+                  <Button
+                    style={{ backgroundSize: "100px" }}
+                    className={cn(
+                      "mt-1 w-full",
+                      plan.savings && "bg-pattern hover:bg-none",
+                    )}
+                  >
+                    Seleccionar Plan
+                  </Button>
                 </Link>
               </Card>
             </div>
@@ -631,7 +698,7 @@ const BusinessEnglish = ({ planId }: { planId: string }) => {
         <h1 className="text-4xl font-bold text-primary">
           Business English - Matrícula grupal
         </h1>
-        <ContactByWhatsApp programName="Business English" />
+        <ContactByWhatsApp programName="Business English" savings="700" />
       </div>
     </>
   );
