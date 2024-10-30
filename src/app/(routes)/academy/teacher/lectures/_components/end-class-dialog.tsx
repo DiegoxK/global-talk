@@ -36,19 +36,24 @@ import { Input } from "@/components/ui/input";
 import Required from "@/components/ui/required";
 import { api } from "@/trpc/react";
 import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 interface EndClassDialogProps {
   lectureSessionId?: string;
   endLectureDialog: boolean;
   setEndLectureDialog: React.Dispatch<React.SetStateAction<boolean>>;
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function EndClassDialog({
   lectureSessionId,
   endLectureDialog,
   setEndLectureDialog,
+  setDialogOpen,
 }: EndClassDialogProps) {
   const { toast } = useToast();
+
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,6 +71,8 @@ export default function EndClassDialog({
           duration: 4000,
         });
         setEndLectureDialog(false);
+        setDialogOpen(false);
+        router.refresh();
       },
       onError: (error) => {
         toast({
