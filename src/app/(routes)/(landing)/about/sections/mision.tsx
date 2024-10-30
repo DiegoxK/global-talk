@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function MisionSection() {
   return (
-    <section className="my-24 flex items-center justify-center gap-10">
+    <section className="my-24 flex items-center justify-center md:gap-10">
       <div className="w-[615px] space-y-6">
         <div className="space-y-4 pr-8">
           <h1 className="text-xl uppercase text-primary">NUESTRA MISIÓN</h1>
@@ -24,16 +24,16 @@ export default function MisionSection() {
             idioma inglés, y a destacarse en el competitivo mercado global.
           </p>
         </div>
-        <div className="space-x-4">
+        <div className="flex flex-col gap-4 md:flex-row">
           <Link href="/join">
-            <Button size="lg" className="rounded-md text-lg">
+            <Button size="lg" className="w-full rounded-md text-lg md:w-auto">
               UNIRME AHORA
             </Button>
           </Link>
           <Link href="/">
             <Button
               size="lg"
-              className="rounded-md border border-primary bg-white text-lg text-primary hover:bg-white hover:text-primary"
+              className="w-full rounded-md border border-primary bg-white text-lg text-primary hover:bg-white hover:text-primary md:w-auto"
             >
               IR A INICIO
             </Button>
@@ -41,7 +41,7 @@ export default function MisionSection() {
         </div>
       </div>
       <div>
-        <Image src={Mision} alt="Mision" />
+        <Image className="hidden md:block" src={Mision} alt="Mision" />
       </div>
     </section>
   );
