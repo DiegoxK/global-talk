@@ -12,6 +12,7 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { ContactByWhatsApp } from "./_components/contact-by-whatsapp";
 import { cn } from "@/lib/utils";
+import { type Pricing, siteConfig } from "@/config";
 
 export default function Page({ params }: { params: { plan: string } }) {
   const planId = params.plan;
@@ -35,6 +36,8 @@ export default function Page({ params }: { params: { plan: string } }) {
 }
 
 const BeginnersA0 = ({ planId }: { planId: string }) => {
+  const plan = planId as keyof Pricing;
+
   const plans = [
     {
       href: `/checkout/${planId}/one-time-level`,
@@ -42,14 +45,7 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
       description: "Matrícula individual",
       price: "600 mil COP / nivel",
       duration: "2 meses",
-      features: [
-        "32 clases de una hora (4 por semana)",
-        "Acceso a la plataforma de aprendizaje",
-        "Grabaciones de las clases",
-        "Material de estudio",
-        "Evaluación al final del nivel",
-        "1 cupo en clases de máximo 5 personas",
-      ],
+      features: siteConfig.pricing[plan].features.level,
     },
 
     {
@@ -58,15 +54,7 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
       description: "Matrícula individual - Programa completo",
       price: "1 millón COP ",
       duration: "4 meses (2 niveles)",
-      features: [
-        "64 clases de una hora (4 por semana)",
-        "Programa completo: 2 niveles",
-        "Acceso a la plataforma de aprendizaje",
-        "Grabaciones de las clases",
-        "Material de estudio",
-        "Evaluación al final de cada nivel",
-        "1 cupo en clases de máximo 5 personas",
-      ],
+      features: siteConfig.pricing[plan].features.complete,
       savings: "Ahorras 200 mil pesos",
     },
   ];
@@ -130,6 +118,7 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
   );
 };
 const PureA1 = ({ planId }: { planId: string }) => {
+  const plan = planId as keyof Pricing;
   const plans = [
     {
       href: `/checkout/${planId}/one-time-level`,
@@ -137,14 +126,7 @@ const PureA1 = ({ planId }: { planId: string }) => {
       description: "Matrícula individual",
       price: "600 mil COP / nivel",
       duration: "2 meses",
-      features: [
-        "32 clases de una hora (4 por semana)",
-        "Acceso a la plataforma de aprendizaje",
-        "Grabaciones de las clases",
-        "Material de estudio",
-        "Evaluación al final de cada nivel",
-        "1 cupo en clases de máximo 5 personas",
-      ],
+      features: siteConfig.pricing[plan].features.level,
     },
 
     {
@@ -153,15 +135,7 @@ const PureA1 = ({ planId }: { planId: string }) => {
       description: "Matrícula individual - Programa completo",
       price: "1 millón COP ",
       duration: "4 meses (2 niveles)",
-      features: [
-        "64 clases de una hora (4 por semana)",
-        "Programa completo: 2 niveles",
-        "Acceso a la plataforma de aprendizaje",
-        "Grabaciones de las clases",
-        "Todos los materiales",
-        "Evaluación al final de cada nivel",
-        "1 cupo en un grupo de máximo 5 personas",
-      ],
+      features: siteConfig.pricing[plan].features.complete,
       savings: "Ahorras 200 mil pesos",
     },
   ];
@@ -225,6 +199,7 @@ const PureA1 = ({ planId }: { planId: string }) => {
   );
 };
 const BeginnersPlusPureA1 = ({ planId }: { planId: string }) => {
+  const plan = planId as keyof Pricing;
   const plans = [
     // {
     //   href: `/checkout/${planId}/one-time-level`,
@@ -248,15 +223,7 @@ const BeginnersPlusPureA1 = ({ planId }: { planId: string }) => {
       description: "Matrícula individual - Programa completo",
       price: "1.900.000 COP ",
       duration: "8 meses (2 niveles)",
-      features: [
-        "124 clases de una hora (4 por semana)",
-        "Acceso a la plataforma de aprendizaje",
-        "Programa completo: 4 niveles",
-        "Grabaciones de las clases",
-        "Todos los materiales",
-        "Evaluación al final de cada nivel",
-        "1 cupo en un grupo de máximo 5 personas",
-      ],
+      features: siteConfig.pricing[plan].features.complete,
       savings: "Ahorras 500 mil pesos",
     },
   ];
@@ -320,6 +287,7 @@ const BeginnersPlusPureA1 = ({ planId }: { planId: string }) => {
   );
 };
 const FromA2ToB1 = ({ planId }: { planId: string }) => {
+  const plan = planId as keyof Pricing;
   const plans = [
     {
       href: `/checkout/${planId}/one-time-level`,
@@ -327,15 +295,7 @@ const FromA2ToB1 = ({ planId }: { planId: string }) => {
       description: "Matrícula individual",
       price: "630 mil COP / nivel",
       duration: "2 meses",
-      features: [
-        "32 clases de una hora (4 por semana)",
-        "Prueba de nivel",
-        "Acceso a la plataforma de aprendizaje",
-        "Grabaciones de las clases",
-        "Material de estudio",
-        "Evaluación al final de cada nivel",
-        "1 cupo en clases de máximo 5 personas",
-      ],
+      features: siteConfig.pricing[plan].features.level,
     },
 
     {
@@ -344,16 +304,7 @@ const FromA2ToB1 = ({ planId }: { planId: string }) => {
       description: "Matrícula individual - Programa completo",
       price: "3 millón COP ",
       duration: "10 meses (5 niveles)",
-      features: [
-        "160 clases de una hora (4 por semana)",
-        "Prueba de nivel",
-        "Acceso a la plataforma de aprendizaje",
-        "Programa completo: 5 niveles",
-        "Grabaciones de las clases",
-        "Todos los materiales",
-        "Evaluación al final de cada nivel",
-        "1 cupo en un grupo de máximo 5 personas",
-      ],
+      features: siteConfig.pricing[plan].features.complete,
       savings: "Ahorras 500 mil pesos",
     },
   ];
@@ -417,6 +368,7 @@ const FromA2ToB1 = ({ planId }: { planId: string }) => {
   );
 };
 const FromB1ToB2 = ({ planId }: { planId: string }) => {
+  const plan = planId as keyof Pricing;
   const plans = [
     {
       href: `/checkout/${planId}/one-time-level`,
@@ -424,14 +376,7 @@ const FromB1ToB2 = ({ planId }: { planId: string }) => {
       description: "Matrícula individual",
       price: "630 mil COP / nivel",
       duration: "2 meses",
-      features: [
-        "32 clases de una hora (4 por semana)",
-        "Acceso a la plataforma de aprendizaje",
-        "Grabaciones de las clases",
-        "Material de estudio",
-        "Evaluación al final de cada nivel",
-        "1 cupo en clases de máximo 5 personas",
-      ],
+      features: siteConfig.pricing[plan].features.level,
     },
 
     {
@@ -440,15 +385,7 @@ const FromB1ToB2 = ({ planId }: { planId: string }) => {
       description: "Matrícula individual - Programa completo",
       price: "3 millón COP ",
       duration: "10 meses (5 niveles)",
-      features: [
-        "160 clases de una hora (4 por semana)",
-        "Acceso a la plataforma de aprendizaje",
-        "Programa completo: 5 niveles",
-        "Grabaciones de las clases",
-        "Todos los materiales",
-        "Evaluación al final de cada nivel",
-        "1 cupo en un grupo de máximo 5 personas",
-      ],
+      features: siteConfig.pricing[plan].features.complete,
       savings: "Ahorras 500 mil pesos",
     },
   ];
@@ -513,6 +450,7 @@ const FromB1ToB2 = ({ planId }: { planId: string }) => {
   );
 };
 const IntensiveB2 = ({ planId }: { planId: string }) => {
+  const plan = planId as keyof Pricing;
   const plans = [
     // {
     //   href: `/checkout/${planId}/one-time-level`,
@@ -536,16 +474,7 @@ const IntensiveB2 = ({ planId }: { planId: string }) => {
       description: "Matrícula individual - Programa completo",
       price: "1 millón COP ",
       duration: "3 meses (2 niveles)",
-      features: [
-        "120 clases de una hora (4 por semana)",
-        "Acceso a la plataforma de aprendizaje",
-        "Prueba de nivel",
-        "Programa completo: 2 niveles",
-        "Grabaciones de las clases",
-        "Todos los materiales",
-        "Evaluación al final de cada nivel",
-        "1 cupo en un grupo de máximo 5 personas",
-      ],
+      features: siteConfig.pricing[plan].features.complete,
       savings: "Preparacion examenes",
     },
   ];
@@ -609,6 +538,7 @@ const IntensiveB2 = ({ planId }: { planId: string }) => {
   );
 };
 const BusinessEnglish = ({ planId }: { planId: string }) => {
+  const plan = planId as keyof Pricing;
   const plans = [
     {
       href: `/checkout/${planId}/one-time-level`,
@@ -616,14 +546,7 @@ const BusinessEnglish = ({ planId }: { planId: string }) => {
       description: "Matrícula individual",
       price: "630 mil COP / nivel",
       duration: "2 meses",
-      features: [
-        "32 clases de una hora (4 por semana)",
-        "Acceso a la plataforma de aprendizaje",
-        "Grabaciones de las clases",
-        "Material de estudio",
-        "Evaluación al final de cada nivel",
-        "1 cupo en clases de máximo 5 personas",
-      ],
+      features: siteConfig.pricing[plan].features.level,
     },
 
     {
@@ -632,15 +555,7 @@ const BusinessEnglish = ({ planId }: { planId: string }) => {
       description: "Matrícula individual - Programa completo",
       price: "3 millón COP ",
       duration: "10 meses (5 niveles)",
-      features: [
-        "160 clases de una hora (4 por semana)",
-        "Acceso a la plataforma de aprendizaje",
-        "Programa completo: 5 niveles",
-        "Grabaciones de las clases",
-        "Todos los materiales",
-        "Evaluación al final de cada nivel",
-        "1 cupo en un grupo de máximo 5 personas",
-      ],
+      features: siteConfig.pricing[plan].features.complete,
       savings: "Ahorras 500 mil pesos",
     },
   ];
