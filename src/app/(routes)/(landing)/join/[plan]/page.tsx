@@ -1,4 +1,4 @@
-import { Check, Phone } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -37,17 +37,17 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
   const plans = [
     {
       href: `/checkout/${planId}/one-time-level`,
-      title: "Pago único por nivel",
-      description: "Matrícula individual",
+      title: "Pago unico por nivel",
+      description: "Matrícula individual - Pago nivel 1",
       price: "600 mil COP / nivel",
       duration: "2 meses",
       features: [
         "32 clases de una hora (4 por semana)",
         "Acceso a la plataforma de aprendizaje",
         "Grabaciones de las clases",
-        "Todos los materiales",
+        "Material de estudio",
         "Evaluación al final del nivel",
-        "1 cupo en un grupo de máximo 5 personas",
+        "5 estudiantes por clase",
       ],
     },
 
