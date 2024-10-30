@@ -532,7 +532,7 @@ const IntensiveB2 = ({ planId }: { planId: string }) => {
         <h1 className="text-center text-4xl font-bold text-primary">
           Intensive B2 - Matrícula grupal
         </h1>
-        {/* <ContactByWhatsApp programName="Intensive B2" savings="350" /> */}
+        <ContactByWhatsApp programName="Intensive B2" savings="350" />
       </div>
     </>
   );
