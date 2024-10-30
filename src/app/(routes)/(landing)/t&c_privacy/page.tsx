@@ -226,12 +226,11 @@ export default function Privacy() {
         través de:
       </p>
       <ul className="ms-5 list-disc space-y-2">
-        {/* TODO: Change to actual domain and number */}
         <li>
-          <strong>Correo Electrónico:</strong> soporte@globtm.co
+          <strong>Correo Electrónico:</strong> contacto@academiaglobtm.com
         </li>
         <li>
-          <strong>Teléfono:</strong> 300 000 0000
+          <strong>Teléfono:</strong> 3148680056
         </li>
       </ul>
     </div>

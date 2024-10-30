@@ -28,8 +28,8 @@ export const emailRouter = createTRPCRouter({
 
       const mailOptions = {
         // TODO: Change to actual domain
-        from: `contact-form@resultadospublicitariosmedellin.com`,
-        to: `contacto@resultadospublicitariosmedellin.com`,
+        from: `contact-form@academiaglobtm.com`,
+        to: `contacto@academiaglobtm.com`,
         subject: `Mensaje de ${input.name}`,
         text: `
   Nombre: ${input.name}

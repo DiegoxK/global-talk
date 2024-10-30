@@ -138,7 +138,6 @@ export default function LectureForm({
     router.refresh();
   };
 
-  // TODO: Error and loading handling for api calls
   const { data: programs } = api.program.getProgramsIds.useQuery();
   const { data: groups } = api.groups.getgroups.useQuery();
 
