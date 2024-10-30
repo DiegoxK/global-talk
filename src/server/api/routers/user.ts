@@ -326,6 +326,17 @@ export const userRouter = createTRPCRouter({
   getUserHomeInfo: protectedProcedure.query(async ({ ctx }) => {
     const user = ctx.session.user;
 
+    const levelCountQuery = ctx.db
+      .select({
+        programId: programs.id,
+        levelCount: count(levels.id).as("level_count"),
+      })
+      .from(programs)
+      .leftJoin(levels, eq(programs.id, levels.programId))
+      .where(eq(programs.id, user.programId))
+      .groupBy(programs.id)
+      .as("level_count_query");
+
     const userHomeInfo = await ctx.db
       .select({
         image: users.image,
@@ -333,7 +344,7 @@ export const userRouter = createTRPCRouter({
           sql<string>`concat(${users.name}, ' ', ${users.lastName})`.as(
             "student_full_name",
           ),
-        levelCount: count(levels.id).as("level_count"),
+        levelCount: levelCountQuery.levelCount,
         lecturesCount: count(lectures.id).as("lectures_count"),
         programName: programs.name,
         programProficiency: programs.proficiency,
@@ -344,6 +355,7 @@ export const userRouter = createTRPCRouter({
       .from(users)
       .leftJoin(groups, eq(users.groupId, groups.id))
       .leftJoin(programs, eq(users.programId, programs.id))
+      .leftJoin(levelCountQuery, eq(levelCountQuery.programId, programs.id))
       .leftJoin(levels, eq(levels.programId, programs.id))
       .leftJoin(lectures, eq(lectures.levelId, levels.id))
       .where(eq(users.id, user.id))
@@ -353,6 +365,7 @@ export const userRouter = createTRPCRouter({
         users.name,
         users.lastName,
         programs.name,
+        levelCountQuery.levelCount,
         programs.proficiency,
         users.current_level,
         groups.startingDate,
