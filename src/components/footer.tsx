@@ -25,15 +25,15 @@ export default function Footer() {
             </p>
           </div>
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              {/* TODO: Change to actual domain */}
-              <Link href="mailto:contacto@globtm.co">
+            <Link href="mailto:contacto@globtm.co">
+              <div className="flex items-center gap-2">
+                {/* TODO: Change to actual domain */}
                 <div className="rounded-md bg-primary p-2">
                   <Mail className="fill-white" />
                 </div>
-              </Link>
-              <p>contacto@globtm.co</p>
-            </div>
+                <p>contacto@globtm.co</p>
+              </div>
+            </Link>
             <div className="flex items-center gap-2">
               <div className="rounded-md bg-primary p-2">
                 <Phone className="fill-white" />
