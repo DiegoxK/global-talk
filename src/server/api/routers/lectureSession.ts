@@ -34,6 +34,7 @@ const lectureSessionCardSchema = {
   name: lectures.title,
   description: lectures.description,
   meetUrl: lectureSessions.meetUrl,
+  groupName: groups.name,
   off2classUrl: lectureSessions.off2classId,
   date: lectureSessions.date,
   startTime: lectureSessions.startTime,
@@ -66,6 +67,7 @@ export const lectureSessionRouter = createTRPCRouter({
           eq(lectureSessions.id, scheduleCount.lectureSessionId),
         )
         .leftJoin(users, eq(lectureSessions.teacherId, users.id))
+        .leftJoin(groups, eq(lectureSessions.groupId, groups.id))
         .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
         .leftJoin(levels, eq(lectures.levelId, levels.id))
         .leftJoin(programs, eq(levels.programId, programs.id))
@@ -98,6 +100,7 @@ export const lectureSessionRouter = createTRPCRouter({
         })
         .from(lectureSessions)
         .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
+
         .leftJoin(levels, eq(lectures.levelId, levels.id))
         .leftJoin(programs, eq(levels.programId, programs.id))
         .leftJoin(schedules, eq(lectureSessions.id, schedules.lectureSessionId))
@@ -114,6 +117,7 @@ export const lectureSessionRouter = createTRPCRouter({
       const query = ctx.db
         .select(lectureSessionCardSchema)
         .from(lectureSessions)
+        .leftJoin(groups, eq(lectureSessions.groupId, groups.id))
         .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
         .leftJoin(scheduled, eq(lectures.title, scheduled.lectureTitle))
         .leftJoin(
@@ -150,6 +154,7 @@ export const lectureSessionRouter = createTRPCRouter({
       const query = ctx.db
         .select(lectureSessionCardSchema)
         .from(lectureSessions)
+        .leftJoin(groups, eq(lectureSessions.groupId, groups.id))
         .leftJoin(lectures, eq(lectureSessions.lectureId, lectures.id))
         .leftJoin(
           scheduleCount,
