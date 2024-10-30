@@ -30,11 +30,11 @@ export const ContactByWhatsApp = ({
 
   return (
     <Card className="relative mx-auto w-full max-w-md">
-      <div className="ribbon-green">
+      <div className="ribbon-green text-center">
         Ahorras hasta {savings} mil pesos por persona!
       </div>
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold text-green-500">
+        <CardTitle className="pt-8 text-2xl font-bold text-green-500 md:pt-0">
           Matrícula grupal
         </CardTitle>
         <CardDescription>
@@ -52,7 +52,7 @@ export const ContactByWhatsApp = ({
         </p>
         <Button
           onClick={handleWhatsAppClick}
-          className="text-green-500-foreground inline-flex items-center rounded-sm bg-green-500 text-white hover:bg-background hover:fill-green-500 hover:text-green-500 hover:outline hover:outline-1 hover:outline-green-500"
+          className="text-green-500-foreground flex h-fit flex-wrap items-center rounded-sm bg-green-500 text-white hover:bg-background hover:fill-green-500 hover:text-green-500 hover:outline hover:outline-1 hover:outline-green-500"
         >
           <WhatsApp className="mr-2 h-5 w-5 fill-white hover:fill-green-500" />
           <span>
