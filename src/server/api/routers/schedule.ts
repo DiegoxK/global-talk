@@ -14,6 +14,14 @@ export const scheduleRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const user = ctx.session.user;
 
+      const schedule = await ctx.db.query.schedules.findFirst({
+        where: eq(schedules.lectureSessionId, input.lectureId),
+      });
+
+      if (schedule) {
+        throw new Error("Clase ya agendada");
+      }
+
       const lectureScheduleNumber = await ctx.db
         .select({
           lectureSessionId: lectureSessions.id,
