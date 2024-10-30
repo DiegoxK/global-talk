@@ -108,7 +108,7 @@ export function Confirmation({
           </Text>
 
           <Link
-            href="https://globtm.vercel.app/academy"
+            href="https://www.academiaglobtm.com/academy"
             style={{
               marginLeft: "95px",
               fontSize: "24px",

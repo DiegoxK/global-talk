@@ -42,8 +42,7 @@ export default function FailedTransaction({
             <Button className="w-full">Intentar Nuevamente</Button>
           </Link>
 
-          {/* TODO: Change for actual domain email */}
-          <Link className="w-full" href={`mailto:contact@globtm.co`}>
+          <Link className="w-full" href={`mailto:contacto@academiaglobtm.com`}>
             <Button variant="outline" className="w-full">
               Contactar Soporte
             </Button>
