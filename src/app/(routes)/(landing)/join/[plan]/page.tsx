@@ -124,7 +124,7 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
         <h1 className="text-4xl font-bold text-primary">
           Beginners A0 - Matrícula grupal
         </h1>
-        <ContactByWhatsApp programName="Beginners A0" />
+        <ContactByWhatsApp programName="Beginners A0" savings="350" />
       </div>
     </>
   );
@@ -219,7 +219,7 @@ const PureA1 = ({ planId }: { planId: string }) => {
         <h1 className="text-4xl font-bold text-primary">
           Pure A1 - Matrícula grupal
         </h1>
-        <ContactByWhatsApp programName="Pure A1" />
+        <ContactByWhatsApp programName="Pure A1" savings="350" />
       </div>
     </>
   );
@@ -314,7 +314,7 @@ const BeginnersPlusPureA1 = ({ planId }: { planId: string }) => {
         <h1 className="text-4xl font-bold text-primary">
           Beginners + Pure A1 - Matrícula grupal
         </h1>
-        <ContactByWhatsApp programName="Beginners + Pure A1" />
+        <ContactByWhatsApp programName="Beginners + Pure A1" savings="600" />
       </div>
     </>
   );
@@ -411,7 +411,7 @@ const FromA2ToB1 = ({ planId }: { planId: string }) => {
         <h1 className="text-4xl font-bold text-primary">
           From B1 to B2 - Matrícula grupal
         </h1>
-        <ContactByWhatsApp programName="From B1 to B2" />
+        <ContactByWhatsApp programName="From B1 to B2" savings="700" />
       </div>
     </>
   );
@@ -507,7 +507,7 @@ const FromB1ToB2 = ({ planId }: { planId: string }) => {
         <h1 className="text-4xl font-bold text-primary">
           From B1 to B2 - Matrícula grupal
         </h1>
-        <ContactByWhatsApp programName="From B1 to B2" />
+        <ContactByWhatsApp programName="From B1 to B2" savings="700" />
       </div>
     </>
   );
@@ -603,7 +603,7 @@ const IntensiveB2 = ({ planId }: { planId: string }) => {
         <h1 className="text-4xl font-bold text-primary">
           Intensive B2 - Matrícula grupal
         </h1>
-        <ContactByWhatsApp programName="Intensive B2" />
+        {/* <ContactByWhatsApp programName="Intensive B2" savings="350" /> */}
       </div>
     </>
   );
@@ -698,7 +698,7 @@ const BusinessEnglish = ({ planId }: { planId: string }) => {
         <h1 className="text-4xl font-bold text-primary">
           Business English - Matrícula grupal
         </h1>
-        <ContactByWhatsApp programName="Business English" />
+        <ContactByWhatsApp programName="Business English" savings="700" />
       </div>
     </>
   );
