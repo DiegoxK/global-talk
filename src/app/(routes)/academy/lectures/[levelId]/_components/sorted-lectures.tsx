@@ -45,7 +45,7 @@ export default function SortedLectures({
               <ChevronDown className="h-4 w-4 shrink-0 text-primary transition-transform duration-200" />
             </div>
           </AccordionTrigger>
-          <AccordionContent className="flex w-full flex-wrap gap-2">
+          <AccordionContent className="flex w-full flex-col gap-2 px-2 md:flex-row md:flex-wrap md:px-0">
             {lectures.map((lecture) => (
               <LectureCard
                 key={lecture.id}

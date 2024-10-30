@@ -255,6 +255,7 @@ export default function LectureForm({
   return (
     <>
       <EndClassDialog
+        setDialogOpen={setOpen}
         lectureSessionId={lectureSession?.id}
         endLectureDialog={staendLectureDialogte}
         setEndLectureDialog={setEndLectureDialog}

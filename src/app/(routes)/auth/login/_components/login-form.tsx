@@ -82,7 +82,7 @@ export default function LoginForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex w-2/4 flex-col items-center space-y-3"
+          className="flex w-full flex-col items-center space-y-3 px-4 md:w-2/4 md:px-0"
         >
           <div className="text-center">
             <h1 className="text-4xl font-bold text-white">Iniciar Sesión</h1>

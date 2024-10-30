@@ -6,9 +6,9 @@ import Link from "next/link";
 
 export default function VisionSection() {
   return (
-    <section className="my-24 flex items-center justify-center gap-x-12">
+    <section className="my-24 flex items-center justify-center md:gap-x-12">
       <div>
-        <Image src={Vision} alt="Mision" />
+        <Image className="hidden md:block" src={Vision} alt="Mision" />
       </div>
       <div className="w-[615px] space-y-6">
         <div className="space-y-4 pr-8">
@@ -28,7 +28,7 @@ export default function VisionSection() {
         </div>
         <div className="space-x-4">
           <Link href="/contact">
-            <Button size="lg" className="rounded-md text-lg">
+            <Button size="lg" className="w-full rounded-md text-lg md:w-auto">
               CONTÁCTANOS
             </Button>
           </Link>

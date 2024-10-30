@@ -29,7 +29,7 @@ export default function LectureCard({
   scheduleCount,
 }: LectureCardProps) {
   return (
-    <div className="flex w-[217px] flex-col justify-between rounded-md border shadow-md">
+    <div className="flex w-full flex-col justify-between rounded-md border shadow-md md:w-[217px]">
       <div>
         <div
           style={{
@@ -37,7 +37,9 @@ export default function LectureCard({
           }}
           className="bg-pattern flex items-center justify-center text-nowrap rounded-t-md py-4 text-xl font-extrabold text-white"
         >
-          {lecture.teacherName}
+          {state === "teacher"
+            ? "#" + String(lecture.groupName).split("#")[1]
+            : lecture.teacherName}
         </div>
         <div className="relative">
           <Avatar className="absolute left-[calc(50%-24px)] top-[-1em] h-[55px] w-[55px] border border-primary-700">

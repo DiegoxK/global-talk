@@ -131,12 +131,12 @@ export default function JoinPage({
         <div className="text- relative py-56 text-center text-4xl font-bold text-white shadow-sm drop-shadow-2xl"></div>
       </div>
       <div className="container mx-auto flex flex-col items-center gap-12 py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           Elige tu plan de inglés
         </h1>
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-8">
           {plans.map((plan, index) => (
-            <Card key={index} className="flex w-[610px] flex-col p-0 pt-6">
+            <Card key={index} className="flex flex-col p-0 pt-6 md:w-[610px]">
               <div className="pl-6 pr-8">
                 <CardHeader>
                   <CardTitle className="text-2xl font-bold text-primary">

@@ -11,11 +11,11 @@ export default async function Login() {
   }
 
   return (
-    <main className="grid grid-cols-2">
+    <main className="grid md:grid-cols-2">
       <div className="bg-pattern flex h-screen items-center justify-center">
         <LoginForm />
       </div>
-      <div className="login-background relative flex items-center justify-center text-white">
+      <div className="login-background relative hidden items-center justify-center text-white md:flex">
         <div className="absolute h-screen w-full bg-primary opacity-65" />
         <div className="relative flex flex-col items-center">
           <Logo className="mb-4 h-48 w-48 fill-white" />

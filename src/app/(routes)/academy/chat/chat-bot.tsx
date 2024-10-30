@@ -222,9 +222,9 @@ export default function ChatBot({
               <div ref={messagesEndRef} />
             </ScrollArea>
           ) : (
-            <div className="mb-10 flex h-full w-full flex-col items-center justify-center gap-5 self-center">
+            <div className="mb-10 flex h-full w-full flex-col items-center justify-center gap-5 self-center px-4">
               <Logo className="fill-white" height={70} width={70} />
-              <p className="w-[50rem] text-center text-white">
+              <p className="text-center text-white md:w-[50rem]">
                 Globy es un asistente de IA inteligente diseñado para ayudarte a
                 mejorar tus habilidades en inglés. Ya sea que estés practicando
                 gramática, ampliando tu vocabulario o trabajando en habilidades

@@ -59,7 +59,7 @@ export function InputOTPForm({ email }: { email: string }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 px-4">
         <FormField
           control={form.control}
           name="pin"
@@ -102,6 +102,9 @@ export function InputOTPForm({ email }: { email: string }) {
           El código fue enviado a tu correo electrónico{" "}
           <span className="font-bold text-primary-900">{email}</span>.
         </FormDescription>
+        <p className="text-sm text-primary-100">
+          *Recuerda revisar la carpeta de spam*
+        </p>
       </form>
     </Form>
   );

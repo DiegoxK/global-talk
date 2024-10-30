@@ -35,7 +35,7 @@ export default function MyLectures({
       <div className="mt-4">
         <h1 className="text-xl font-bold text-primary">Clases agendadas</h1>
         <Separator />
-        <div className="flex flex-wrap gap-2 py-2">
+        <div className="flex flex-wrap gap-2 px-2 py-2 md:px-0">
           {scheduledLectures.length > 0 ? (
             scheduledLectures.map((lecture) => {
               return (

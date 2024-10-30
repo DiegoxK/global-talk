@@ -15,7 +15,7 @@ export default function Courses() {
     {
       plan: "64 clases",
       proficiency: "A0",
-      price: "530,000/Nivel",
+      price: "600,000/Nivel",
       image: Course1,
       title: "Beginners A0",
       levels: 2,
@@ -25,7 +25,7 @@ export default function Courses() {
     {
       plan: "64 clases",
       proficiency: "A1",
-      price: "530,000/Nivel",
+      price: "600,000/Nivel",
       image: Course2,
       title: "Pure A1",
       levels: 2,

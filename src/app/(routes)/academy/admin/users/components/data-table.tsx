@@ -84,7 +84,7 @@ export function DataTable<TData extends UserWithRole, TValue>({
           Añadir usuario
         </Button>
       </div>
-      <div className="max-w-[calc(100vw-22rem)] rounded-md border">
+      <div className="rounded-md border md:max-w-[calc(100vw-22rem)]">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

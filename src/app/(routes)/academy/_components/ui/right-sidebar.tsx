@@ -20,7 +20,7 @@ export default async function RightSidebar({
   });
 
   return (
-    <div className="sticky top-0 h-screen max-h-screen py-4 pl-4">
+    <div className="sticky top-0 hidden h-screen max-h-screen py-4 pl-4 md:block">
       <div className="grid h-full grid-rows-2 rounded-md bg-accent p-4">
         <div className="overflow-auto rounded-sm pr-1">
           <div className="flex flex-col gap-2">

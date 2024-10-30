@@ -18,7 +18,7 @@ interface SidebarProps {
 
 export default function Sidebar({ user, program, firstLevel }: SidebarProps) {
   return (
-    <div className="sticky top-0 flex h-screen max-h-screen w-80 min-w-80 flex-col space-y-2 bg-primary-50 p-2">
+    <div className="sticky top-0 hidden h-screen max-h-screen w-80 min-w-80 flex-col space-y-2 bg-primary-50 p-2 md:flex">
       <div className="flex flex-col items-center justify-center text-nowrap rounded-md bg-white py-8">
         <Avatar className="h-24 w-24 bg-primary">
           <AvatarImage src={user.image ?? undefined} />

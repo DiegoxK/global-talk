@@ -62,10 +62,10 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
   return (
     <>
       <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           Beginners A0 - Matrícula individual
         </h1>
-        <div className="flex flex-wrap last:gap-6">
+        <div className="flex flex-wrap space-y-6 last:gap-6">
           {plans.map((plan, index) => (
             <div key={index}>
               <Card className="relative flex flex-col">
@@ -109,7 +109,7 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
       </div>
       <Separator />
       <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           Beginners A0 - Matrícula grupal
         </h1>
         <ContactByWhatsApp programName="Beginners A0" savings="350" />
@@ -143,10 +143,10 @@ const PureA1 = ({ planId }: { planId: string }) => {
   return (
     <>
       <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           Pure A1 - Matrícula individual
         </h1>
-        <div className="flex flex-wrap last:gap-6">
+        <div className="flex flex-wrap space-y-6 last:gap-6">
           {plans.map((plan, index) => (
             <div key={index}>
               <Card className="relative flex flex-col">
@@ -190,7 +190,7 @@ const PureA1 = ({ planId }: { planId: string }) => {
       </div>
       <Separator />
       <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           Pure A1 - Matrícula grupal
         </h1>
         <ContactByWhatsApp programName="Pure A1" savings="350" />
@@ -231,10 +231,10 @@ const BeginnersPlusPureA1 = ({ planId }: { planId: string }) => {
   return (
     <>
       <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           Beginners + Pure A1 - Matrícula individual
         </h1>
-        <div className="flex flex-wrap last:gap-6">
+        <div className="flex flex-wrap space-y-6 last:gap-6">
           {plans.map((plan, index) => (
             <div key={index}>
               <Card className="relative flex flex-col">
@@ -278,7 +278,7 @@ const BeginnersPlusPureA1 = ({ planId }: { planId: string }) => {
       </div>
       <Separator />
       <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           Beginners + Pure A1 - Matrícula grupal
         </h1>
         <ContactByWhatsApp programName="Beginners + Pure A1" savings="600" />
@@ -312,10 +312,10 @@ const FromA2ToB1 = ({ planId }: { planId: string }) => {
   return (
     <>
       <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           From A2 to B1 - Matrícula individual
         </h1>
-        <div className="flex flex-wrap last:gap-6">
+        <div className="flex flex-wrap space-y-6 last:gap-6">
           {plans.map((plan, index) => (
             <div key={index}>
               <Card className="relative flex flex-col">
@@ -359,7 +359,7 @@ const FromA2ToB1 = ({ planId }: { planId: string }) => {
       </div>
       <Separator />
       <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           From B1 to B2 - Matrícula grupal
         </h1>
         <ContactByWhatsApp programName="From B1 to B2" savings="700" />
@@ -393,10 +393,10 @@ const FromB1ToB2 = ({ planId }: { planId: string }) => {
   return (
     <>
       <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           From B1 to B2 - Matrícula individual
         </h1>
-        <div className="flex flex-wrap last:gap-6">
+        <div className="flex flex-wrap space-y-6 last:gap-6">
           {plans.map((plan, index) => (
             <div key={index}>
               <Card className="relative flex flex-col">
@@ -441,7 +441,7 @@ const FromB1ToB2 = ({ planId }: { planId: string }) => {
 
       <Separator />
       <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           From B1 to B2 - Matrícula grupal
         </h1>
         <ContactByWhatsApp programName="From B1 to B2" savings="700" />
@@ -482,10 +482,10 @@ const IntensiveB2 = ({ planId }: { planId: string }) => {
   return (
     <>
       <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           Intensive B2 - Matrícula individual
         </h1>
-        <div className="flex flex-wrap last:gap-6">
+        <div className="flex flex-wrap space-y-6 last:gap-6">
           {plans.map((plan, index) => (
             <div key={index}>
               <Card className="relative flex flex-col">
@@ -529,10 +529,10 @@ const IntensiveB2 = ({ planId }: { planId: string }) => {
       </div>
       <Separator />
       <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           Intensive B2 - Matrícula grupal
         </h1>
-        {/* <ContactByWhatsApp programName="Intensive B2" savings="350" /> */}
+        <ContactByWhatsApp programName="Intensive B2" savings="350" />
       </div>
     </>
   );
@@ -563,10 +563,10 @@ const BusinessEnglish = ({ planId }: { planId: string }) => {
   return (
     <>
       <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           Business English - Matrícula individual
         </h1>
-        <div className="flex flex-wrap last:gap-6">
+        <div className="flex flex-wrap space-y-6 last:gap-6">
           {plans.map((plan, index) => (
             <div key={index}>
               <Card className="relative flex flex-col">
@@ -610,7 +610,7 @@ const BusinessEnglish = ({ planId }: { planId: string }) => {
       </div>
       <Separator />
       <div className="container mx-auto flex flex-col items-center justify-center gap-12 border-t py-16">
-        <h1 className="text-4xl font-bold text-primary">
+        <h1 className="text-center text-4xl font-bold text-primary">
           Business English - Matrícula grupal
         </h1>
         <ContactByWhatsApp programName="Business English" savings="700" />

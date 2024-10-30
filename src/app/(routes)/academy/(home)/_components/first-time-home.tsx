@@ -25,11 +25,11 @@ export default function FirstTimeHome({
   // TODO: Program ended - Show a message to inform that the program is over
 
   return (
-    <div className="flex h-full flex-col justify-between px-4 pt-8">
+    <div className="flex h-full flex-col justify-between pt-8 md:px-4">
       <div>
         <div>
-          <div className="flex items-center space-x-4">
-            <Avatar className="h-20 w-20">
+          <div className="flex flex-col items-center justify-center gap-4 text-center md:flex-row md:justify-start md:text-left">
+            <Avatar className="h-28 w-28 md:h-20 md:w-20">
               <AvatarImage
                 src={image ? image : undefined}
                 alt={studentFullName}
@@ -54,16 +54,16 @@ export default function FirstTimeHome({
         </div>
         <CardContent className="pt-6">
           <div className="bg-primary/5 mb-6 rounded-lg p-6">
-            <h3 className="mb-3 flex items-center gap-2 text-xl font-semibold text-primary">
-              <CalendarIcon className="h-6 w-6" />
+            <h3 className="mb-3 flex items-center gap-2 text-center text-xl font-semibold text-primary md:text-left">
+              <CalendarIcon className="hidden min-h-6 min-w-6 md:block" />
               Información importante sobre tu programa
             </h3>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-center text-lg text-muted-foreground md:text-left">
               Recuerda que la fecha de inicio para las clases de tu programa{" "}
               <span className="font-semibold text-primary">{programName}</span>{" "}
               es:
             </p>
-            <p className="mt-2 text-2xl font-bold text-primary">
+            <p className="mt-8 text-center text-2xl font-bold text-primary md:mt-2 md:text-left">
               {formatDateToSpanish(startDate!)}
             </p>
           </div>

@@ -24,7 +24,7 @@ export default function MobileNav() {
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left">
+      <SheetContent side="right">
         <NavLink
           href="/"
           toggleOpen={setOpen}
@@ -44,6 +44,9 @@ export default function MobileNav() {
                 {link.label}
               </NavLink>
             ))}
+            <NavLink href="/join" toggleOpen={setOpen} className="w-full">
+              Unete!
+            </NavLink>
           </nav>
         </ScrollArea>
       </SheetContent>
