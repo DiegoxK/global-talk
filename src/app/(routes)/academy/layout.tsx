@@ -28,7 +28,7 @@ export default async function RootLayout({
       <div className="flex w-full flex-col md:mx-4 md:mt-4">
         <div
           style={{ backgroundSize: "100px" }}
-          className="bg-pattern flex w-full items-center justify-between gap-2 px-7 py-10 text-3xl font-extrabold text-white md:justify-center md:gap-1 md:rounded-lg md:px-0"
+          className="bg-pattern flex w-full items-center justify-between gap-2 py-10 pl-7 pr-9 text-3xl font-extrabold text-white md:justify-center md:gap-1 md:rounded-lg md:px-0"
         >
           <MobileSidebar
             user={session.user}
@@ -41,7 +41,7 @@ export default async function RootLayout({
             <p>lobal talk medallo</p>
           </div>
         </div>
-        <main className="relative grow px-0">{children}</main>
+        <main className="relative grow px-4 md:px-0">{children}</main>
       </div>
     </div>
   );
