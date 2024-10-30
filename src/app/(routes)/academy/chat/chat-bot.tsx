@@ -17,6 +17,7 @@ import ReactMarkdown from "react-markdown";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import TypingEffect from "./_components/typing";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   userText: z.string(),
@@ -36,6 +37,8 @@ export default function ChatBot({
   userImage,
   userName,
 }: ChatBotProps) {
+  const { toast } = useToast();
+
   const [messages, setMessages] = useState<{ role: roles; content: string }[]>(
     [],
   );
@@ -59,6 +62,15 @@ export default function ChatBot({
         ]);
         setIsThinking(false);
       }
+    },
+    onError: (error) => {
+      console.error(error);
+      toast({
+        title: "Error al enviar mensaje",
+        description:
+          "Error al obtener la respuesta de globy :(, por favor intenta nuevamente o contacta a soporte.",
+        duration: 6000,
+      });
     },
   });
 
