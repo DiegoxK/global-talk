@@ -3,6 +3,18 @@ import { CheckIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 const plans = [
   {
     href: "/join/beginners_a0",
@@ -78,9 +90,32 @@ const plans = [
   },
 ];
 
-export default function JoinPage() {
+export default function JoinPage({
+  searchParams,
+}: {
+  searchParams: {
+    redirected: string;
+  };
+}) {
+  const userEmail = searchParams.redirected;
+
   return (
     <>
+      <AlertDialog defaultOpen={userEmail !== undefined}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>No se encontro tu usuario.</AlertDialogTitle>
+            <AlertDialogDescription>
+              No se encontro ningún usuario con el correo electrónico{" "}
+              <strong>{userEmail}</strong>. Si crees que es un error, por favor
+              contacta a <strong>contacto@academiaglobtm.com</strong>.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction>Continuar</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <div className="join-background relative">
         <div className="absolute h-full w-full bg-primary-700 opacity-50" />
         <div className="text- relative py-56 text-center text-4xl font-bold text-white shadow-sm drop-shadow-2xl"></div>
