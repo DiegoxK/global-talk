@@ -325,7 +325,7 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
                   <h3 className="text-lg font-semibold">
                     Información de facturacion
                   </h3>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-4 md:grid-cols-2">
                     <FormField
                       control={form.control}
                       name="firstName"
@@ -355,7 +355,7 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
                       )}
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-4 md:grid-cols-2">
                     <FormField
                       control={form.control}
                       name="idType"
@@ -472,7 +472,7 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
                       </FormItem>
                     )}
                   />
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-4 md:grid-cols-2">
                     <FormField
                       control={form.control}
                       name="city"
