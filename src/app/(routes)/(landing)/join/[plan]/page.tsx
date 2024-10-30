@@ -39,7 +39,7 @@ const BeginnersA0 = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time-level`,
       title: "Pago único por nivel",
       description: "Matrícula individual",
-      price: "530 mil COP / nivel",
+      price: "600 mil COP / nivel",
       duration: "2 meses",
       features: [
         "32 clases de una hora (4 por semana)",
@@ -125,7 +125,7 @@ const PureA1 = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time-level`,
       title: "Pago único por nivel",
       description: "Matrícula individual",
-      price: "530 mil COP / nivel",
+      price: "600 mil COP / nivel",
       duration: "2 meses",
       features: [
         "32 clases de una hora (4 por semana)",
@@ -211,7 +211,7 @@ const BeginnersPlusPureA1 = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time-level`,
       title: "Pago único por nivel",
       description: "Matrícula individual",
-      price: "530 mil COP / nivel",
+      price: "600 mil COP / nivel",
       duration: "2 meses",
       features: [
         "32 clases de una hora (4 por semana)",
@@ -297,7 +297,7 @@ const FromA2ToB1 = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time-level`,
       title: "Pago único por nivel",
       description: "Matrícula individual",
-      price: "530 mil COP / nivel",
+      price: "600 mil COP / nivel",
       duration: "2 meses",
       features: [
         "32 clases de una hora (4 por semana)",
@@ -383,7 +383,7 @@ const FromB1ToB2 = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time-level`,
       title: "Pago único por nivel",
       description: "Matrícula individual",
-      price: "530 mil COP / nivel",
+      price: "600 mil COP / nivel",
       duration: "2 meses",
       features: [
         "32 clases de una hora (4 por semana)",
@@ -470,7 +470,7 @@ const IntensiveB2 = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time-level`,
       title: "Pago único por nivel",
       description: "Matrícula individual",
-      price: "530 mil COP / nivel",
+      price: "600 mil COP / nivel",
       duration: "2 meses",
       features: [
         "32 clases de una hora (4 por semana)",
@@ -556,7 +556,7 @@ const BusinessEnglish = ({ planId }: { planId: string }) => {
       href: `/checkout/${planId}/one-time-level`,
       title: "Pago único por nivel",
       description: "Matrícula individual",
-      price: "530 mil COP / nivel",
+      price: "600 mil COP / nivel",
       duration: "2 meses",
       features: [
         "32 clases de una hora (4 por semana)",
