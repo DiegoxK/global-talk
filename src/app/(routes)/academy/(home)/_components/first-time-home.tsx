@@ -28,8 +28,8 @@ export default function FirstTimeHome({
     <div className="flex h-full flex-col justify-between px-4 pt-8">
       <div>
         <div>
-          <div className="flex items-center space-x-4">
-            <Avatar className="h-20 w-20">
+          <div className="flex flex-col items-center justify-center gap-4 text-center md:flex-row md:justify-start md:text-left">
+            <Avatar className="h-28 w-28 md:h-20 md:w-20">
               <AvatarImage
                 src={image ? image : undefined}
                 alt={studentFullName}
@@ -55,7 +55,7 @@ export default function FirstTimeHome({
         <CardContent className="pt-6">
           <div className="bg-primary/5 mb-6 rounded-lg p-6">
             <h3 className="mb-3 flex items-center gap-2 text-xl font-semibold text-primary">
-              <CalendarIcon className="h-6 w-6" />
+              <CalendarIcon className="min-h-6 min-w-6" />
               Información importante sobre tu programa
             </h3>
             <p className="text-lg text-muted-foreground">
