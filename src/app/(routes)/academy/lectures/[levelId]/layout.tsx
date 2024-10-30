@@ -2,6 +2,7 @@ import { api } from "@/trpc/server";
 import RightSidebar from "../../_components/ui/right-sidebar";
 import { getServerAuthSession } from "@/server/auth";
 import { redirect } from "next/navigation";
+import MobileRightSidebar from "../../_components/ui/mobile-right-sidebar";
 
 export default async function LecturesLayout({
   children,
@@ -16,7 +17,12 @@ export default async function LecturesLayout({
   if (session?.user?.active === false) return redirect("/academy");
 
   return (
-    <div className="flex justify-between">
+    <div className="flex flex-col justify-between md:flex-row">
+      <MobileRightSidebar
+        levelId={params.levelId}
+        levels={userInformation.levels}
+        currentUserLevel={userInformation.currentUserLevel}
+      />
       {children}
       <RightSidebar
         levelId={params.levelId}
