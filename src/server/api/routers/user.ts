@@ -236,22 +236,21 @@ export const userRouter = createTRPCRouter({
       z.object({
         name: z.string(),
         lastName: z.string(),
-        email: z.string().email(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
       const userEmail = ctx.session.user.email;
 
-      if (input.email) {
-        const user = await ctx.db.query.users.findFirst({
-          where: (table, funcs) => funcs.eq(table.email, input.email),
-        });
+      // if (input.email) {
+      //   const user = await ctx.db.query.users.findFirst({
+      //     where: (table, funcs) => funcs.eq(table.email, input.email),
+      //   });
 
-        if (user && user.id !== userId) {
-          throw new Error("El correo ya está en uso");
-        }
-      }
+      //   if (user && user.id !== userId) {
+      //     throw new Error("El correo ya está en uso");
+      //   }
+      // }
 
       const user = await ctx.db.query.users.findFirst({
         where: (table, funcs) => funcs.eq(table.email, userEmail),
@@ -263,7 +262,7 @@ export const userRouter = createTRPCRouter({
           .set({
             name: input.name,
             lastName: input.lastName,
-            email: input.email,
+            // email: input.email,
           })
           .where(eq(users.id, userId));
       }

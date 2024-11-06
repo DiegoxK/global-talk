@@ -66,9 +66,9 @@ const formSchema = z.object({
       message: "Campo requerido",
     })
     .max(50),
-  email: z.string().email({
-    message: "Campo requerido",
-  }),
+  // email: z.string().email({
+  //   message: "Campo requerido",
+  // }),
 });
 
 export default function ProfileForm({ user }: ProfileFormProps) {
@@ -84,7 +84,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
     defaultValues: {
       name: user.name,
       lastName: user.lastName,
-      email: user.email,
+      // email: user.email,
     },
   });
 
@@ -92,7 +92,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
     onSuccess: () => {
       form.control._defaultValues.name = form.getValues("name");
       form.control._defaultValues.lastName = form.getValues("lastName");
-      form.control._defaultValues.email = form.getValues("email");
+      // form.control._defaultValues.email = form.getValues("email");
 
       toast({
         title: "Perfil actualizado",
@@ -138,7 +138,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
     updateUser({
       name: values.name,
       lastName: values.lastName,
-      email: values.email,
+      // email: values.email,
     });
   }
 
@@ -307,7 +307,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                   </FormItem>
                 )}
               />
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
@@ -324,7 +324,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
                     </FormControl>
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <div className="flex justify-end">
                 <Button
