@@ -100,7 +100,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
 // ============================ Prompts ================================
 export const prompts = createTable("prompt", {
   id: uuid("id").primaryKey().defaultRandom(),
-  name: varchar("name", { length: 25 }).notNull(),
+  name: varchar("name", { length: 20 }).notNull(),
   description: text("description").notNull(),
   prompt: text("prompt").notNull(),
 });
