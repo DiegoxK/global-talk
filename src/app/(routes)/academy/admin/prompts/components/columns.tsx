@@ -22,7 +22,7 @@ export const columns: ColumnDef<Prompt>[] = [
     header: "Prompt",
     cell: ({ row }) => (
       <p className="w-[40rem] truncate text-sm text-muted-foreground">
-        {row.original.description}
+        {row.original.prompt}
       </p>
     ),
   },
