@@ -299,7 +299,7 @@ export default function Recurrent({ params }: { params: { plan: string } }) {
                 <p className="mt-1 text-sm">
                   Matrícula individual:{" "}
                   <strong>
-                    {formatToCOP(siteConfig.pricing[plan].price.level)}
+                    {formatToCOP(siteConfig.pricing[plan].price.complete)}
                   </strong>{" "}
                 </p>
                 <ul className="mt-2 list-inside list-disc space-y-1 text-sm">
