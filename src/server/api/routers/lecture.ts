@@ -5,7 +5,7 @@ import {
   schedules,
 } from "@/server/db/schema";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { and, eq, sql } from "drizzle-orm";
+import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 export const lectureRouter = createTRPCRouter({
@@ -62,7 +62,12 @@ export const lectureRouter = createTRPCRouter({
         .from(lectures)
         .leftJoin(levels, eq(lectures.levelId, levels.id))
         .leftJoin(viewedLectures, eq(lectures.id, viewedLectures.lectureId))
-        .where(eq(levels.id, input.levelId));
+        .where(eq(levels.id, input.levelId))
+        .orderBy(
+       
+          asc(sql`CAST(SUBSTRING(${lectures.title}, '^[0-9]+') AS INTEGER)`),
+          asc(lectures.title)
+        );
 
       return myLectures;
     }),
