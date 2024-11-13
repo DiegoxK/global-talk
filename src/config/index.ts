@@ -118,8 +118,8 @@ export const siteConfig: SiteConfig = {
     },
     pure_a1: {
       price: {
-        level: "10000",
-        complete: "10000",
+        level: "600000",
+        complete: "1000000",
       },
       name: "Pure A1",
       description: {
@@ -154,8 +154,8 @@ export const siteConfig: SiteConfig = {
     },
     beginners_plus_pure_a1: {
       price: {
-        level: "10000",
-        complete: "10000",
+        level: "1900000",
+        complete: "1900000",
       },
       name: "Beginners + Pure A1",
       description: {
@@ -182,8 +182,8 @@ export const siteConfig: SiteConfig = {
     },
     from_a2_to_b1: {
       price: {
-        level: "10000",
-        complete: "10000",
+        level: "630000",
+        complete: "3000000",
       },
       name: "From A2 to B1",
       description: {
@@ -220,8 +220,8 @@ export const siteConfig: SiteConfig = {
     },
     from_b1_to_b2: {
       price: {
-        level: "10000",
-        complete: "10000",
+        level: "630000",
+        complete: "3000000",
       },
       name: "From B1 to B2",
       description: {
@@ -256,8 +256,8 @@ export const siteConfig: SiteConfig = {
     },
     intensive_b2: {
       price: {
-        level: "10000",
-        complete: "10000",
+        level: "1000000",
+        complete: "1000000",
       },
       name: "Intensive B2",
       description: {
@@ -285,8 +285,8 @@ export const siteConfig: SiteConfig = {
     },
     business_english: {
       price: {
-        level: "10000",
-        complete: "10000",
+        level: "630000",
+        complete: "3000000",
       },
       name: "Business English",
       description: {
