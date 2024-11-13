@@ -82,8 +82,8 @@ export const siteConfig: SiteConfig = {
   pricing: {
     beginners_a0: {
       price: {
-        level: "10000",
-        complete: "10000",
+        level: "600000",
+        complete: "1000000",
       },
       name: "Beginners A0",
       description: {
