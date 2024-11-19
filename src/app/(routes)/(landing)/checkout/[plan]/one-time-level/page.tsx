@@ -231,7 +231,7 @@ export default function Level({ params }: { params: { plan: string } }) {
         transactionType: "LEVEL",
         confirmation: `https://www.academiaglobtm.com/api/checkout/confirmation`,
         response: "https://www.academiaglobtm.com/response",
-        test: "true",
+        test: "false",
       };
 
       createSession(paymentDetails);
