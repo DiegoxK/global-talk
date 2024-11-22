@@ -1,7 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 import "@/styles/globals.css";
 import { Outfit } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import { TRPCReactProvider } from "@/trpc/react";
+import { MetaPixel } from "@/components/meta/meta-pixel";
 
 export const metadata = {
   title: "Global Talk Medallo",
@@ -21,7 +23,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${outfit.className} antialiased`}>
+      <MetaPixel />
       <body>
+        <img
+          alt=""
+          height="1"
+          width="1"
+          className="hidden"
+          src="https://www.facebook.com/tr?id=1757671605066556&ev=PageView&noscript=1"
+        />
         <Toaster />
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
