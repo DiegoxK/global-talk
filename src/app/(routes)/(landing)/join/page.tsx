@@ -126,9 +126,8 @@ export default function JoinPage({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      <div className="join-background relative">
-        <div className="absolute h-full w-full bg-primary-700 opacity-50" />
-        <div className="text- relative py-56 text-center text-4xl font-bold text-white shadow-sm drop-shadow-2xl"></div>
+      <div className="join-background relative rounded-xl">
+        <div className="text- relative rounded-xl py-56 text-center text-4xl font-bold text-white"></div>
       </div>
       <div className="container mx-auto flex flex-col items-center gap-12 py-16">
         <h1 className="text-center text-4xl font-bold text-primary">
