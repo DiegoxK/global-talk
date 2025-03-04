@@ -72,6 +72,10 @@ export const siteConfig: SiteConfig = {
       ],
     },
     {
+      label: "Newsletter", // Nueva sección
+      url: "/newsletter",  // Ruta corregida
+    },
+    {
       label: "Contacto",
       url: "/contact",
       subLinks: [{ label: "Formulario de contacto", url: "/contact#form" }],

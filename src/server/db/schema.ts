@@ -276,6 +276,20 @@ export const accounts = createTable(
   }),
 );
 
+// ============================== SUBSCRIBERS ==============================
+export const subscribers = createTable("subscriber", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  createdAt: timestamp("created_at", {
+    mode: "date",
+    withTimezone: true,
+  })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+});
+
+export const subscribersRelations = relations(subscribers, ({}) => ({}));
+
 export const accountsRelations = relations(accounts, ({ one }) => ({
   user: one(users, { fields: [accounts.userId], references: [users.id] }),
 }));
