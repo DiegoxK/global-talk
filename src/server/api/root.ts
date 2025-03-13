@@ -10,6 +10,7 @@ import { groupRouter } from "./routers/group";
 import { promptRouter } from "./routers/prompt";
 import { transactionRouter } from "./routers/transactions";
 import { emailRouter } from "./routers/email";
+import { brevoRouter } from "./routers/brevo"; // Importa el router de Brevo
 
 /**
  * This is the primary router for your server.
@@ -28,6 +29,7 @@ export const appRouter = createTRPCRouter({
   lectureSession: lectureSessionRouter,
   prompt: promptRouter,
   transaction: transactionRouter,
+  brevo: brevoRouter, // Agrega el router de Brevo sin modificar lo demás
 });
 
 // export type definition of API
