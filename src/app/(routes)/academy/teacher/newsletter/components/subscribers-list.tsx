@@ -11,20 +11,24 @@ type Subscriber = {
 };
 
 export function SubscribersList() {
-  const { data: subscribers, isLoading, refetch } = api.brevo.getSubscribers.useQuery();
+  const {
+    data: subscribers,
+    isLoading,
+    refetch,
+  } = api.brevo.getSubscribers.useQuery();
   const deleteSubscriber = api.brevo.deleteSubscriber.useMutation();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
   const handleDelete = async (id: string, email: string) => {
     const isConfirmed = window.confirm(
-      `¿Seguro que deseas eliminar ${email} de la lista de suscriptores?`
+      `¿Seguro que deseas eliminar ${email} de la lista de suscriptores?`,
     );
 
     if (isConfirmed) {
       try {
         await deleteSubscriber.mutateAsync({ id });
-        refetch(); // Refrescar la lista después de eliminar
+        await refetch(); // Refrescar la lista después de eliminar
       } catch (error) {
         alert("Error al eliminar el suscriptor.");
       }
@@ -39,14 +43,17 @@ export function SubscribersList() {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentSubscribers = subscribers.slice(indexOfFirstItem, indexOfLastItem);
+  const currentSubscribers = subscribers.slice(
+    indexOfFirstItem,
+    indexOfLastItem,
+  );
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <div>
       <h2 className="text-lg font-semibold">Suscriptores</h2>
-      <table className="min-w-full mt-2">
+      <table className="mt-2 min-w-full">
         <thead>
           <tr>
             <th className="px-4 py-2">Email</th>
@@ -64,7 +71,7 @@ export function SubscribersList() {
               <td className="px-4 py-2">
                 <button
                   onClick={() => handleDelete(subscriber.id, subscriber.email)}
-                  className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                  className="rounded bg-red-500 px-2 py-1 text-white hover:bg-red-600"
                 >
                   Eliminar
                 </button>
@@ -74,18 +81,21 @@ export function SubscribersList() {
         </tbody>
       </table>
 
-      <div className="flex justify-center mt-4">
-        {Array.from({ length: Math.ceil(subscribers.length / itemsPerPage) }, (_, i) => (
-          <button
-            key={i + 1}
-            onClick={() => paginate(i + 1)}
-            className={`mx-1 px-3 py-1 rounded ${
-              currentPage === i + 1 ? 'bg-primary text-white' : 'bg-gray-200'
-            }`}
-          >
-            {i + 1}
-          </button>
-        ))}
+      <div className="mt-4 flex justify-center">
+        {Array.from(
+          { length: Math.ceil(subscribers.length / itemsPerPage) },
+          (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => paginate(i + 1)}
+              className={`mx-1 rounded px-3 py-1 ${
+                currentPage === i + 1 ? "bg-primary text-white" : "bg-gray-200"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ),
+        )}
       </div>
     </div>
   );
