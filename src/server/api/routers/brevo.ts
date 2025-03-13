@@ -4,6 +4,7 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { subscribers } from "@/server/db/schema";
 import { db } from "@/server/db";
 import { eq } from "drizzle-orm";
+import { env } from "@/env";
 
 export const brevoRouter = createTRPCRouter({
   // Obtener todos los suscriptores desde la tabla `subscribers`
@@ -41,7 +42,7 @@ export const brevoRouter = createTRPCRouter({
         .returning(); // Retorna el registro insertado
 
       // Agregar el suscriptor a Brevo
-      const apiKey = process.env.BREVO_API_KEY;
+      const apiKey = env.BREVO_API_KEY;
 
       if (!apiKey) {
         throw new Error("API Key de Brevo no configurada");
