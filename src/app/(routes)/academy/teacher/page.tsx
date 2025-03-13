@@ -18,6 +18,13 @@ export default function Teacher() {
           <p>Gestion de estudiantes</p>
         </button>
       </Link>
+      <Link href="/academy/teacher/newsletter">
+        <button className="flex flex-col items-center justify-center rounded-md border px-6 py-4 shadow-md md:h-[410px] md:w-[410px] md:px-0 md:py-0">
+          <Students width={280} height={280} />
+          <h2 className="text-2xl font-bold text-primary-600">Newsletter</h2>
+          <p>Envío de correos</p>
+        </button>
+      </Link>
     </div>
   );
 }
