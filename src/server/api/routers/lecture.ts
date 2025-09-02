@@ -62,7 +62,8 @@ export const lectureRouter = createTRPCRouter({
         .from(lectures)
         .leftJoin(levels, eq(lectures.levelId, levels.id))
         .leftJoin(viewedLectures, eq(lectures.id, viewedLectures.lectureId))
-        .where(eq(levels.id, input.levelId));
+        .where(eq(levels.id, input.levelId))
+        .orderBy(sql`CAST(split_part(${lectures.title}, '.', 1) AS INTEGER)`);
 
       return myLectures;
     }),

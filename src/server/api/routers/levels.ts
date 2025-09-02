@@ -1,6 +1,6 @@
 import { levels } from "@/server/db/schema";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 export const levelRouter = createTRPCRouter({
@@ -17,7 +17,7 @@ export const levelRouter = createTRPCRouter({
     }
 
     return ctx.db.query.levels.findFirst({
-      where: eq(levels.programId, programId),
+      where: and(eq(levels.programId, programId), eq(levels.level, 1)),
       columns: {
         id: true,
       },
@@ -38,6 +38,9 @@ export const levelRouter = createTRPCRouter({
 
     const userLevels = await ctx.db.query.levels.findMany({
       where: eq(levels.programId, programId),
+      orderBy: (levels, { asc }) => [
+        asc(sql`CAST(split_part(${levels.name}, ' ', 2) AS INTEGER)`),
+      ],
     });
 
     return {
